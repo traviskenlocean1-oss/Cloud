@@ -135,8 +135,8 @@
     border-bottom:1px solid var(--line);
     padding:14px 32px;
   }
-  #nav .logo img{height:130px;width:auto;}
-  #nav-links{display:flex;gap:36px;align-items:center;}
+  #nav .logo img{height:90px;width:auto;}
+  #nav-links{display:flex;gap:36px;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}
   #nav-links a{
     font-size:.82rem;letter-spacing:.03em;color:var(--ink-dim);
     transition:color .25s ease;position:relative;
@@ -261,7 +261,7 @@
   @keyframes svcspin{to{transform:rotate(360deg);}}
 
   /* ===== PROCESS ===== */
-  #process{background:var(--surface);border-top:1px solid var(--line);}
+  #process{background:var(--black);border-top:1px solid var(--line);}
   .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
   .process-card{background:var(--surface);padding:44px 30px;}
   .process-card .svc-num{display:block;margin-bottom:22px;}
@@ -291,7 +291,7 @@
   .price-list li svg{flex-shrink:0;margin-top:3px;}
 
   /* ===== FAQ ===== */
-  #faq{background:var(--surface);border-top:1px solid var(--line);}
+  #faq{background:var(--black);border-top:1px solid var(--line);}
   .faq-item{border-top:1px solid var(--line);}
   .faq-item:last-child{border-bottom:1px solid var(--line);}
   .faq-q{
@@ -365,7 +365,7 @@
   @media (max-width:860px){
     #nav-links,.tel-link{display:none;}
     #nav-toggle{display:block;}
-    #nav .logo img{height:64px;}
+    #nav .logo img{height:52px;}
     .svc-layout,.process-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
     .process-grid{gap:1px;}
     .footer-top{flex-direction:column;}
@@ -661,7 +661,7 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-col">
-        <img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy" style="height:120px;margin-bottom:14px;">
+        <img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy" style="height:84px;margin-bottom:14px;">
         <p style="color:var(--ink-faint);font-size:.85rem;max-width:32ch;">Brand strategy, rebrands, and advertising for companies that'd rather look inevitable than loud.</p>
       </div>
       <div class="footer-col">
