@@ -300,7 +300,6 @@
   .arc-circle{
     position:absolute;top:50%;left:-1060px;width:1400px;height:1400px;
     border-radius:50%;border:1px solid var(--line-strong);
-    transform:translateY(-50%);
   }
   .process-numbers{position:absolute;top:0;left:0;width:100%;}
   .process-marker{
@@ -871,23 +870,26 @@
       const arcCircleEl = document.querySelector('.arc-circle');
       const stepHeight = markers.length > 1 ? (markers[1].offsetTop - markers[0].offsetTop) : 140;
       const firstMarkerCenter = markers[0].offsetTop + markers[0].offsetHeight / 2;
+      gsap.set(arcCircleEl, { y: -700, rotation: 0 });
+      const updateProcess = (progress)=>{
+        const continuous = progress * (steps.length - 1);
+        const arcCenter = arcEl.offsetHeight / 2;
+        gsap.set(track, { y: arcCenter - firstMarkerCenter - continuous * stepHeight });
+        gsap.set(arcCircleEl, { y: -700, rotation: continuous * -1.1 });
+        const idx = Math.min(steps.length - 1, Math.round(continuous));
+        steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
+        markers.forEach((m,i)=> m.classList.toggle('active', i === idx));
+        visuals.forEach((v,i)=> v.classList.toggle('active', i === idx));
+      };
       ScrollTrigger.create({
         trigger: '.process-pin',
         start: 'top top',
         end: () => '+=' + (window.innerHeight * 2.2),
         pin: true,
         scrub: 0.6,
-        onUpdate: (self)=>{
-          const continuous = self.progress * (steps.length - 1);
-          const arcCenter = arcEl.offsetHeight / 2;
-          gsap.set(track, { y: arcCenter - firstMarkerCenter - continuous * stepHeight });
-          gsap.set(arcCircleEl, { y: '-50%', rotation: continuous * -4.5 });
-          const idx = Math.min(steps.length - 1, Math.round(continuous));
-          steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
-          markers.forEach((m,i)=> m.classList.toggle('active', i === idx));
-          visuals.forEach((v,i)=> v.classList.toggle('active', i === idx));
-        }
+        onUpdate: (self)=> updateProcess(self.progress)
       });
+      updateProcess(0);
     }
   });
 
