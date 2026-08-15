@@ -226,54 +226,64 @@
   .section-head h2{font-size:clamp(2rem,3.6vw,3.1rem);margin-top:14px;}
   .section-pad{padding:130px 0;}
 
-  /* ===== SERVICES (numbered, scroll-driven) ===== */
+  /* ===== SERVICES (icon-card grid) ===== */
   #services{background:var(--black);border-top:1px solid var(--line);}
-  #services-pin{padding:130px 0 0;}
-  .svc-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;min-height:520px;}
-  .svc-list{position:relative;}
-  .svc-item{
-    padding:34px 0;border-top:1px solid var(--line);
-    cursor:pointer;
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .service-card{
+    border:1px solid var(--line);padding:48px 36px;display:flex;flex-direction:column;
+    transition:border-color .3s ease;
   }
-  .svc-item:last-child{border-bottom:1px solid var(--line);}
-  .svc-item-top{display:flex;align-items:baseline;gap:22px;}
+  .service-card:hover{border-color:var(--line-strong);}
+  .service-icon{
+    width:108px;height:108px;border-radius:50%;flex-shrink:0;
+    border:1px solid var(--line-strong);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:30px;
+  }
+  .service-icon svg{width:52%;height:52%;animation:svcspin 26s linear infinite;}
+  @keyframes svcspin{to{transform:rotate(360deg);}}
   .svc-num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink-faint);}
-  .svc-item h3{font-size:1.7rem;transition:color .3s ease;}
-  .svc-item.active h3{color:var(--ink);}
-  .svc-item:not(.active) h3{color:var(--ink-faint);}
-  .svc-body{
-    display:grid;grid-template-rows:minmax(0,0fr);overflow:hidden;transition:grid-template-rows .5s ease;
-  }
-  .svc-item.active .svc-body{grid-template-rows:minmax(0,1fr);}
-  .svc-body-inner{min-height:0;padding:0 0 6px 0;}
-  .svc-item.active .svc-body-inner{padding-top:18px;}
-  .svc-body p{color:var(--ink-dim);font-size:.95rem;line-height:1.65;max-width:42ch;margin-bottom:18px;}
-  .svc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .service-card h3{font-size:1.8rem;margin:10px 0 16px;}
+  .service-card p{color:var(--ink-dim);font-size:.95rem;line-height:1.65;margin-bottom:22px;flex:1;}
+  .svc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
   .svc-tags span{
     font-size:.68rem;letter-spacing:.04em;padding:6px 13px;
     border:1px solid var(--line-strong);border-radius:100px;color:var(--ink-dim);
   }
-  .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;}
-  .svc-visual{
-    position:relative;aspect-ratio:1/1;width:100%;max-width:400px;justify-self:center;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .svc-shape{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    opacity:0;transition:opacity .6s ease;
-  }
-  .svc-shape.active{opacity:1;}
-  .svc-shape svg{width:78%;height:78%;animation:svcspin 22s linear infinite;}
-  .svc-shape svg *{stroke:var(--ink-dim);}
-  @keyframes svcspin{to{transform:rotate(360deg);}}
+  .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
 
-  /* ===== PROCESS ===== */
-  #process{background:var(--black);border-top:1px solid var(--line);}
-  .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
-  .process-card{background:var(--surface);padding:44px 30px;}
-  .process-card .svc-num{display:block;margin-bottom:22px;}
-  .process-card h3{font-size:1.4rem;margin-bottom:14px;}
-  .process-card p{color:var(--ink-dim);font-size:.9rem;line-height:1.6;}
+  /* ===== PROCESS (scroll-driven curved-arc steps) ===== */
+  #process{background:var(--black);border-top:1px solid var(--line);padding-bottom:130px;}
+  .process-pin{height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;}
+  .process-scroll-layout{display:grid;grid-template-columns:340px 1fr;gap:70px;align-items:center;width:100%;}
+  .process-arc{position:relative;height:420px;overflow:hidden;}
+  .arc-circle{
+    position:absolute;top:50%;left:-1060px;width:1400px;height:1400px;
+    border-radius:50%;border:1px solid var(--line-strong);
+    transform:translateY(-50%);
+  }
+  .process-marker{
+    position:absolute;left:0;display:flex;align-items:center;gap:14px;
+    opacity:.4;transition:opacity .4s ease;
+  }
+  .process-marker.active{opacity:1;}
+  .process-marker[data-step="0"]{top:6%;}
+  .process-marker[data-step="1"]{top:35%;}
+  .process-marker[data-step="2"]{top:64%;}
+  .process-marker[data-step="3"]{top:93%;}
+  .process-marker .dot{
+    width:8px;height:8px;border-radius:50%;
+    border:1px solid var(--ink-faint);background:transparent;
+    transition:background .4s ease, border-color .4s ease;
+  }
+  .process-marker.active .dot{background:var(--ink);border-color:var(--ink);}
+  .process-marker .num{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink-faint);transition:color .4s ease;}
+  .process-marker.active .num{color:var(--ink);}
+  .process-content{position:relative;min-height:280px;}
+  .process-step{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s ease;}
+  .process-step.active{opacity:1;pointer-events:auto;}
+  .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;}
+  .process-step p{color:var(--ink-dim);font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
 
   /* ===== PRICING ===== */
   #pricing{background:var(--black);border-top:1px solid var(--line);}
@@ -387,9 +397,14 @@
     #nav-links,.tel-link{display:none;}
     #nav-toggle{display:block;}
     #nav .logo img{height:52px;}
-    .svc-layout,.process-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
-    .process-grid{gap:1px;}
+    .services-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
     .footer-top{flex-direction:column;}
+    .process-pin{height:auto;overflow:visible;}
+    .process-scroll-layout{grid-template-columns:1fr;gap:50px;}
+    .process-arc{display:none;}
+    .process-content{min-height:0;}
+    .process-step{position:static;opacity:1;pointer-events:auto;padding-bottom:44px;border-bottom:1px solid var(--line);margin-bottom:44px;}
+    .process-step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
   }
 </style>
 </head>
@@ -436,103 +451,97 @@
         <h2>Three disciplines, one system.</h2>
       </div>
 
-      <div class="svc-layout">
-        <div class="svc-list">
+      <div class="services-grid">
 
-          <div class="svc-item active" data-index="0">
-            <div class="svc-item-top">
-              <span class="svc-num">01</span>
-              <h3>Brand Strategy</h3>
-            </div>
-            <div class="svc-body"><div class="svc-body-inner">
-              <p>Positioning, naming, and messaging architecture — built before a single pixel, so the identity has something to say.</p>
-              <div class="svc-tags"><span>Positioning</span><span>Naming</span><span>Messaging Architecture</span><span>Market Research</span></div>
-              <a href="services/brand-strategy.html" class="svc-link">View Service →</a>
-            </div></div>
-          </div>
-
-          <div class="svc-item" data-index="1">
-            <div class="svc-item-top">
-              <span class="svc-num">02</span>
-              <h3>Rebrands</h3>
-            </div>
-            <div class="svc-body"><div class="svc-body-inner">
-              <p>For companies that outgrew their first identity. We rebuild the visual system from the ground up, not just the logo.</p>
-              <div class="svc-tags"><span>Identity Systems</span><span>Visual Language</span><span>Brand Guidelines</span><span>Rollout</span></div>
-              <a href="services/rebrands.html" class="svc-link">View Service →</a>
-            </div></div>
-          </div>
-
-          <div class="svc-item" data-index="2">
-            <div class="svc-item-top">
-              <span class="svc-num">03</span>
-              <h3>Advertising</h3>
-            </div>
-            <div class="svc-body"><div class="svc-body-inner">
-              <p>Campaigns and creative direction built to convert, not just to look good in a portfolio.</p>
-              <div class="svc-tags"><span>Paid Media</span><span>Creative Direction</span><span>Campaign Strategy</span><span>Media Buying</span></div>
-              <a href="services/advertising.html" class="svc-link">View Service →</a>
-            </div></div>
-          </div>
-
-        </div>
-
-        <div class="svc-visual">
-          <div class="svc-shape active" data-shape="0">
-            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink-dim)" stroke-width="1">
+        <div class="service-card fade-up">
+          <div class="service-icon">
+            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink)" stroke-width="1">
               <polygon points="100,20 170,160 30,160"/>
               <polygon points="100,70 145,160 55,160"/>
               <polygon points="100,120 122,160 78,160"/>
             </svg>
           </div>
-          <div class="svc-shape" data-shape="1">
-            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink-dim)" stroke-width="1">
+          <span class="svc-num">01</span>
+          <h3>Brand Strategy</h3>
+          <p>Positioning, naming, and messaging architecture — built before a single pixel, so the identity has something to say.</p>
+          <div class="svc-tags"><span>Positioning</span><span>Naming</span><span>Messaging Architecture</span><span>Market Research</span></div>
+          <a href="services/brand-strategy.html" class="svc-link">View Service →</a>
+        </div>
+
+        <div class="service-card fade-up">
+          <div class="service-icon">
+            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink)" stroke-width="1">
               <rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/>
               <rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/>
             </svg>
           </div>
-          <div class="svc-shape" data-shape="2">
-            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink-dim)" stroke-width="1">
+          <span class="svc-num">02</span>
+          <h3>Rebrands</h3>
+          <p>For companies that outgrew their first identity. We rebuild the visual system from the ground up, not just the logo.</p>
+          <div class="svc-tags"><span>Identity Systems</span><span>Visual Language</span><span>Brand Guidelines</span><span>Rollout</span></div>
+          <a href="services/rebrands.html" class="svc-link">View Service →</a>
+        </div>
+
+        <div class="service-card fade-up">
+          <div class="service-icon">
+            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink)" stroke-width="1">
               <circle cx="100" cy="100" r="80"/>
               <circle cx="100" cy="100" r="50"/>
               <line x1="100" y1="20" x2="100" y2="180"/>
               <line x1="20" y1="100" x2="180" y2="100"/>
             </svg>
           </div>
+          <span class="svc-num">03</span>
+          <h3>Advertising</h3>
+          <p>Campaigns and creative direction built to convert, not just to look good in a portfolio.</p>
+          <div class="svc-tags"><span>Paid Media</span><span>Creative Direction</span><span>Campaign Strategy</span><span>Media Buying</span></div>
+          <a href="services/advertising.html" class="svc-link">View Service →</a>
         </div>
+
       </div>
     </div>
   </section>
 
   <!-- PROCESS -->
-  <section id="process" class="section-pad">
+  <section id="process">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">How We Work</p>
         <h2>A process built to survive scale.</h2>
       </div>
     </div>
-    <div class="wrap">
-      <div class="process-grid">
-        <div class="process-card fade-up">
-          <span class="svc-num">01</span>
-          <h3>Discovery</h3>
-          <p>We study the business, the market, and the competition before we ever open a design file.</p>
+
+    <div class="process-pin">
+      <div class="wrap process-scroll-layout">
+        <div class="process-arc">
+          <div class="arc-circle"></div>
+          <div class="process-marker active" data-step="0"><span class="dot"></span><span class="num">01</span></div>
+          <div class="process-marker" data-step="1"><span class="dot"></span><span class="num">02</span></div>
+          <div class="process-marker" data-step="2"><span class="dot"></span><span class="num">03</span></div>
+          <div class="process-marker" data-step="3"><span class="dot"></span><span class="num">04</span></div>
         </div>
-        <div class="process-card fade-up">
-          <span class="svc-num">02</span>
-          <h3>Strategy</h3>
-          <p>Positioning and messaging get locked before anything visual starts — so the identity is built on something.</p>
-        </div>
-        <div class="process-card fade-up">
-          <span class="svc-num">03</span>
-          <h3>Design</h3>
-          <p>Identity, digital, and campaign assets are built as one coherent system, not a stack of separate deliverables.</p>
-        </div>
-        <div class="process-card fade-up">
-          <span class="svc-num">04</span>
-          <h3>Launch</h3>
-          <p>We roll the brand out across every touchpoint and stay on to run the campaigns that put it in front of people.</p>
+
+        <div class="process-content">
+          <div class="process-step active" data-step="0">
+            <h3>Discovery</h3>
+            <p>We study the business, the market, and the competition before we ever open a design file.</p>
+            <div class="svc-tags"><span>Research</span><span>Audit</span><span>Interviews</span></div>
+          </div>
+          <div class="process-step" data-step="1">
+            <h3>Strategy</h3>
+            <p>Positioning and messaging get locked before anything visual starts — so the identity is built on something.</p>
+            <div class="svc-tags"><span>Positioning</span><span>Messaging</span><span>Roadmap</span></div>
+          </div>
+          <div class="process-step" data-step="2">
+            <h3>Design</h3>
+            <p>Identity, digital, and campaign assets are built as one coherent system, not a stack of separate deliverables.</p>
+            <div class="svc-tags"><span>Identity</span><span>Digital</span><span>Campaign Assets</span></div>
+          </div>
+          <div class="process-step" data-step="3">
+            <h3>Launch</h3>
+            <p>We roll the brand out across every touchpoint and stay on to run the campaigns that put it in front of people.</p>
+            <div class="svc-tags"><span>Rollout</span><span>Campaigns</span><span>Ongoing Support</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -759,15 +768,24 @@
   });
   heroEl.addEventListener('mouseleave', ()=> heroGlow.style.opacity = 0);
 
-  // Services — click to switch active item + shape
-  document.querySelectorAll('.svc-item').forEach(item=>{
-    item.addEventListener('click', ()=>{
-      document.querySelectorAll('.svc-item').forEach(i=>i.classList.remove('active'));
-      item.classList.add('active');
-      const idx = item.dataset.index;
-      document.querySelectorAll('.svc-shape').forEach(s=>s.classList.remove('active'));
-      document.querySelector('.svc-shape[data-shape="'+idx+'"]').classList.add('active');
-    });
+  // Process — pinned scroll-driven curved-arc steps (desktop only)
+  ScrollTrigger.matchMedia({
+    '(min-width: 861px)': function(){
+      const steps = gsap.utils.toArray('.process-step');
+      const markers = gsap.utils.toArray('.process-marker');
+      ScrollTrigger.create({
+        trigger: '.process-pin',
+        start: 'top top',
+        end: () => '+=' + (window.innerHeight * 2.2),
+        pin: true,
+        scrub: 0.6,
+        onUpdate: (self)=>{
+          const idx = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+          steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
+          markers.forEach((m,i)=> m.classList.toggle('active', i === idx));
+        }
+      });
+    }
   });
 
   // Fade-up on scroll for cards
