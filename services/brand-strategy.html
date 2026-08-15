@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Strategy Services in Austin, TX | Cloudefy</title>
+<meta name="description" content="Positioning, naming, and messaging architecture built before any visual work starts. Brand strategy services from Cloudefy, Austin, TX.">
+<link rel="canonical" href="https://www.cloudefy.co/services/brand-strategy.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Brand Strategy Services in Austin, TX | Cloudefy">
+<meta property="og:description" content="Positioning, naming, and messaging architecture built before any visual work starts.">
+<meta property="og:url" content="https://www.cloudefy.co/services/brand-strategy.html">
+<meta property="og:site_name" content="Cloudefy">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Brand Strategy",
+  "provider": { "@type": "ProfessionalService", "name": "Cloudefy", "telephone": "+15125550142",
+    "address": { "@type": "PostalAddress", "streetAddress": "1200 Congress Ave, Suite 400", "addressLocality": "Austin", "addressRegion": "TX", "postalCode": "78701", "addressCountry": "US" } },
+  "areaServed": "US",
+  "description": "Positioning, naming, and messaging architecture built before any visual work starts."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.cloudefy.co/" },
+    { "@type": "ListItem", "position": 2, "name": "Brand Strategy", "item": "https://www.cloudefy.co/services/brand-strategy.html" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<style>
+  :root{
+    --black:#050505;--surface:#0d0d0d;--line:rgba(245,245,240,.1);--line-strong:rgba(245,245,240,.22);
+    --ink:#f5f5f0;--ink-dim:rgba(245,245,240,.6);--ink-faint:rgba(245,245,240,.32);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{background:var(--black);}
+  body{background:var(--black);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:-.01em;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
+  .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);font-weight:500;}
+  section{position:relative;}
+  .section-pad{padding:110px 0;}
+
+  #nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 32px;background:rgba(5,5,5,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+  #nav .logo img{height:26px;width:auto;}
+  #nav-links{display:flex;gap:36px;align-items:center;}
+  #nav-links a{font-size:.82rem;letter-spacing:.03em;color:var(--ink-dim);transition:color .25s ease;}
+  #nav-links a:hover{color:var(--ink);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;font-size:.8rem;letter-spacing:.04em;border-radius:2px;white-space:nowrap;}
+  .btn-primary{background:var(--ink);color:var(--black);font-weight:600;}
+  .btn-outline{border:1px solid var(--line-strong);color:var(--ink);}
+  .magnetic{transition:transform .15s ease;}
+  #nav-toggle{display:none;background:none;border:none;width:26px;height:18px;position:relative;}
+  #nav-toggle span{position:absolute;left:0;right:0;height:1px;background:var(--ink);}
+  #nav-toggle span:nth-child(1){top:0;}#nav-toggle span:nth-child(2){top:8px;}#nav-toggle span:nth-child(3){top:16px;}
+
+  .breadcrumb{padding-top:130px;font-size:.78rem;color:var(--ink-faint);display:flex;gap:8px;}
+  .breadcrumb a{color:var(--ink-dim);}
+  .page-hero{padding:36px 0 90px;border-bottom:1px solid var(--line);}
+  .page-hero .svc-num{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ink-faint);display:block;margin-bottom:18px;}
+  .page-hero h1{font-size:clamp(2.4rem,5.4vw,4.4rem);max-width:16ch;margin-bottom:26px;}
+  .page-hero .lead{color:var(--ink-dim);font-size:1.05rem;line-height:1.7;max-width:56ch;margin-bottom:38px;}
+
+  .deliv-item{display:grid;grid-template-columns:70px 1fr;gap:24px;padding:34px 0;border-top:1px solid var(--line);}
+  .deliv-item:last-child{border-bottom:1px solid var(--line);}
+  .deliv-item .svc-num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--ink-faint);}
+  .deliv-item p{color:var(--ink-dim);font-size:.98rem;line-height:1.7;max-width:64ch;}
+  .deliv-item p b{color:var(--ink);font-weight:600;}
+
+  .process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .process-card{background:var(--surface);padding:44px 30px;}
+  .process-card .svc-num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--ink-faint);display:block;margin-bottom:22px;}
+  .process-card h3{font-size:1.4rem;margin-bottom:14px;}
+  .process-card p{color:var(--ink-dim);font-size:.9rem;line-height:1.6;}
+
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .related-card{border:1px solid var(--line);padding:32px;transition:border-color .25s ease;}
+  .related-card:hover{border-color:var(--line-strong);}
+  .related-card .svc-num{color:var(--ink-faint);font-family:'Cormorant Garamond',serif;}
+  .related-card h3{font-size:1.5rem;margin:12px 0 10px;}
+  .related-card p{color:var(--ink-dim);font-size:.88rem;line-height:1.6;}
+
+  #cta{background:var(--surface);border-top:1px solid var(--line);text-align:center;}
+  #cta h2{font-size:clamp(2rem,3.6vw,2.8rem);margin-bottom:24px;max-width:16ch;margin-left:auto;margin-right:auto;}
+  #cta .ctas{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;}
+
+  footer{background:var(--black);border-top:1px solid var(--line);padding:50px 0;}
+  .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.78rem;color:var(--ink-faint);}
+  .footer-bottom a{color:var(--ink-dim);}
+
+  @media (max-width:860px){
+    #nav-links{display:none;}
+    #nav-toggle{display:block;}
+    .deliv-item{grid-template-columns:1fr;gap:8px;}
+    .process-grid,.related-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="../index.html" class="logo"><img src="../assets/images/cloudefy-logo-white.png" alt="Cloudefy"></a>
+  <div id="nav-links">
+    <a href="../index.html#services">Services</a>
+    <a href="../index.html#process">Process</a>
+    <a href="../index.html#pricing">Pricing</a>
+    <a href="../index.html#faq">FAQ</a>
+  </div>
+  <a href="../index.html#contact" class="btn btn-primary magnetic">Book a Call</a>
+  <button id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<main>
+  <div class="wrap">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#services">Services</a> / Brand Strategy</p>
+    <div class="page-hero">
+      <span class="svc-num">01 / 03</span>
+      <h1>Brand Strategy</h1>
+      <p class="lead">Most companies skip straight to a logo. We start with why the business exists, who it's for, and why it should win — then build the message and visual language on top of that, not before it.</p>
+      <a href="../index.html#contact" class="btn btn-primary magnetic">Inquire About Brand Strategy</a>
+    </div>
+  </div>
+
+  <section class="section-pad">
+    <div class="wrap">
+      <p class="eyebrow" style="margin-bottom:14px;">Deliverables</p>
+      <div class="deliv-list">
+        <div class="deliv-item"><span class="svc-num">01</span><p><b>Market & Competitive Analysis</b> — a clear picture of where the category is crowded and where there's room to be genuinely different.</p></div>
+        <div class="deliv-item"><span class="svc-num">02</span><p><b>Positioning Statement</b> — one sentence that defines what the business does, for whom, and why it's the better choice.</p></div>
+        <div class="deliv-item"><span class="svc-num">03</span><p><b>Messaging Architecture</b> — core message, supporting pillars, and proof points that hold up across every channel.</p></div>
+        <div class="deliv-item"><span class="svc-num">04</span><p><b>Naming</b> — for companies without a name yet, or one that no longer fits where the business is headed.</p></div>
+        <div class="deliv-item"><span class="svc-num">05</span><p><b>Brand Voice Guidelines</b> — how the business sounds in writing, from the homepage to a cold email.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad" style="background:var(--surface);border-top:1px solid var(--line);">
+    <div class="wrap">
+      <p class="eyebrow" style="margin-bottom:40px;">Process</p>
+      <div class="process-grid">
+        <div class="process-card"><span class="svc-num">01</span><h3>Discovery</h3><p>Interviews with founders and leadership, a competitor audit, and category research before anything is drafted.</p></div>
+        <div class="process-card"><span class="svc-num">02</span><h3>Strategy</h3><p>Positioning and messaging are drafted, then stress-tested against the objections a real buyer would raise.</p></div>
+        <div class="process-card"><span class="svc-num">03</span><h3>Delivery</h3><p>A final strategy document and voice guidelines handed off — ready to brief any designer or writer.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="wrap">
+      <p class="eyebrow" style="margin-bottom:40px;">Related Services</p>
+      <div class="related-grid">
+        <a href="rebrands.html" class="related-card"><span class="svc-num">02</span><h3>Rebrands</h3><p>For companies that outgrew their first identity — a full rebuild of the visual system, not just the logo.</p></a>
+        <a href="advertising.html" class="related-card"><span class="svc-num">03</span><h3>Advertising</h3><p>Campaigns and creative direction built to convert, not just to look good in a portfolio.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta" class="section-pad">
+    <div class="wrap">
+      <p class="eyebrow" style="margin-bottom:20px;">Get Started</p>
+      <h2>Ready to build the strategy first?</h2>
+      <div class="ctas">
+        <a href="../index.html#contact" class="btn btn-primary magnetic">Book a Call</a>
+        <a href="tel:+15125550142" class="btn btn-outline magnetic">(512) 555-0142</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Cloudefy. All rights reserved.</span>
+    <span><a href="../index.html">cloudefy.co</a> — Austin, TX</span>
+  </div>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+  const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time)=>{ lenis.raf(time*1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  navToggle.addEventListener('click', ()=>{
+    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    navLinks.style.cssText += 'position:fixed;top:64px;left:0;right:0;flex-direction:column;background:rgba(5,5,5,.97);padding:24px 32px;gap:20px;border-bottom:1px solid var(--line);';
+  });
+
+  gsap.utils.toArray('.deliv-item, .process-card, .related-card').forEach(el=>{
+    gsap.from(el, { opacity:0, y:24, duration:0.8, ease:'power2.out', scrollTrigger:{ trigger: el, start:'top 90%' } });
+  });
+
+  document.querySelectorAll('.magnetic').forEach(btn=>{
+    btn.addEventListener('mousemove', (e)=>{
+      const r = btn.getBoundingClientRect();
+      gsap.to(btn, { x:(e.clientX-r.left-r.width/2)*0.25, y:(e.clientY-r.top-r.height/2)*0.4, duration:0.4, ease:'power2.out' });
+    });
+    btn.addEventListener('mouseleave', ()=> gsap.to(btn, { x:0, y:0, duration:0.5, ease:'elastic.out(1,0.4)' }));
+  });
+</script>
+</body>
+</html>

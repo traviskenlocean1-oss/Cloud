@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Strategy & Rebrands Agency | Cloudefy</title>
+<meta name="description" content="Cloudefy is a brand strategy, rebrand, and advertising studio in Austin, TX. No social media management — just work built to look expensive.">
+<link rel="canonical" href="https://www.cloudefy.co/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Brand Strategy & Rebrands Agency | Cloudefy">
+<meta property="og:description" content="Cloudefy is a brand strategy, rebrand, and advertising studio in Austin, TX. No social media management — just work built to look expensive.">
+<meta property="og:url" content="https://www.cloudefy.co/">
+<meta property="og:site_name" content="Cloudefy">
+<meta property="og:image" content="https://www.cloudefy.co/assets/images/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Brand Strategy & Rebrands Agency | Cloudefy">
+<meta name="twitter:description" content="Cloudefy is a brand strategy, rebrand, and advertising studio in Austin, TX.">
+
+<!-- LocalBusiness Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Cloudefy",
+  "image": "https://www.cloudefy.co/assets/images/cloudefy-logo-white.png",
+  "url": "https://www.cloudefy.co/",
+  "telephone": "+15125550142",
+  "priceRange": "$$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1200 Congress Ave, Suite 400",
+    "addressLocality": "Austin",
+    "addressRegion": "TX",
+    "postalCode": "78701",
+    "addressCountry": "US"
+  },
+  "sameAs": []
+}
+</script>
+
+<!-- FAQPage Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is Cloudefy different from a marketing agency that also does social media?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We don't manage social accounts. Cloudefy is scoped to brand strategy, identity, rebrands, and paid advertising — the work that determines whether a brand looks credible before a single post ever goes out." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you work with companies that don't have a brand yet?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our Foundation tier is built specifically for companies building their first real identity — strategy and positioning come before any visual work starts." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does a rebrand take?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most rebrands run 6 to 10 weeks from strategy through final asset delivery, depending on the number of touchpoints the new identity needs to roll out across." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you handle media buying, or just the creative for ad campaigns?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is Cloudefy located, and do you work with clients outside Austin?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We're based in Austin, TX, and work with clients nationally — most engagements run remotely with the same process regardless of location." }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<style>
+  :root{
+    --black:#050505;
+    --surface:#0d0d0d;
+    --surface-2:#131313;
+    --line:rgba(245,245,240,.1);
+    --line-strong:rgba(245,245,240,.22);
+    --ink:#f5f5f0;
+    --ink-dim:rgba(245,245,240,.6);
+    --ink-faint:rgba(245,245,240,.32);
+    --chrome:linear-gradient(115deg,#8a8a86 0%,#f5f5f0 28%,#c9c9c4 45%,#f5f5f0 62%,#77776f 100%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{background:var(--black);}
+  body{
+    background:var(--black);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:-.01em;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-dim);font-weight:500;
+  }
+  section{position:relative;}
+
+  /* ===== NAV ===== */
+  #nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 32px;
+    background:rgba(5,5,5,0);
+    border-bottom:1px solid transparent;
+    transition:background .4s ease, border-color .4s ease, padding .4s ease;
+  }
+  #nav.scrolled{
+    background:rgba(5,5,5,.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    padding:14px 32px;
+  }
+  #nav .logo img{height:26px;width:auto;}
+  #nav-links{display:flex;gap:36px;align-items:center;}
+  #nav-links a{
+    font-size:.82rem;letter-spacing:.03em;color:var(--ink-dim);
+    transition:color .25s ease;position:relative;
+  }
+  #nav-links a:hover{color:var(--ink);}
+  .nav-right{display:flex;align-items:center;gap:22px;}
+  .tel-link{font-size:.82rem;color:var(--ink-dim);display:none;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 26px;font-size:.8rem;letter-spacing:.04em;
+    border-radius:2px;white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--ink);color:var(--black);font-weight:600;
+  }
+  .btn-outline{
+    border:1px solid var(--line-strong);color:var(--ink);
+  }
+  .magnetic{transition:transform .15s ease;}
+  #nav-toggle{display:none;background:none;border:none;width:26px;height:18px;position:relative;}
+  #nav-toggle span{position:absolute;left:0;right:0;height:1px;background:var(--ink);transition:.3s;}
+  #nav-toggle span:nth-child(1){top:0;}
+  #nav-toggle span:nth-child(2){top:8px;}
+  #nav-toggle span:nth-child(3){top:16px;}
+
+  /* ===== HERO (placeholder — swap for MiniMax scroll-scrub video later) ===== */
+  #hero{
+    height:100vh;min-height:640px;
+    display:flex;align-items:center;
+    position:relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 38%, rgba(245,245,240,.05), transparent 70%),
+      radial-gradient(ellipse 90% 60% at 50% 100%, rgba(245,245,240,.03), transparent 70%),
+      var(--black);
+    overflow:hidden;
+  }
+  #hero::before{
+    content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+  #hero-glow{
+    position:absolute;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle, rgba(245,245,240,.07), transparent 70%);
+    pointer-events:none;left:0;top:0;
+    transform:translate(-50%,-50%);
+    transition:opacity .4s ease;
+    opacity:0;
+  }
+  .hero-inner{position:relative;z-index:2;width:100%;}
+  .hero-eyebrow{margin-bottom:26px;}
+  .hero-eyebrow span{margin:0 10px;color:var(--ink-faint);}
+  #hero h1{
+    font-size:clamp(2.6rem,6.4vw,5.6rem);
+    line-height:1.04;max-width:14ch;
+    margin-bottom:28px;
+  }
+  #hero h1 .line{overflow:hidden;display:block;}
+  #hero p.lead{
+    font-size:1.05rem;color:var(--ink-dim);max-width:44ch;
+    line-height:1.6;margin-bottom:44px;
+  }
+  .hero-ctas{display:flex;gap:18px;flex-wrap:wrap;}
+  .scroll-cue{
+    position:absolute;bottom:38px;left:32px;display:flex;align-items:center;gap:12px;
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);
+  }
+  .scroll-cue .line-v{width:1px;height:36px;background:var(--line-strong);position:relative;overflow:hidden;}
+  .scroll-cue .line-v::after{
+    content:'';position:absolute;top:-100%;left:0;right:0;height:100%;
+    background:var(--ink);animation:scrollcue 2.2s ease-in-out infinite;
+  }
+  @keyframes scrollcue{
+    0%{top:-100%;} 50%{top:100%;} 50.01%{top:-100%;} 100%{top:-100%;}
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-head{margin-bottom:64px;max-width:640px;}
+  .section-head h2{font-size:clamp(2rem,3.6vw,3.1rem);margin-top:14px;}
+  .section-pad{padding:130px 0;}
+
+  /* ===== SERVICES (numbered, scroll-driven) ===== */
+  #services{background:var(--black);border-top:1px solid var(--line);}
+  #services-pin{padding:130px 0 0;}
+  .svc-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;min-height:520px;}
+  .svc-list{position:relative;}
+  .svc-item{
+    padding:34px 0;border-top:1px solid var(--line);
+    cursor:pointer;
+  }
+  .svc-item:last-child{border-bottom:1px solid var(--line);}
+  .svc-item-top{display:flex;align-items:baseline;gap:22px;}
+  .svc-num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink-faint);}
+  .svc-item h3{font-size:1.7rem;transition:color .3s ease;}
+  .svc-item.active h3{color:var(--ink);}
+  .svc-item:not(.active) h3{color:var(--ink-faint);}
+  .svc-body{
+    max-height:0;overflow:hidden;transition:max-height .5s ease;
+  }
+  .svc-item.active .svc-body{max-height:220px;}
+  .svc-body-inner{padding:18px 0 6px 0;}
+  .svc-body p{color:var(--ink-dim);font-size:.95rem;line-height:1.65;max-width:42ch;margin-bottom:18px;}
+  .svc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .svc-tags span{
+    font-size:.68rem;letter-spacing:.04em;padding:6px 13px;
+    border:1px solid var(--line-strong);border-radius:100px;color:var(--ink-dim);
+  }
+  .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;}
+  .svc-visual{
+    position:relative;aspect-ratio:1/1;width:100%;max-width:400px;justify-self:center;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .svc-shape{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:opacity .6s ease;
+  }
+  .svc-shape.active{opacity:1;}
+  .svc-shape svg{width:78%;height:78%;animation:svcspin 22s linear infinite;}
+  .svc-shape svg *{stroke:var(--ink-dim);}
+  @keyframes svcspin{to{transform:rotate(360deg);}}
+
+  /* ===== PROCESS ===== */
+  #process{background:var(--surface);border-top:1px solid var(--line);}
+  .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .process-card{background:var(--surface);padding:44px 30px;}
+  .process-card .svc-num{display:block;margin-bottom:22px;}
+  .process-card h3{font-size:1.4rem;margin-bottom:14px;}
+  .process-card p{color:var(--ink-dim);font-size:.9rem;line-height:1.6;}
+
+  /* ===== PRICING ===== */
+  #pricing{background:var(--black);border-top:1px solid var(--line);}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+  .price-card{
+    border:1px solid var(--line);padding:44px 34px;display:flex;flex-direction:column;
+  }
+  .price-card.premium{
+    background:var(--surface);border-color:var(--line-strong);
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.6);
+  }
+  .price-card .tier{font-size:1.5rem;margin-bottom:10px;}
+  .price-card .tier-desc{color:var(--ink-dim);font-size:.88rem;line-height:1.6;margin-bottom:26px;min-height:64px;}
+  .price-card .price{font-size:2rem;font-family:'Cormorant Garamond',serif;margin-bottom:28px;}
+  .price-card .price small{font-size:.9rem;color:var(--ink-faint);font-family:'Inter',sans-serif;}
+  .price-list{margin-bottom:34px;flex:1;}
+  .price-list li{
+    display:flex;gap:12px;font-size:.87rem;color:var(--ink-dim);padding:10px 0;
+    border-top:1px solid var(--line);
+  }
+  .price-list li:first-child{border-top:none;}
+  .price-list li svg{flex-shrink:0;margin-top:3px;}
+
+  /* ===== FAQ ===== */
+  #faq{background:var(--surface);border-top:1px solid var(--line);}
+  .faq-item{border-top:1px solid var(--line);}
+  .faq-item:last-child{border-bottom:1px solid var(--line);}
+  .faq-q{
+    display:flex;align-items:center;gap:24px;padding:28px 0;cursor:pointer;width:100%;text-align:left;
+  }
+  .faq-q .svc-num{width:32px;flex-shrink:0;}
+  .faq-q span.qtext{font-size:1.1rem;flex:1;}
+  .faq-q .plus{font-size:1.4rem;color:var(--ink-faint);transition:transform .3s ease;flex-shrink:0;}
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+  .faq-item.open .faq-a{max-height:200px;}
+  .faq-a p{padding:0 0 30px 56px;color:var(--ink-dim);font-size:.94rem;line-height:1.7;max-width:60ch;}
+
+  /* ===== CONTACT / BOTTOM CTA ===== */
+  #contact{
+    background:var(--black);border-top:1px solid var(--line);
+    padding:140px 0;position:relative;overflow:hidden;
+  }
+  #contact::before{
+    content:'';position:absolute;left:50%;top:0;width:900px;height:900px;
+    background:radial-gradient(circle, rgba(245,245,240,.06), transparent 70%);
+    transform:translate(-50%,-50%);pointer-events:none;
+  }
+  .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;position:relative;z-index:1;}
+  #contact h2{font-size:clamp(2.2rem,4.2vw,3.4rem);margin-bottom:24px;max-width:20ch;line-height:1.1;}
+  #contact .lead{color:var(--ink-dim);font-size:1.02rem;line-height:1.65;margin-bottom:38px;max-width:44ch;}
+  .contact-nap{margin-top:44px;}
+  .contact-nap p{color:var(--ink-dim);font-size:.9rem;line-height:1.9;}
+  .contact-nap a{color:var(--ink);}
+  .cf-outline{border:1px solid var(--line);padding:38px;background:var(--surface);}
+  .cf-row{margin-bottom:20px;}
+  .cf-row label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px;}
+  .cf-row input,.cf-row select,.cf-row textarea{
+    width:100%;background:transparent;border:1px solid var(--line-strong);
+    color:var(--ink);padding:13px 15px;font-family:'Inter',sans-serif;font-size:.9rem;
+    border-radius:2px;
+  }
+  .cf-row select{
+    appearance:none;-webkit-appearance:none;background-color:var(--surface);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f5f5f0' stroke-width='1.4' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 15px center;padding-right:40px;
+  }
+  .cf-row select option{background:var(--surface);color:var(--ink);}
+  .cf-row textarea{resize:vertical;min-height:100px;}
+  .cf-row input:focus,.cf-row select:focus,.cf-row textarea:focus{outline:none;border-color:var(--ink);}
+  .cf-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  #contact form button{width:100%;margin-top:6px;}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--black);border-top:1px solid var(--line);padding:70px 0 0;overflow:hidden;}
+  .footer-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:60px;}
+  .footer-col h4{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px;}
+  .footer-col a{display:block;font-size:.88rem;color:var(--ink-dim);padding:6px 0;transition:color .2s;}
+  .footer-col a:hover{color:var(--ink);}
+  .footer-social{display:flex;gap:16px;}
+  .footer-social a{
+    width:38px;height:38px;border:1px solid var(--line-strong);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .wordmark-wrap{overflow:hidden;line-height:.78;}
+  .wordmark-wrap h2{
+    font-size:clamp(4rem,15vw,13rem);
+    color:transparent;-webkit-text-stroke:1px var(--line-strong);
+    white-space:nowrap;text-align:center;font-weight:500;
+  }
+  .footer-bottom{
+    display:flex;justify-content:space-between;padding:24px 32px;border-top:1px solid var(--line);
+    font-size:.76rem;color:var(--ink-faint);flex-wrap:wrap;gap:10px;
+  }
+
+  @media (max-width:860px){
+    #nav-links,.tel-link{display:none;}
+    #nav-toggle{display:block;}
+    .svc-layout,.process-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
+    .process-grid{gap:1px;}
+    .footer-top{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div id="hero-glow"></div>
+
+<nav id="nav">
+  <a href="/" class="logo"><img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy"></a>
+  <div id="nav-links">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <a href="tel:+15125550142" class="tel-link">(512) 555-0142</a>
+    <a href="#contact" class="btn btn-primary magnetic">Book a Call</a>
+  </div>
+  <button id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<main>
+
+  <!-- HERO — placeholder background; swap for MiniMax scroll-scrub frame sequence once the real asset is produced -->
+  <header id="hero">
+    <div class="wrap hero-inner">
+      <p class="eyebrow hero-eyebrow">Brand Strategy<span>·</span>Rebrands<span>·</span>Advertising</p>
+      <h1 id="hero-headline">Brands built to look expensive.</h1>
+      <p class="lead">Cloudefy is a brand strategy, identity, and advertising studio for companies who'd rather look inevitable than loud. No social media management — just the work that actually determines how a brand is judged.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary magnetic">Book a Call</a>
+        <a href="#services" class="btn btn-outline magnetic">View Services</a>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="line-v"></span></div>
+  </header>
+
+  <!-- SERVICES -->
+  <section id="services" class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What We Do</p>
+        <h2>Three disciplines, one system.</h2>
+      </div>
+
+      <div class="svc-layout">
+        <div class="svc-list">
+
+          <div class="svc-item active" data-index="0">
+            <div class="svc-item-top">
+              <span class="svc-num">01</span>
+              <h3>Brand Strategy</h3>
+            </div>
+            <div class="svc-body"><div class="svc-body-inner">
+              <p>Positioning, naming, and messaging architecture — built before a single pixel, so the identity has something to say.</p>
+              <div class="svc-tags"><span>Positioning</span><span>Naming</span><span>Messaging Architecture</span><span>Market Research</span></div>
+              <a href="services/brand-strategy.html" class="svc-link">View Service →</a>
+            </div></div>
+          </div>
+
+          <div class="svc-item" data-index="1">
+            <div class="svc-item-top">
+              <span class="svc-num">02</span>
+              <h3>Rebrands</h3>
+            </div>
+            <div class="svc-body"><div class="svc-body-inner">
+              <p>For companies that outgrew their first identity. We rebuild the visual system from the ground up, not just the logo.</p>
+              <div class="svc-tags"><span>Identity Systems</span><span>Visual Language</span><span>Brand Guidelines</span><span>Rollout</span></div>
+              <a href="services/rebrands.html" class="svc-link">View Service →</a>
+            </div></div>
+          </div>
+
+          <div class="svc-item" data-index="2">
+            <div class="svc-item-top">
+              <span class="svc-num">03</span>
+              <h3>Advertising</h3>
+            </div>
+            <div class="svc-body"><div class="svc-body-inner">
+              <p>Campaigns and creative direction built to convert, not just to look good in a portfolio.</p>
+              <div class="svc-tags"><span>Paid Media</span><span>Creative Direction</span><span>Campaign Strategy</span><span>Media Buying</span></div>
+              <a href="services/advertising.html" class="svc-link">View Service →</a>
+            </div></div>
+          </div>
+
+        </div>
+
+        <div class="svc-visual">
+          <div class="svc-shape active" data-shape="0">
+            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink-dim)" stroke-width="1">
+              <polygon points="100,20 170,160 30,160"/>
+              <polygon points="100,70 145,160 55,160"/>
+              <polygon points="100,120 122,160 78,160"/>
+            </svg>
+          </div>
+          <div class="svc-shape" data-shape="1">
+            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink-dim)" stroke-width="1">
+              <rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/>
+              <rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/>
+            </svg>
+          </div>
+          <div class="svc-shape" data-shape="2">
+            <svg viewBox="0 0 200 200" fill="none" stroke="var(--ink-dim)" stroke-width="1">
+              <circle cx="100" cy="100" r="80"/>
+              <circle cx="100" cy="100" r="50"/>
+              <line x1="100" y1="20" x2="100" y2="180"/>
+              <line x1="20" y1="100" x2="180" y2="100"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How We Work</p>
+        <h2>A process built to survive scale.</h2>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="process-grid">
+        <div class="process-card fade-up">
+          <span class="svc-num">01</span>
+          <h3>Discovery</h3>
+          <p>We study the business, the market, and the competition before we ever open a design file.</p>
+        </div>
+        <div class="process-card fade-up">
+          <span class="svc-num">02</span>
+          <h3>Strategy</h3>
+          <p>Positioning and messaging get locked before anything visual starts — so the identity is built on something.</p>
+        </div>
+        <div class="process-card fade-up">
+          <span class="svc-num">03</span>
+          <h3>Design</h3>
+          <p>Identity, digital, and campaign assets are built as one coherent system, not a stack of separate deliverables.</p>
+        </div>
+        <div class="process-card fade-up">
+          <span class="svc-num">04</span>
+          <h3>Launch</h3>
+          <p>We roll the brand out across every touchpoint and stay on to run the campaigns that put it in front of people.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Investment</p>
+        <h2>Three ways to work together.</h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card fade-up">
+          <p class="tier serif">Foundation</p>
+          <p class="tier-desc">For early-stage brands that need a real identity for the first time.</p>
+          <p class="price">$8,500 <small>starting</small></p>
+          <ul class="price-list">
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Brand strategy & positioning</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Full identity system</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Brand guidelines</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>2 rounds of revisions</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline magnetic">Inquire for Foundation</a>
+        </div>
+
+        <div class="price-card fade-up">
+          <p class="tier serif">Growth</p>
+          <p class="tier-desc">For existing brands that need a rebuild plus a real go-to-market push.</p>
+          <p class="price">$18,500 <small>starting</small></p>
+          <ul class="price-list">
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Everything in Foundation</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Full rebrand of existing identity</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Website design direction</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Launch campaign strategy</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>4 rounds of revisions</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline magnetic">Inquire for Growth</a>
+        </div>
+
+        <div class="price-card premium fade-up">
+          <p class="tier serif">Signature</p>
+          <p class="tier-desc">Full-service partnership — brand, identity, and ongoing advertising management.</p>
+          <p class="price">Custom</p>
+          <ul class="price-list">
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Everything in Growth</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Ongoing ad campaign management</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Dedicated strategist</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Quarterly brand audits</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Unlimited revisions</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary magnetic">Inquire for Signature</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Before you reach out.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-q"><span class="svc-num">01</span><span class="qtext">How is Cloudefy different from a marketing agency that also does social media?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>We don't manage social accounts. Cloudefy is scoped to brand strategy, identity, rebrands, and paid advertising — the work that determines whether a brand looks credible before a single post ever goes out.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="svc-num">02</span><span class="qtext">Do you work with companies that don't have a brand yet?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Our Foundation tier is built specifically for companies building their first real identity — strategy and positioning come before any visual work starts.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="svc-num">03</span><span class="qtext">How long does a rebrand take?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Most rebrands run 6 to 10 weeks from strategy through final asset delivery, depending on how many touchpoints the new identity needs to roll out across.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="svc-num">04</span><span class="qtext">Do you handle media buying, or just the creative for ad campaigns?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="svc-num">05</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>We're based in Austin, TX, and work with clients nationally — most engagements run remotely with the same process regardless of location.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / BOTTOM CTA -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="fade-up">
+          <p class="eyebrow">Get In Touch</p>
+          <h2>Let's make your brand look inevitable.</h2>
+          <p class="lead">Prefer to talk it through first? Book a call. Otherwise, send the details below and we'll respond within one business day.</p>
+          <a href="tel:+15125550142" class="btn btn-primary magnetic">Book a Call — (512) 555-0142</a>
+          <div class="contact-nap">
+            <p>
+              Cloudefy<br>
+              1200 Congress Ave, Suite 400<br>
+              Austin, TX 78701<br>
+              <a href="tel:+15125550142">(512) 555-0142</a>
+            </p>
+          </div>
+        </div>
+
+        <form class="cf-outline fade-up" action="https://formspree.io/f/mzzeqoyj" method="POST">
+          <div class="cf-two">
+            <div class="cf-row">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" name="name" type="text" required>
+            </div>
+            <div class="cf-row">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" name="email" type="email" required>
+            </div>
+          </div>
+          <div class="cf-row">
+            <label for="cf-company">Company</label>
+            <input id="cf-company" name="company" type="text">
+          </div>
+          <div class="cf-row">
+            <label for="cf-service">Service of interest</label>
+            <select id="cf-service" name="service">
+              <option>Brand Strategy</option>
+              <option>Rebrands</option>
+              <option>Advertising</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="cf-row">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary magnetic">Send Inquiry</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-col">
+        <img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy" style="height:24px;margin-bottom:14px;">
+        <p style="color:var(--ink-faint);font-size:.85rem;max-width:32ch;">Brand strategy, rebrands, and advertising for companies that'd rather look inevitable than loud.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Sitemap</h4>
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:+15125550142">(512) 555-0142</a>
+        <a href="mailto:hello@cloudefy.co">hello@cloudefy.co</a>
+        <p style="color:var(--ink-dim);font-size:.88rem;padding-top:6px;">1200 Congress Ave, Suite 400<br>Austin, TX 78701</p>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="11" x2="8" y2="16"/><line x1="8" y1="8" x2="8" y2="8"/><path d="M12 16v-3a2 2 0 0 1 4 0v3"/></svg></a>
+          <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="wordmark-wrap"><h2>CLOUDEFY</h2></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Cloudefy. All rights reserved.</span>
+    <span>Austin, TX</span>
+  </div>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  // Smooth scroll
+  const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time)=>{ lenis.raf(time*1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  // Nav background on scroll
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({
+    start: 'top -80',
+    onUpdate: (self)=> nav.classList.toggle('scrolled', self.scroll() > 80)
+  });
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  navToggle.addEventListener('click', ()=>{
+    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    navLinks.style.cssText += 'position:fixed;top:64px;left:0;right:0;flex-direction:column;background:rgba(5,5,5,.97);padding:24px 32px;gap:20px;border-bottom:1px solid var(--line);';
+  });
+
+  // Hero headline reveal
+  const split = new SplitText('#hero-headline', { type: 'lines', linesClass: 'line' });
+  gsap.set(split.lines, { yPercent: 110 });
+  gsap.to(split.lines, {
+    yPercent: 0, duration: 1.1, stagger: 0.08, ease: 'power3.out', delay: 0.3
+  });
+  gsap.from('.hero-eyebrow, .lead, .hero-ctas', {
+    opacity: 0, y: 16, duration: 1, stagger: 0.12, delay: 0.9, ease: 'power2.out'
+  });
+
+  // Hero mouse-follow glow (background ambience only — not a custom cursor)
+  const heroGlow = document.getElementById('hero-glow');
+  const heroEl = document.getElementById('hero');
+  heroEl.addEventListener('mousemove', (e)=>{
+    heroGlow.style.opacity = 1;
+    gsap.to(heroGlow, { x: e.clientX, y: e.clientY, duration: 0.6, ease: 'power2.out' });
+  });
+  heroEl.addEventListener('mouseleave', ()=> heroGlow.style.opacity = 0);
+
+  // Services — click to switch active item + shape
+  document.querySelectorAll('.svc-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      document.querySelectorAll('.svc-item').forEach(i=>i.classList.remove('active'));
+      item.classList.add('active');
+      const idx = item.dataset.index;
+      document.querySelectorAll('.svc-shape').forEach(s=>s.classList.remove('active'));
+      document.querySelector('.svc-shape[data-shape="'+idx+'"]').classList.add('active');
+    });
+  });
+
+  // Fade-up on scroll for cards
+  gsap.utils.toArray('.fade-up').forEach(el=>{
+    gsap.from(el, {
+      opacity: 0, y: 30, duration: 0.9, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    });
+  });
+
+  // Section entrance for headers
+  gsap.utils.toArray('.section-head').forEach(el=>{
+    gsap.from(el, {
+      opacity: 0, y: 24, duration: 0.9, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' }
+    });
+  });
+
+  gsap.from('.wordmark-wrap h2', {
+    opacity: 0, y: 40, duration: 1.2, ease: 'power2.out',
+    scrollTrigger: { trigger: '.wordmark-wrap', start: 'top 90%' }
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const item = btn.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Magnetic buttons
+  document.querySelectorAll('.magnetic').forEach(btn=>{
+    btn.addEventListener('mousemove', (e)=>{
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      gsap.to(btn, { x: x*0.25, y: y*0.4, duration: 0.4, ease: 'power2.out' });
+    });
+    btn.addEventListener('mouseleave', ()=> gsap.to(btn, { x:0, y:0, duration:0.5, ease:'elastic.out(1,0.4)' }));
+  });
+</script>
+</body>
+</html>
