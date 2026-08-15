@@ -313,12 +313,20 @@
     border:1px solid var(--ink-faint);background:transparent;
     transition:background .35s ease, border-color .35s ease;
   }
-  .process-marker.active .dot{background:var(--ink);border-color:var(--ink);}
-  .process-marker .num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--ink-faint);transition:color .35s ease;}
-  .process-marker.active .num{color:var(--ink);}
+  .process-marker.active .dot{background:var(--ink);border-color:var(--ink);width:11px;height:11px;}
+  .process-marker .num{
+    font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--ink-faint);
+    transform:scale(.76);transform-origin:left center;
+    transition:color .35s ease, transform .4s ease;
+  }
+  .process-marker.active .num{color:var(--ink);transform:scale(1.16);}
   .process-content{position:relative;min-height:280px;}
-  .process-step{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s ease;}
-  .process-step.active{opacity:1;pointer-events:auto;}
+  .process-step{
+    position:absolute;inset:0;opacity:0;pointer-events:none;
+    transform:translateY(14px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .process-step.active{opacity:1;pointer-events:auto;transform:translateY(0);}
   .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;}
   .process-step p{color:var(--ink-dim);font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
   .process-visual{
@@ -347,7 +355,9 @@
   .visual-orb svg{
     position:relative;z-index:1;width:38%;height:38%;
     filter:drop-shadow(0 6px 14px rgba(0,0,0,.7)) drop-shadow(0 -2px 2px rgba(255,255,240,.15));
+    animation:orb-spin 18s linear infinite;
   }
+  @keyframes orb-spin{to{transform:rotate(360deg);}}
 
   /* ===== PRICING ===== */
   #pricing{background:var(--black);}
@@ -858,6 +868,7 @@
       const visuals = gsap.utils.toArray('.process-visual-shape');
       const track = document.getElementById('process-numbers-track');
       const arcEl = document.querySelector('.process-arc');
+      const arcCircleEl = document.querySelector('.arc-circle');
       const stepHeight = markers.length > 1 ? (markers[1].offsetTop - markers[0].offsetTop) : 140;
       const firstMarkerCenter = markers[0].offsetTop + markers[0].offsetHeight / 2;
       ScrollTrigger.create({
@@ -870,6 +881,7 @@
           const continuous = self.progress * (steps.length - 1);
           const arcCenter = arcEl.offsetHeight / 2;
           gsap.set(track, { y: arcCenter - firstMarkerCenter - continuous * stepHeight });
+          gsap.set(arcCircleEl, { y: '-50%', rotation: continuous * -4.5 });
           const idx = Math.min(steps.length - 1, Math.round(continuous));
           steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
           markers.forEach((m,i)=> m.classList.toggle('active', i === idx));
