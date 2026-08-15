@@ -86,6 +86,19 @@
 
 <style>
   :root{
+    --black:#ffffff;
+    --surface:#f5f4f1;
+    --surface-2:#efeee9;
+    --line:rgba(10,10,10,.1);
+    --line-strong:rgba(10,10,10,.18);
+    --ink:#0a0a0a;
+    --ink-dim:rgba(10,10,10,.62);
+    --ink-faint:rgba(10,10,10,.34);
+    --btn-bg:#141414;
+    --btn-fg:#ffffff;
+    --chrome:linear-gradient(115deg,#8a8a86 0%,#f5f5f0 28%,#c9c9c4 45%,#f5f5f0 62%,#77776f 100%);
+  }
+  .dark-section{
     --black:#000000;
     --surface:#0a0a0a;
     --surface-2:#111111;
@@ -94,9 +107,9 @@
     --ink:#f5f5f0;
     --ink-dim:rgba(245,245,240,.6);
     --ink-faint:rgba(245,245,240,.32);
-    --btn-bg:#161616;
-    --btn-fg:#f5f5f0;
-    --chrome:linear-gradient(115deg,#8a8a86 0%,#f5f5f0 28%,#c9c9c4 45%,#f5f5f0 62%,#77776f 100%);
+    --btn-bg:#f5f5f0;
+    --btn-fg:#0a0a0a;
+    color:var(--ink);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{background:var(--black);}
@@ -129,16 +142,24 @@
     border-bottom:1px solid transparent;
     transition:background .4s ease, border-color .4s ease;
   }
-  #nav.scrolled{
+  #nav.scrolled.dark-section{
     background:rgba(0,0,0,.82);
     backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
     padding:14px 32px;
   }
+  #nav.scrolled:not(.dark-section){
+    background:rgba(255,255,255,.86);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    padding:14px 32px;
+  }
+  #nav .logo img{transition:filter .3s ease;}
+  #nav:not(.dark-section) .logo img{filter:brightness(0);}
   #nav .logo img{height:90px;width:auto;}
   #nav-links{display:flex;gap:36px;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}
   #nav-links a{
-    font-size:1rem;letter-spacing:.03em;color:rgba(245,245,240,.8);
+    font-size:1rem;letter-spacing:.03em;color:var(--ink-dim);
     transition:color .25s ease;position:relative;padding-bottom:16px;
   }
   #nav-links a:hover{color:var(--ink);}
@@ -267,38 +288,66 @@
   }
   .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
 
-  /* ===== PROCESS (scroll-driven curved-arc steps) ===== */
+  /* ===== PROCESS (scroll-driven traveling-number steps) ===== */
   #process{background:var(--black);padding-bottom:130px;}
-  .process-pin{height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;}
-  .process-scroll-layout{display:grid;grid-template-columns:340px 1fr;gap:70px;align-items:center;width:100%;}
-  .process-arc{position:relative;height:420px;overflow:hidden;}
+  .process-pin{height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;position:relative;}
+  .process-scroll-layout{display:grid;grid-template-columns:340px 1fr;gap:70px;align-items:center;width:100%;position:relative;z-index:2;}
+  .process-arc{
+    position:relative;height:420px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+  }
   .arc-circle{
     position:absolute;top:50%;left:-1060px;width:1400px;height:1400px;
     border-radius:50%;border:1px solid var(--line-strong);
     transform:translateY(-50%);
   }
+  .process-numbers{position:absolute;top:0;left:0;width:100%;}
   .process-marker{
-    position:absolute;left:0;display:flex;align-items:center;gap:14px;
-    opacity:.4;transition:opacity .4s ease;
+    display:flex;align-items:center;gap:16px;padding:54px 0;
+    opacity:.32;transition:opacity .35s ease;
   }
   .process-marker.active{opacity:1;}
-  .process-marker[data-step="0"]{top:6%;}
-  .process-marker[data-step="1"]{top:35%;}
-  .process-marker[data-step="2"]{top:64%;}
-  .process-marker[data-step="3"]{top:93%;}
   .process-marker .dot{
-    width:8px;height:8px;border-radius:50%;
+    width:9px;height:9px;border-radius:50%;
     border:1px solid var(--ink-faint);background:transparent;
-    transition:background .4s ease, border-color .4s ease;
+    transition:background .35s ease, border-color .35s ease;
   }
   .process-marker.active .dot{background:var(--ink);border-color:var(--ink);}
-  .process-marker .num{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink-faint);transition:color .4s ease;}
+  .process-marker .num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--ink-faint);transition:color .35s ease;}
   .process-marker.active .num{color:var(--ink);}
   .process-content{position:relative;min-height:280px;}
   .process-step{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s ease;}
   .process-step.active{opacity:1;pointer-events:auto;}
   .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;}
   .process-step p{color:var(--ink-dim);font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
+  .process-visual{
+    position:absolute;right:-40px;top:50%;transform:translateY(-50%);
+    width:460px;height:460px;pointer-events:none;z-index:1;
+  }
+  .process-visual-shape{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;}
+  .process-visual-shape.active{opacity:1;}
+  .visual-orb{
+    width:100%;height:100%;border-radius:50%;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(circle at 32% 26%, rgba(245,245,240,.2), rgba(245,245,240,.02) 42%, transparent 65%),
+      radial-gradient(circle at 74% 80%, rgba(0,0,0,.75), transparent 60%),
+      linear-gradient(160deg, #202020 0%, #050505 75%);
+    box-shadow:
+      inset 0 4px 10px rgba(255,255,255,.08),
+      inset 0 -16px 34px rgba(0,0,0,.8),
+      0 40px 80px -30px rgba(0,0,0,.55);
+  }
+  .visual-orb::before{
+    content:'';position:absolute;top:14%;left:20%;width:35%;height:24%;
+    background:radial-gradient(ellipse, rgba(255,255,255,.4), transparent 72%);
+    border-radius:50%;filter:blur(6px);pointer-events:none;
+  }
+  .visual-orb svg{
+    position:relative;z-index:1;width:38%;height:38%;
+    filter:drop-shadow(0 6px 14px rgba(0,0,0,.7)) drop-shadow(0 -2px 2px rgba(255,255,240,.15));
+  }
 
   /* ===== PRICING ===== */
   #pricing{background:var(--black);}
@@ -344,7 +393,7 @@
   }
   #contact::before{
     content:'';position:absolute;left:50%;top:0;width:900px;height:900px;
-    background:radial-gradient(circle, rgba(245,245,240,.06), transparent 70%);
+    background:radial-gradient(circle, rgba(10,10,10,.05), transparent 70%);
     transform:translate(-50%,-50%);pointer-events:none;
   }
   .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;position:relative;z-index:1;}
@@ -363,7 +412,7 @@
   }
   .cf-row select{
     appearance:none;-webkit-appearance:none;background-color:var(--surface);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f5f5f0' stroke-width='1.4' fill='none'/%3E%3C/svg%3E");
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230a0a0a' stroke-width='1.4' fill='none'/%3E%3C/svg%3E");
     background-repeat:no-repeat;background-position:right 15px center;padding-right:40px;
   }
   .cf-row select option{background:var(--surface);color:var(--ink);}
@@ -390,9 +439,9 @@
     -webkit-text-stroke:1.5px var(--line-strong);
     white-space:nowrap;text-align:center;font-weight:500;
     background-image:linear-gradient(100deg,
-      transparent 30%, rgba(245,245,240,.15) 45%,
-      rgba(245,245,240,.9) 50%,
-      rgba(245,245,240,.15) 55%, transparent 70%);
+      transparent 30%, rgba(10,10,10,.15) 45%,
+      rgba(10,10,10,.9) 50%,
+      rgba(10,10,10,.15) 55%, transparent 70%);
     background-size:260% 100%;
     background-position:-60% 0;
     -webkit-background-clip:text;background-clip:text;
@@ -417,6 +466,7 @@
     .process-pin{height:auto;overflow:visible;}
     .process-scroll-layout{grid-template-columns:1fr;gap:50px;}
     .process-arc{display:none;}
+    .process-visual{display:none;}
     .process-content{min-height:0;}
     .process-step{position:static;opacity:1;pointer-events:auto;padding-bottom:44px;border-bottom:1px solid var(--line);margin-bottom:44px;}
     .process-step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
@@ -427,7 +477,7 @@
 
 <div id="hero-glow"></div>
 
-<nav id="nav">
+<nav id="nav" class="dark-section">
   <a href="/" class="logo"><img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy"></a>
   <div id="nav-links">
     <a href="#services">Services</a>
@@ -445,7 +495,7 @@
 <main>
 
   <!-- HERO — placeholder background; swap for MiniMax scroll-scrub frame sequence once the real asset is produced -->
-  <header id="hero">
+  <header id="hero" class="dark-section">
     <div class="wrap hero-inner">
       <p class="eyebrow hero-eyebrow">Brand Strategy<span>·</span>Rebrands<span>·</span>Advertising</p>
       <h1 id="hero-headline">Brands built to look expensive.</h1>
@@ -530,10 +580,14 @@
       <div class="wrap process-scroll-layout">
         <div class="process-arc">
           <div class="arc-circle"></div>
-          <div class="process-marker active" data-step="0"><span class="dot"></span><span class="num">01</span></div>
-          <div class="process-marker" data-step="1"><span class="dot"></span><span class="num">02</span></div>
-          <div class="process-marker" data-step="2"><span class="dot"></span><span class="num">03</span></div>
-          <div class="process-marker" data-step="3"><span class="dot"></span><span class="num">04</span></div>
+          <div class="process-numbers">
+            <div class="process-numbers-track" id="process-numbers-track">
+              <div class="process-marker active" data-step="0"><span class="dot"></span><span class="num">01</span></div>
+              <div class="process-marker" data-step="1"><span class="dot"></span><span class="num">02</span></div>
+              <div class="process-marker" data-step="2"><span class="dot"></span><span class="num">03</span></div>
+              <div class="process-marker" data-step="3"><span class="dot"></span><span class="num">04</span></div>
+            </div>
+          </div>
         </div>
 
         <div class="process-content">
@@ -558,6 +612,14 @@
             <div class="svc-tags"><span>Rollout</span><span>Campaigns</span><span>Ongoing Support</span></div>
           </div>
         </div>
+      </div>
+
+      <!-- Placeholder orb per step — swap for real AI-rendered shapes once produced -->
+      <div class="process-visual">
+        <div class="process-visual-shape active" data-step="0"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,20 170,160 30,160"/><polygon points="100,70 145,160 55,160"/><polygon points="100,120 122,160 78,160"/></svg></div></div>
+        <div class="process-visual-shape" data-step="1"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/><rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/></svg></div></div>
+        <div class="process-visual-shape" data-step="2"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="50"/><line x1="100" y1="20" x2="100" y2="180"/><line x1="20" y1="100" x2="180" y2="100"/></svg></div></div>
+        <div class="process-visual-shape" data-step="3"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,15 178,60 178,140 100,185 22,140 22,60"/><polygon points="100,55 145,80 145,120 100,145 55,120 55,80"/></svg></div></div>
       </div>
     </div>
   </section>
@@ -597,7 +659,7 @@
           <a href="#contact" class="btn btn-outline magnetic">Inquire for Growth</a>
         </div>
 
-        <div class="price-card premium fade-up">
+        <div class="price-card premium dark-section fade-up">
           <p class="tier serif">Signature</p>
           <p class="tier-desc">Full-service partnership — brand, identity, and ongoing advertising management.</p>
           <p class="price">Custom</p>
@@ -706,7 +768,7 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-col">
-        <img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy" style="height:84px;margin-bottom:14px;">
+        <img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy" style="height:84px;margin-bottom:14px;filter:brightness(0);">
         <p style="color:var(--ink-faint);font-size:.85rem;max-width:32ch;">Brand strategy, rebrands, and advertising for companies that'd rather look inevitable than loud.</p>
       </div>
       <div class="footer-col">
@@ -749,11 +811,16 @@
   gsap.ticker.add((time)=>{ lenis.raf(time*1000); });
   gsap.ticker.lagSmoothing(0);
 
-  // Nav background on scroll
+  // Nav background on scroll — dark while over the hero, light once past it
   const nav = document.getElementById('nav');
+  const heroSection = document.getElementById('hero');
   ScrollTrigger.create({
     start: 'top -80',
-    onUpdate: (self)=> nav.classList.toggle('scrolled', self.scroll() > 80)
+    onUpdate: (self)=>{
+      nav.classList.toggle('scrolled', self.scroll() > 80);
+      const overHero = self.scroll() < heroSection.offsetHeight - 90;
+      nav.classList.toggle('dark-section', overHero);
+    }
   });
 
   // Mobile nav toggle
@@ -761,7 +828,7 @@
   const navLinks = document.getElementById('nav-links');
   navToggle.addEventListener('click', ()=>{
     navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    navLinks.style.cssText += 'position:fixed;top:64px;left:0;right:0;flex-direction:column;background:rgba(0,0,0,.97);padding:24px 32px;gap:20px;border-bottom:1px solid var(--line);';
+    navLinks.style.cssText += 'position:fixed;top:64px;left:0;right:0;flex-direction:column;background:var(--surface);padding:24px 32px;gap:20px;border-bottom:1px solid var(--line);';
   });
 
   // Hero headline reveal
@@ -783,11 +850,16 @@
   });
   heroEl.addEventListener('mouseleave', ()=> heroGlow.style.opacity = 0);
 
-  // Process — pinned scroll-driven curved-arc steps (desktop only)
+  // Process — pinned scroll-driven traveling-number steps (desktop only)
   ScrollTrigger.matchMedia({
     '(min-width: 861px)': function(){
       const steps = gsap.utils.toArray('.process-step');
       const markers = gsap.utils.toArray('.process-marker');
+      const visuals = gsap.utils.toArray('.process-visual-shape');
+      const track = document.getElementById('process-numbers-track');
+      const arcEl = document.querySelector('.process-arc');
+      const stepHeight = markers.length > 1 ? (markers[1].offsetTop - markers[0].offsetTop) : 140;
+      const firstMarkerCenter = markers[0].offsetTop + markers[0].offsetHeight / 2;
       ScrollTrigger.create({
         trigger: '.process-pin',
         start: 'top top',
@@ -795,9 +867,13 @@
         pin: true,
         scrub: 0.6,
         onUpdate: (self)=>{
-          const idx = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+          const continuous = self.progress * (steps.length - 1);
+          const arcCenter = arcEl.offsetHeight / 2;
+          gsap.set(track, { y: arcCenter - firstMarkerCenter - continuous * stepHeight });
+          const idx = Math.min(steps.length - 1, Math.round(continuous));
           steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
           markers.forEach((m,i)=> m.classList.toggle('active', i === idx));
+          visuals.forEach((v,i)=> v.classList.toggle('active', i === idx));
         }
       });
     }
