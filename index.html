@@ -299,11 +299,11 @@
   @keyframes svcspin{to{transform:rotate(360deg);}}
   .svc-num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink-faint);}
   .service-card h3{font-size:1.8rem;margin:10px 0 16px;}
-  .service-card p{color:var(--ink-dim);font-size:.95rem;line-height:1.65;margin-bottom:22px;flex:1;}
+  .service-card p{color:var(--ink);font-weight:700;font-size:.95rem;line-height:1.65;margin-bottom:22px;flex:1;}
   .svc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
   .svc-tags span{
-    font-size:.68rem;letter-spacing:.04em;padding:6px 13px;
-    border:1px solid var(--line-strong);border-radius:100px;color:var(--ink-dim);
+    font-size:.68rem;letter-spacing:.04em;padding:6px 13px;font-weight:700;
+    border:1px solid var(--line-strong);border-radius:100px;color:var(--ink);
   }
   .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
 
@@ -350,7 +350,7 @@
   }
   .process-step.active{opacity:1;pointer-events:auto;transform:translateY(0);}
   .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;}
-  .process-step p{color:var(--ink-dim);font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
+  .process-step p{color:var(--ink);font-weight:700;font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
   .process-visual{
     position:absolute;right:-40px;top:50%;transform:translateY(-50%);
     width:460px;height:460px;pointer-events:none;z-index:1;
@@ -358,7 +358,8 @@
   .process-visual-shape{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;}
   .process-visual-shape.active{opacity:1;}
   .visual-orb{
-    width:100%;height:100%;border-radius:50%;position:relative;overflow:hidden;
+    width:100%;height:100%;position:relative;overflow:hidden;
+    transition:border-radius .6s ease;
     display:flex;align-items:center;justify-content:center;
     background:
       radial-gradient(circle at 32% 26%, rgba(245,245,240,.2), rgba(245,245,240,.02) 42%, transparent 65%),
@@ -380,6 +381,10 @@
     animation:orb-spin 18s linear infinite;
   }
   @keyframes orb-spin{to{transform:rotate(360deg);}}
+  .visual-orb.shape-circle{border-radius:50%;}
+  .visual-orb.shape-squircle{border-radius:30%;}
+  .visual-orb.shape-blob{border-radius:58% 42% 63% 37% / 41% 53% 47% 59%;}
+  .visual-orb.shape-petal{border-radius:10% 50% 10% 50%;}
 
   /* ===== PRICING ===== */
   #pricing{background:var(--black);}
@@ -665,10 +670,10 @@
 
       <!-- Placeholder orb per step — swap for real AI-rendered shapes once produced -->
       <div class="process-visual">
-        <div class="process-visual-shape active" data-step="0"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,20 170,160 30,160"/><polygon points="100,70 145,160 55,160"/><polygon points="100,120 122,160 78,160"/></svg></div></div>
-        <div class="process-visual-shape" data-step="1"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/><rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/></svg></div></div>
-        <div class="process-visual-shape" data-step="2"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="50"/><line x1="100" y1="20" x2="100" y2="180"/><line x1="20" y1="100" x2="180" y2="100"/></svg></div></div>
-        <div class="process-visual-shape" data-step="3"><div class="visual-orb"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,15 178,60 178,140 100,185 22,140 22,60"/><polygon points="100,55 145,80 145,120 100,145 55,120 55,80"/></svg></div></div>
+        <div class="process-visual-shape active" data-step="0"><div class="visual-orb shape-circle"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,20 170,160 30,160"/><polygon points="100,70 145,160 55,160"/><polygon points="100,120 122,160 78,160"/></svg></div></div>
+        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/><rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/></svg></div></div>
+        <div class="process-visual-shape" data-step="2"><div class="visual-orb shape-blob"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="50"/><line x1="100" y1="20" x2="100" y2="180"/><line x1="20" y1="100" x2="180" y2="100"/></svg></div></div>
+        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,15 178,60 178,140 100,185 22,140 22,60"/><polygon points="100,55 145,80 145,120 100,145 55,120 55,80"/></svg></div></div>
       </div>
     </div>
   </section>
