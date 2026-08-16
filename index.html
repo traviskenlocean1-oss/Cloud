@@ -157,19 +157,6 @@
   #nav .logo img{transition:filter .3s ease;}
   #nav:not(.dark-section) .logo img{filter:brightness(0);}
   #nav .logo img{height:90px;width:auto;}
-  #nav-links{display:flex;gap:36px;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}
-  #nav-links a{
-    font-size:1rem;letter-spacing:.03em;color:var(--ink-dim);
-    transition:color .25s ease;position:relative;padding-bottom:16px;
-  }
-  #nav-links a:hover{color:var(--ink);}
-  #nav-links a::after{
-    content:'';position:absolute;left:50%;bottom:0;width:5px;height:5px;
-    border-radius:50%;background:var(--ink);
-    transform:translate(-50%,8px);opacity:0;
-    transition:transform .3s ease, opacity .3s ease;
-  }
-  #nav-links a:hover::after{opacity:1;transform:translate(-50%,0);}
   .nav-right{display:flex;align-items:center;gap:22px;}
   .tel-link{font-size:.82rem;color:var(--ink-dim);display:none;}
   .btn{
@@ -184,12 +171,33 @@
   .btn-outline{
     border:1px solid var(--line-strong);color:var(--ink);
   }
+  #menu-toggle{border-radius:999px;background:transparent;cursor:pointer;}
   .magnetic{transition:transform .15s ease;}
-  #nav-toggle{display:none;background:none;border:none;width:26px;height:18px;position:relative;}
-  #nav-toggle span{position:absolute;left:0;right:0;height:1px;background:var(--ink);transition:.3s;}
-  #nav-toggle span:nth-child(1){top:0;}
-  #nav-toggle span:nth-child(2){top:8px;}
-  #nav-toggle span:nth-child(3){top:16px;}
+
+  #menu-toggle{display:flex;align-items:center;gap:10px;}
+  .menu-toggle-dots{display:flex;gap:3px;}
+  .menu-toggle-dots span{width:3px;height:3px;border-radius:50%;background:var(--ink);}
+
+  #menu-panel{
+    position:fixed;top:86px;right:32px;z-index:99;width:320px;
+    background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.35);
+    opacity:0;pointer-events:none;transform:translateY(-12px);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  #menu-panel.open{opacity:1;pointer-events:auto;transform:translateY(0);}
+  #menu-panel a{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Inter',sans-serif;font-size:1.5rem;font-weight:700;
+    color:var(--ink);padding:16px 14px;border-radius:10px;
+    transition:background .25s ease;
+  }
+  #menu-panel a:hover{background:var(--surface-2);}
+  #menu-panel a .menu-arrow{
+    opacity:0;transform:translateX(-8px);display:inline-block;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  #menu-panel a:hover .menu-arrow{opacity:1;transform:translateX(0);}
 
   /* ===== HERO (placeholder — swap for MiniMax scroll-scrub video later) ===== */
   #hero{
@@ -246,6 +254,16 @@
   .section-head{margin-bottom:64px;max-width:640px;}
   .section-head h2{font-size:clamp(2rem,3.6vw,3.1rem);margin-top:14px;}
   .section-pad{padding:130px 0;}
+
+  /* ===== STATEMENT (scroll-reveal caption text) ===== */
+  #statement{background:var(--black);}
+  .statement-text{
+    font-family:'Inter',sans-serif;font-weight:700;
+    font-size:clamp(2.1rem,4.4vw,4.2rem);
+    line-height:1.3;letter-spacing:-.01em;
+    max-width:22ch;color:var(--ink);
+  }
+  .statement-text span{opacity:.22;}
 
   /* ===== SERVICES (icon-card grid) ===== */
   #services{background:var(--black);}
@@ -472,9 +490,11 @@
   }
 
   @media (max-width:860px){
-    #nav-links,.tel-link{display:none;}
-    #nav-toggle{display:block;}
+    .tel-link{display:none;}
     #nav .logo img{height:52px;}
+    .menu-toggle-label{display:none;}
+    #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
+    #menu-panel a{font-size:1.3rem;}
     .services-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
     .footer-top{flex-direction:column;}
     .process-pin{height:auto;overflow:visible;}
@@ -493,17 +513,21 @@
 
 <nav id="nav" class="dark-section">
   <a href="/" class="logo"><img src="assets/images/cloudefy-logo-white.png" alt="Cloudefy"></a>
-  <div id="nav-links">
-    <a href="#services">Services</a>
-    <a href="#process">Process</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-  </div>
   <div class="nav-right">
     <a href="tel:+15125550142" class="tel-link">(512) 555-0142</a>
     <a href="#contact" class="btn btn-primary magnetic">Book a Call</a>
+    <button id="menu-toggle" class="btn btn-outline" aria-expanded="false" aria-controls="menu-panel">
+      <span class="menu-toggle-label">Menu</span>
+      <span class="menu-toggle-dots"><span></span><span></span></span>
+    </button>
   </div>
-  <button id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div id="menu-panel">
+    <a href="#services"><span class="menu-arrow">→</span>Services</a>
+    <a href="#process"><span class="menu-arrow">→</span>Process</a>
+    <a href="#pricing"><span class="menu-arrow">→</span>Pricing</a>
+    <a href="#faq"><span class="menu-arrow">→</span>FAQ</a>
+    <a href="#contact"><span class="menu-arrow">→</span>Contact</a>
+  </div>
 </nav>
 
 <main>
@@ -521,6 +545,13 @@
     </div>
     <div class="scroll-cue"><span>Scroll</span><span class="line-v"></span></div>
   </header>
+
+  <!-- STATEMENT (scroll-reveal caption text) -->
+  <section id="statement" class="section-pad">
+    <div class="wrap">
+      <p class="statement-text" id="statement-text">We're an exacting studio that treats every detail like it's the reason a client wins the room, not just another line item on a deliverables list.</p>
+    </div>
+  </section>
 
   <!-- SERVICES -->
   <section id="services" class="section-pad">
@@ -837,12 +868,24 @@
     }
   });
 
-  // Mobile nav toggle
-  const navToggle = document.getElementById('nav-toggle');
-  const navLinks = document.getElementById('nav-links');
-  navToggle.addEventListener('click', ()=>{
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    navLinks.style.cssText += 'position:fixed;top:64px;left:0;right:0;flex-direction:column;background:var(--surface);padding:24px 32px;gap:20px;border-bottom:1px solid var(--line);';
+  // Menu toggle panel
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuPanel = document.getElementById('menu-panel');
+  const menuLabel = menuToggle.querySelector('.menu-toggle-label');
+  const closeMenu = ()=>{
+    menuPanel.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuLabel.textContent = 'Menu';
+  };
+  menuToggle.addEventListener('click', ()=>{
+    const isOpen = menuPanel.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuLabel.textContent = isOpen ? 'Close' : 'Menu';
+  });
+  menuPanel.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMenu));
+  document.addEventListener('click', (e)=>{
+    if (!menuPanel.classList.contains('open')) return;
+    if (!menuPanel.contains(e.target) && !menuToggle.contains(e.target)) closeMenu();
   });
 
   // Hero headline reveal
@@ -853,6 +896,26 @@
   });
   gsap.from('.hero-eyebrow, .lead, .hero-ctas', {
     opacity: 0, y: 16, duration: 1, stagger: 0.12, delay: 0.9, ease: 'power2.out'
+  });
+
+  // Statement — words brighten in as the section scrolls through view
+  const statementEl = document.getElementById('statement-text');
+  statementEl.innerHTML = statementEl.textContent.trim().split(/\s+/)
+    .map(w => '<span>' + w + '</span>').join(' ');
+  const statementWords = statementEl.querySelectorAll('span');
+  ScrollTrigger.create({
+    trigger: '#statement',
+    start: 'top 80%',
+    end: 'bottom 55%',
+    scrub: 0.4,
+    onUpdate: (self)=>{
+      const p = self.progress;
+      statementWords.forEach((word, i)=>{
+        const wordProgress = i / (statementWords.length - 1);
+        const opacity = Math.min(1, Math.max(.22, .22 + (p - wordProgress) * 7));
+        word.style.opacity = opacity;
+      });
+    }
   });
 
   // Hero mouse-follow glow (background ambience only — not a custom cursor)
