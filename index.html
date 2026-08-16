@@ -304,21 +304,25 @@
   .process-numbers{position:absolute;top:0;left:0;width:100%;}
   .process-marker{
     display:flex;align-items:center;gap:16px;padding:54px 0;
-    opacity:.32;transition:opacity .35s ease;
+    opacity:.32;transition:opacity .4s ease;cursor:pointer;
   }
   .process-marker.active{opacity:1;}
   .process-marker .dot{
     width:9px;height:9px;border-radius:50%;
     border:1px solid var(--ink-faint);background:transparent;
-    transition:background .35s ease, border-color .35s ease;
+    opacity:0;transform:translateY(8px);
+    transition:background .35s ease, border-color .35s ease, opacity .4s ease, transform .4s ease;
   }
-  .process-marker.active .dot{background:var(--ink);border-color:var(--ink);width:11px;height:11px;}
+  .process-marker.active .dot{
+    background:var(--ink);border-color:var(--ink);width:11px;height:11px;
+    opacity:1;transform:translateY(0);
+  }
   .process-marker .num{
-    font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--ink-faint);
-    transform:scale(.76);transform-origin:left center;
+    font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--ink-faint);
+    transform:scale(.7);transform-origin:left center;
     transition:color .35s ease, transform .4s ease;
   }
-  .process-marker.active .num{color:var(--ink);transform:scale(1.16);}
+  .process-marker.active .num{color:var(--ink);transform:scale(1.15);}
   .process-content{position:relative;min-height:280px;}
   .process-step{
     position:absolute;inset:0;opacity:0;pointer-events:none;
@@ -879,10 +883,14 @@
         gsap.set(arcCircleEl, { y: -700, rotation: continuous * -1.1 });
         const idx = Math.min(steps.length - 1, Math.round(continuous));
         steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
-        markers.forEach((m,i)=> m.classList.toggle('active', i === idx));
         visuals.forEach((v,i)=> v.classList.toggle('active', i === idx));
+        markers.forEach((m,i)=>{
+          const dist = Math.abs(i - continuous);
+          m.classList.toggle('active', i === idx);
+          m.style.opacity = i === idx ? 1 : Math.max(.12, 1 - dist * .4);
+        });
       };
-      ScrollTrigger.create({
+      const st = ScrollTrigger.create({
         trigger: '.process-pin',
         start: 'top top',
         end: () => '+=' + (window.innerHeight * 2.2),
@@ -891,6 +899,15 @@
         onUpdate: (self)=> updateProcess(self.progress)
       });
       updateProcess(0);
+
+      // Click a number to jump straight to that step
+      markers.forEach((m, i)=>{
+        m.addEventListener('click', ()=>{
+          const targetProgress = i / (steps.length - 1);
+          const targetScroll = st.start + targetProgress * (st.end - st.start);
+          lenis.scrollTo(targetScroll, { duration: 1.1 });
+        });
+      });
     }
   });
 
