@@ -225,6 +225,7 @@
   .hero-eyebrow{margin-bottom:26px;}
   .hero-eyebrow span{margin:0 10px;color:var(--ink-faint);}
   #hero h1{
+    font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.02em;
     font-size:clamp(2.6rem,6.4vw,5.6rem);
     line-height:1.04;max-width:14ch;
     margin-bottom:28px;
@@ -266,46 +267,43 @@
   }
   .statement-text span{opacity:.045;}
 
-  /* ===== SERVICES (icon-card grid) ===== */
-  #services{background:var(--black);}
-  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  .service-card{
-    padding:0 28px 0 0;display:flex;flex-direction:column;
+  /* ===== SERVICES (scroll-fades to dark, mads-matters-style feature cards) ===== */
+  #services{
+    background:var(--black);
+    transition:background-color .9s ease, color .9s ease;
   }
-  .service-icon{
-    width:112px;height:112px;border-radius:50%;flex-shrink:0;position:relative;overflow:hidden;
-    background:
-      radial-gradient(circle at 32% 28%, rgba(245,245,240,.22), rgba(245,245,240,.02) 42%, transparent 65%),
-      radial-gradient(circle at 72% 78%, rgba(0,0,0,.7), transparent 60%),
-      linear-gradient(160deg, #202020 0%, #050505 72%);
-    box-shadow:
-      inset 0 2px 5px rgba(255,255,255,.1),
-      inset 0 -8px 16px rgba(0,0,0,.75),
-      0 22px 40px -20px rgba(0,0,0,.9),
-      0 0 0 1px rgba(245,245,240,.14);
-    display:flex;align-items:center;justify-content:center;
-    margin-bottom:30px;
-  }
-  .service-icon::before{
-    content:'';position:absolute;top:13%;left:18%;width:38%;height:26%;
-    background:radial-gradient(ellipse, rgba(255,255,255,.4), transparent 72%);
-    border-radius:50%;filter:blur(2px);pointer-events:none;
-  }
-  .service-icon svg{
-    width:46%;height:46%;position:relative;z-index:1;
-    filter:drop-shadow(0 3px 6px rgba(0,0,0,.7)) drop-shadow(0 -1px 1px rgba(255,255,240,.18));
-    animation:svcspin 26s linear infinite;
-  }
-  @keyframes svcspin{to{transform:rotate(360deg);}}
+  #services *{transition:color .9s ease, border-color .9s ease;}
+  .accent{color:var(--btn-bg);}
   .svc-num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink-faint);}
-  .service-card h3{font-size:1.8rem;margin:10px 0 16px;}
-  .service-card p{color:var(--ink);font-weight:700;font-size:.95rem;line-height:1.65;margin-bottom:22px;flex:1;}
+  .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
+
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .feature-card{display:flex;flex-direction:column;}
+  .feature-media{
+    position:relative;aspect-ratio:4/5;border-radius:22px;overflow:hidden;margin-bottom:26px;
+    background:
+      radial-gradient(circle at 28% 22%, rgba(28,182,254,.18), transparent 55%),
+      radial-gradient(circle at 75% 85%, rgba(0,0,0,.65), transparent 60%),
+      linear-gradient(155deg, #1b1b1b 0%, #050505 78%);
+    box-shadow:inset 0 0 0 1px rgba(245,245,240,.08);
+  }
+  .feature-media::before{
+    content:'';position:absolute;inset:0;opacity:.5;mix-blend-mode:overlay;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+  }
+  .feature-pill{
+    position:absolute;background:#f5f5f0;color:#0a0a0a;font-size:.72rem;font-weight:700;
+    padding:9px 16px;border-radius:100px;box-shadow:0 12px 24px -8px rgba(0,0,0,.5);
+  }
+  .feature-pill.pill-a{top:20px;left:20px;}
+  .feature-pill.pill-b{bottom:20px;right:20px;}
+  .feature-card h3{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.01em;font-size:1.5rem;margin-bottom:12px;}
+  .feature-card p{color:var(--ink);font-weight:700;font-size:.95rem;line-height:1.65;margin-bottom:20px;flex:1;}
   .svc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
   .svc-tags span{
     font-size:.68rem;letter-spacing:.04em;padding:6px 13px;font-weight:700;
     border:1px solid var(--line-strong);border-radius:100px;color:var(--ink);
   }
-  .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
 
   /* ===== PROCESS (scroll-driven traveling-number steps) ===== */
   #process{background:var(--black);padding-bottom:130px;}
@@ -504,7 +502,7 @@
     .menu-toggle-label{display:none;}
     #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
     #menu-panel a{font-size:1.3rem;}
-    .services-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
+    .feature-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
     .footer-top{flex-direction:column;}
     .process-pin{height:auto;overflow:visible;}
     .process-scroll-layout{grid-template-columns:1fr;gap:50px;}
@@ -562,58 +560,43 @@
     </div>
   </section>
 
-  <!-- SERVICES -->
+  <!-- SERVICES — scroll-fades to a dark section (milestoners.nl-style), feature cards styled after Mads Matters -->
   <section id="services" class="section-pad">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">What We Do</p>
-        <h2>Three disciplines, one system.</h2>
+        <h2>Three disciplines, <span class="accent">one system</span>.</h2>
       </div>
 
-      <div class="services-grid">
+      <div class="feature-grid">
 
-        <div class="service-card fade-up">
-          <div class="service-icon">
-            <svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="var(--ink)" stroke-width="1.3">
-              <polygon points="100,20 170,160 30,160"/>
-              <polygon points="100,70 145,160 55,160"/>
-              <polygon points="100,120 122,160 78,160"/>
-            </svg>
+        <div class="feature-card fade-up">
+          <div class="feature-media">
+            <span class="feature-pill pill-a">Positioning</span>
+            <span class="feature-pill pill-b">Messaging</span>
           </div>
-          <span class="svc-num">01</span>
-          <h3>Brand Strategy</h3>
+          <h3>Brand <span class="accent">Strategy</span></h3>
           <p>Positioning, naming, and messaging architecture — built before a single pixel, so the identity has something to say.</p>
-          <div class="svc-tags"><span>Positioning</span><span>Naming</span><span>Messaging Architecture</span><span>Market Research</span></div>
           <a href="services/brand-strategy.html" class="svc-link">View Service →</a>
         </div>
 
-        <div class="service-card fade-up">
-          <div class="service-icon">
-            <svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="var(--ink)" stroke-width="1.3">
-              <rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/>
-              <rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/>
-            </svg>
+        <div class="feature-card fade-up">
+          <div class="feature-media">
+            <span class="feature-pill pill-a">Identity Systems</span>
+            <span class="feature-pill pill-b">Rollout</span>
           </div>
-          <span class="svc-num">02</span>
-          <h3>Rebrands</h3>
+          <h3>Full <span class="accent">Rebrands</span></h3>
           <p>For companies that outgrew their first identity. We rebuild the visual system from the ground up, not just the logo.</p>
-          <div class="svc-tags"><span>Identity Systems</span><span>Visual Language</span><span>Brand Guidelines</span><span>Rollout</span></div>
           <a href="services/rebrands.html" class="svc-link">View Service →</a>
         </div>
 
-        <div class="service-card fade-up">
-          <div class="service-icon">
-            <svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="var(--ink)" stroke-width="1.3">
-              <circle cx="100" cy="100" r="80"/>
-              <circle cx="100" cy="100" r="50"/>
-              <line x1="100" y1="20" x2="100" y2="180"/>
-              <line x1="20" y1="100" x2="180" y2="100"/>
-            </svg>
+        <div class="feature-card fade-up">
+          <div class="feature-media">
+            <span class="feature-pill pill-a">Paid Media</span>
+            <span class="feature-pill pill-b">Campaign Strategy</span>
           </div>
-          <span class="svc-num">03</span>
-          <h3>Advertising</h3>
+          <h3>Creative <span class="accent">Advertising</span></h3>
           <p>Campaigns and creative direction built to convert, not just to look good in a portfolio.</p>
-          <div class="svc-tags"><span>Paid Media</span><span>Creative Direction</span><span>Campaign Strategy</span><span>Media Buying</span></div>
           <a href="services/advertising.html" class="svc-link">View Service →</a>
         </div>
 
@@ -928,11 +911,21 @@
     onUpdate: (self)=>{
       const p = self.progress;
       statementWords.forEach((word, i)=>{
-        const wordProgress = i / (statementWords.length - 1);
+        // Compressed into the first 78% of scroll progress so the last word
+        // reaches full opacity before the section scrolls out of the trigger range.
+        const wordProgress = (i / (statementWords.length - 1)) * 0.78;
         const opacity = Math.min(1, Math.max(.045, .045 + (p - wordProgress) * 7));
         word.style.opacity = opacity;
       });
     }
+  });
+
+  // Services — smooth scroll-linked fade from white to black and back (milestoners.nl-style)
+  ScrollTrigger.create({
+    trigger: '#services',
+    start: 'top 65%',
+    end: 'bottom 35%',
+    toggleClass: { targets: '#services', className: 'dark-section' }
   });
 
   // Hero mouse-follow glow (background ambience only — not a custom cursor)
