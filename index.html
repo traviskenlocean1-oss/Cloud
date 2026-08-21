@@ -197,25 +197,48 @@
   }
   #menu-panel a:hover .menu-arrow{opacity:1;transform:translateX(0);}
 
-  /* ===== HERO (placeholder — swap for MiniMax scroll-scrub video later) ===== */
+  /* ===== HERO (glass/chrome parallax background — two MiniMax-generated layers) ===== */
   #hero{
     height:100vh;min-height:640px;
     display:flex;align-items:center;
     position:relative;
-    background:
-      radial-gradient(ellipse 60% 50% at 50% 38%, rgba(245,245,240,.05), transparent 70%),
-      radial-gradient(ellipse 90% 60% at 50% 100%, rgba(245,245,240,.03), transparent 70%),
-      var(--black);
+    background:var(--surface);
     overflow:hidden;
+    color:var(--ink);
   }
   #hero::before{
-    content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;
+    content:'';position:absolute;inset:0;pointer-events:none;opacity:.12;z-index:2;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
     mix-blend-mode:overlay;
   }
+  /* Background plate — bottom layer, slow drift only (no idle animation). Oversized so the
+     scroll-driven translateY (GSAP, see script) never reveals an edge inside #hero's overflow:hidden. */
+  .hero-bg-plate{
+    position:absolute;left:-6%;top:-6%;width:112%;height:112%;z-index:0;
+    background-size:cover;background-position:center;
+    pointer-events:none;will-change:transform;
+  }
+  /* Glass/chrome layer — outer wrapper is GSAP-owned (scroll parallax transform only);
+     inner element is CSS-owned (idle float keyframes only). Keeping scroll motion and idle
+     motion on two separate elements avoids the transform/CSS-keyframe collision documented
+     elsewhere in this file (Process section arc-circle bug) — never mix a CSS `transform`
+     with GSAP set/to on the same element. */
+  .hero-glass-outer{
+    position:absolute;left:-15%;top:-15%;width:130%;height:130%;z-index:1;
+    pointer-events:none;will-change:transform;
+  }
+  .hero-glass-inner{
+    width:100%;height:100%;
+    background-size:cover;background-position:center;
+    animation:heroGlassIdle 13s ease-in-out infinite alternate;
+  }
+  @keyframes heroGlassIdle{
+    0%{transform:translateY(-12px) rotate(-.8deg);}
+    100%{transform:translateY(14px) rotate(.9deg);}
+  }
   #hero-glow{
     position:absolute;width:520px;height:520px;border-radius:50%;
-    background:radial-gradient(circle, rgba(245,245,240,.07), transparent 70%);
+    background:radial-gradient(circle, rgba(28,182,254,.16), transparent 70%);
     pointer-events:none;left:0;top:0;
     transform:translate(-50%,-50%);
     transition:opacity .4s ease;
@@ -586,8 +609,8 @@
 
 <div id="hero-glow"></div>
 
-<nav id="nav" class="dark-section">
-  <a href="/" class="logo"><img id="nav-logo-img" src="assets/images/cloudefy-logo-color-dark.png" alt="Cloudefy"></a>
+<nav id="nav">
+  <a href="/" class="logo"><img id="nav-logo-img" src="assets/images/cloudefy-logo-color.png" alt="Cloudefy"></a>
   <div class="nav-right">
     <a href="tel:+15125550142" class="tel-link">(512) 555-0142</a>
     <a href="#contact" class="btn btn-primary magnetic">Book a Call</a>
@@ -607,8 +630,12 @@
 
 <main>
 
-  <!-- HERO — placeholder background; swap for MiniMax scroll-scrub frame sequence once the real asset is produced -->
-  <header id="hero" class="dark-section">
+  <!-- HERO — glass/chrome parallax background (MiniMax-generated layers, scroll + idle motion) -->
+  <header id="hero">
+    <div class="hero-bg-plate" style="background-image:url('assets/images/hero-bg-plate.png')"></div>
+    <div class="hero-glass-outer">
+      <div class="hero-glass-inner" style="background-image:url('assets/images/hero-glass-layer.png')"></div>
+    </div>
     <div class="wrap hero-inner">
       <p class="eyebrow hero-eyebrow">Brand Strategy<span>·</span>Rebrands<span>·</span>Advertising</p>
       <h1 id="hero-headline">Brands built to look expensive.</h1>
@@ -940,23 +967,14 @@
   gsap.ticker.add((time)=>{ lenis.raf(time*1000); });
   gsap.ticker.lagSmoothing(0);
 
-  // Nav background on scroll — dark while over the hero, light once past it
+  // Nav background on scroll — nav stays light throughout (hero is a light gradient
+  // now, not the old dark placeholder), just gains a blurred bg once scrolled past the top.
   const nav = document.getElementById('nav');
   const heroSection = document.getElementById('hero');
-  const navLogoImg = document.getElementById('nav-logo-img');
-  let navIsDark = true;
   ScrollTrigger.create({
     start: 'top -80',
     onUpdate: (self)=>{
       nav.classList.toggle('scrolled', self.scroll() > 80);
-      const overHero = self.scroll() < heroSection.offsetHeight - 90;
-      nav.classList.toggle('dark-section', overHero);
-      if (overHero !== navIsDark) {
-        navIsDark = overHero;
-        navLogoImg.src = navIsDark
-          ? 'assets/images/cloudefy-logo-color-dark.png'
-          : 'assets/images/cloudefy-logo-color.png';
-      }
     }
   });
 
@@ -1028,6 +1046,24 @@
     gsap.to(heroGlow, { x: e.clientX, y: e.clientY, duration: 0.6, ease: 'power2.out' });
   });
   heroEl.addEventListener('mouseleave', ()=> heroGlow.style.opacity = 0);
+
+  // Hero background parallax — two-speed drift as the hero scrolls by (glass layer moves
+  // further + rotates more than the plate, classic two-layer parallax). Distances are derived
+  // from the hero's own height rather than hardcoded so they hold up across viewport sizes.
+  // Idle float lives separately in CSS (.hero-glass-inner's @keyframes) — this GSAP timeline
+  // only ever touches the *outer* wrapper elements, so the two motions never fight over the
+  // same element's transform (see the CSS comment above .hero-glass-outer).
+  const heroBgPlate = document.querySelector('.hero-bg-plate');
+  const heroGlassOuter = document.querySelector('.hero-glass-outer');
+  gsap.timeline({
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
+  })
+  .fromTo(heroBgPlate,
+    { y: 0 },
+    { y: heroSection.offsetHeight * 0.045, ease: 'none' }, 0)
+  .fromTo(heroGlassOuter,
+    { y: 0, rotate: 0 },
+    { y: heroSection.offsetHeight * 0.11, rotate: heroSection.offsetHeight * 0.006, ease: 'none' }, 0);
 
   // Process — pinned scroll-driven traveling-number steps (desktop only)
   ScrollTrigger.matchMedia({
