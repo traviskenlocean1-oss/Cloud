@@ -77,12 +77,20 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=DM+Sans:wght@500;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
 
 <style>
   :root{
@@ -121,7 +129,7 @@
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
-  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:-.01em;}
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-.01em;}
   a{color:inherit;text-decoration:none;}
   ul{list-style:none;}
   img{max-width:100%;display:block;}
@@ -236,6 +244,19 @@
     0%{transform:translateY(-12px) rotate(-.8deg);}
     100%{transform:translateY(14px) rotate(.9deg);}
   }
+  /* Hero-scoped 3D "C" (2026-08-21): the flat MiniMax PNG glass layer is retired in favor of
+     a single real-time glassy-chrome "C" that reacts to mouse + scroll (see the module script
+     near the end of the file). Scoped to #hero only -- not a site-wide background. The old PNG
+     gradient plate is also retired in favor of a CSS gradient sampled from its exact colors,
+     so #hero keeps the same look without depending on a fixed-resolution image. */
+  .hero-bg-plate, .hero-glass-outer { display: none; }
+  #hero {
+    background: linear-gradient(180deg, #fbfafd 0%, #fcfcfc 22%, #ebf3fa 50%, #b4cbe4 75%, #56779a 100%);
+  }
+  .hero-gl-canvas{
+    position:absolute; inset:0; width:100%; height:100%;
+    z-index:1; display:block; pointer-events:none;
+  }
   #hero-glow{
     position:absolute;width:520px;height:520px;border-radius:50%;
     background:radial-gradient(circle, rgba(28,182,254,.16), transparent 70%);
@@ -248,7 +269,7 @@
   .hero-eyebrow{margin-bottom:26px;}
   .hero-eyebrow span{margin:0 10px;color:var(--ink-faint);}
   #hero h1{
-    font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.02em;
+    font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;
     font-size:clamp(2.6rem,6.4vw,5.6rem);
     line-height:1.04;max-width:14ch;
     margin-bottom:28px;
@@ -275,7 +296,7 @@
   /* ===== SECTION HEADERS ===== */
   .section-head{margin-bottom:64px;max-width:640px;}
   .section-head h2{
-    font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.02em;
+    font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;
     font-size:clamp(1.9rem,3.2vw,2.7rem);margin-top:14px;
   }
   .section-pad{padding:130px 0;}
@@ -283,7 +304,7 @@
   /* ===== STATEMENT (scroll-reveal caption text) ===== */
   #statement{background:var(--black);}
   .statement-text{
-    font-family:'Inter',sans-serif;font-weight:700;
+    font-family:'DM Sans',sans-serif;font-weight:700;
     font-size:clamp(2.1rem,4.4vw,4.2rem);
     line-height:1.3;letter-spacing:-.01em;
     max-width:22ch;color:var(--ink);
@@ -298,7 +319,7 @@
   }
   #services *{transition:color .9s ease, border-color .9s ease;}
   .accent{color:var(--btn-bg);}
-  .svc-num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink-faint);}
+  .svc-num{font-family:'Fraunces',serif;font-size:1rem;color:var(--ink-faint);}
   .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
 
   /* the whole card IS the "photo" (milestoners format) — heading overlaid top-left,
@@ -359,7 +380,7 @@
 
   .feature-card h3{
     position:relative;z-index:1;
-    font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.01em;
+    font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.01em;
     font-size:clamp(1.7rem,2.6vw,2.4rem);max-width:14ch;
   }
   .feature-bottom{position:relative;z-index:1;}
@@ -384,7 +405,7 @@
     padding:220px 0 180px;position:relative;z-index:1;
   }
   .brand-statement-line{
-    font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.02em;color:var(--ink);
+    font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;color:var(--ink);
     font-size:clamp(2.6rem,6vw,5rem);line-height:1;
   }
   .brand-statement-script{
@@ -402,7 +423,9 @@
     mask-image:linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
   }
   .arc-circle{
-    position:absolute;top:50%;left:-1060px;width:1400px;height:1400px;
+    /* Smaller radius than before (was 1400px, nearly flat over a 340px-wide window) so the
+       visible slice actually reads as a curve, not a near-straight line. */
+    position:absolute;top:50%;left:-560px;width:900px;height:900px;
     border-radius:50%;border:1px solid var(--line-strong);
   }
   .process-numbers{position:absolute;top:0;left:0;width:100%;}
@@ -422,9 +445,10 @@
     opacity:1;transform:translateY(0);
   }
   .process-marker .num{
-    font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--ink-faint);
+    font-family:'Fraunces',serif;font-size:3.6rem;color:var(--ink-faint);
     transform:scale(.7);transform-origin:left center;
     transition:color .35s ease, transform .4s ease;
+    will-change:transform;
   }
   .process-marker.active .num{color:var(--ink);transform:scale(1.15);}
   .process-content{position:relative;min-height:280px;}
@@ -443,26 +467,29 @@
   .process-visual-shape{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;}
   .process-visual-shape.active{opacity:1;}
   .visual-orb{
+    /* Light glossy sphere, not the old near-black one -- same layered-gradient technique
+       (rim highlight + underside shadow + base tone) just flipped to a light base so it sits
+       naturally against the site's light palette instead of reading as a dark void. */
     width:100%;height:100%;position:relative;overflow:hidden;
     transition:border-radius .6s ease;
     display:flex;align-items:center;justify-content:center;
     background:
-      radial-gradient(circle at 32% 26%, rgba(245,245,240,.2), rgba(245,245,240,.02) 42%, transparent 65%),
-      radial-gradient(circle at 74% 80%, rgba(0,0,0,.75), transparent 60%),
-      linear-gradient(160deg, #202020 0%, #050505 75%);
+      radial-gradient(circle at 32% 26%, rgba(255,255,255,.9), rgba(255,255,255,.15) 42%, transparent 65%),
+      radial-gradient(circle at 74% 80%, rgba(150,168,186,.55), transparent 60%),
+      linear-gradient(160deg, #f4f6f8 0%, #cfd8e0 75%);
     box-shadow:
-      inset 0 4px 10px rgba(255,255,255,.08),
-      inset 0 -16px 34px rgba(0,0,0,.8),
-      0 40px 80px -30px rgba(0,0,0,.55);
+      inset 0 4px 10px rgba(255,255,255,.6),
+      inset 0 -16px 34px rgba(80,96,112,.35),
+      0 40px 80px -30px rgba(30,50,70,.28);
   }
   .visual-orb::before{
     content:'';position:absolute;top:14%;left:20%;width:35%;height:24%;
-    background:radial-gradient(ellipse, rgba(255,255,255,.4), transparent 72%);
+    background:radial-gradient(ellipse, rgba(255,255,255,.85), transparent 72%);
     border-radius:50%;filter:blur(6px);pointer-events:none;
   }
   .visual-orb svg{
     position:relative;z-index:1;width:38%;height:38%;
-    filter:drop-shadow(0 6px 14px rgba(0,0,0,.7)) drop-shadow(0 -2px 2px rgba(255,255,240,.15));
+    filter:drop-shadow(0 6px 14px rgba(60,80,100,.35)) drop-shadow(0 -2px 2px rgba(255,255,255,.5));
     animation:orb-spin 18s linear infinite;
   }
   @keyframes orb-spin{to{transform:rotate(360deg);}}
@@ -483,7 +510,7 @@
   }
   .price-card .tier{font-size:1.5rem;margin-bottom:10px;}
   .price-card .tier-desc{color:var(--ink-dim);font-size:.88rem;line-height:1.6;margin-bottom:26px;min-height:64px;}
-  .price-card .price{font-size:2rem;font-family:'Cormorant Garamond',serif;margin-bottom:28px;}
+  .price-card .price{font-size:2rem;font-family:'Fraunces',serif;margin-bottom:28px;}
   .price-card .price small{font-size:.9rem;color:var(--ink-faint);font-family:'Inter',sans-serif;}
   .price-list{margin-bottom:34px;flex:1;}
   .price-list li{
@@ -520,7 +547,7 @@
   }
   .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;position:relative;z-index:1;}
   #contact h2{
-    font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.02em;
+    font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;
     font-size:clamp(2rem,3.8vw,3rem);margin-bottom:24px;max-width:20ch;line-height:1.1;
   }
   #contact .lead{color:var(--ink-dim);font-size:1.02rem;line-height:1.65;margin-bottom:38px;max-width:44ch;}
@@ -559,7 +586,7 @@
   }
   .wordmark-wrap{overflow:hidden;line-height:.78;padding:0 20px;}
   .wordmark-wrap h2{
-    font-family:'Inter',sans-serif;
+    font-family:'DM Sans',sans-serif;
     font-size:clamp(4.5rem,19vw,18rem);
     letter-spacing:-.02em;
     -webkit-text-stroke:2px rgba(10,10,10,.55);
@@ -636,6 +663,7 @@
     <div class="hero-glass-outer">
       <div class="hero-glass-inner" style="background-image:url('assets/images/hero-glass-layer.png')"></div>
     </div>
+    <canvas id="hero-gl" class="hero-gl-canvas"></canvas>
     <div class="wrap hero-inner">
       <p class="eyebrow hero-eyebrow">Brand Strategy<span>·</span>Rebrands<span>·</span>Advertising</p>
       <h1 id="hero-headline">Brands built to look expensive.</h1>
@@ -772,10 +800,10 @@
 
       <!-- Placeholder orb per step — swap for real AI-rendered shapes once produced -->
       <div class="process-visual">
-        <div class="process-visual-shape active" data-step="0"><div class="visual-orb shape-circle"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,20 170,160 30,160"/><polygon points="100,70 145,160 55,160"/><polygon points="100,120 122,160 78,160"/></svg></div></div>
-        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/><rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/></svg></div></div>
-        <div class="process-visual-shape" data-step="2"><div class="visual-orb shape-blob"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="50"/><line x1="100" y1="20" x2="100" y2="180"/><line x1="20" y1="100" x2="180" y2="100"/></svg></div></div>
-        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal"><svg viewBox="0 0 200 200" fill="rgba(245,245,240,.08)" stroke="#f5f5f0" stroke-width="1.3"><polygon points="100,15 178,60 178,140 100,185 22,140 22,60"/><polygon points="100,55 145,80 145,120 100,145 55,120 55,80"/></svg></div></div>
+        <div class="process-visual-shape active" data-step="0"><div class="visual-orb shape-circle"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><polygon points="100,20 170,160 30,160"/><polygon points="100,70 145,160 55,160"/><polygon points="100,120 122,160 78,160"/></svg></div></div>
+        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/><rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/></svg></div></div>
+        <div class="process-visual-shape" data-step="2"><div class="visual-orb shape-blob"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="50"/><line x1="100" y1="20" x2="100" y2="180"/><line x1="20" y1="100" x2="180" y2="100"/></svg></div></div>
+        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><polygon points="100,15 178,60 178,140 100,185 22,140 22,60"/><polygon points="100,55 145,80 145,120 100,145 55,120 55,80"/></svg></div></div>
       </div>
     </div>
   </section>
@@ -1076,12 +1104,14 @@
       const arcCircleEl = document.querySelector('.arc-circle');
       const stepHeight = markers.length > 1 ? (markers[1].offsetTop - markers[0].offsetTop) : 140;
       const firstMarkerCenter = markers[0].offsetTop + markers[0].offsetHeight / 2;
-      gsap.set(arcCircleEl, { y: -700, rotation: 0 });
+      gsap.set(arcCircleEl, { y: -450, rotation: 0 });
       const updateProcess = (progress)=>{
         const continuous = progress * (steps.length - 1);
         const arcCenter = arcEl.offsetHeight / 2;
         gsap.set(track, { y: arcCenter - firstMarkerCenter - continuous * stepHeight });
-        gsap.set(arcCircleEl, { y: -700, rotation: continuous * -1.1 });
+        // Bigger, more dramatic clock-hand sweep -- was -1.1deg/step (barely perceptible over
+        // 3 steps), now a real visible rotation.
+        gsap.set(arcCircleEl, { y: -450, rotation: continuous * -9 });
         const idx = Math.min(steps.length - 1, Math.round(continuous));
         steps.forEach((s,i)=> s.classList.toggle('active', i === idx));
         visuals.forEach((v,i)=> v.classList.toggle('active', i === idx));
@@ -1089,6 +1119,14 @@
           const dist = Math.abs(i - continuous);
           m.classList.toggle('active', i === idx);
           m.style.opacity = i === idx ? 1 : Math.max(.12, 1 - dist * .4);
+          // The numbers previously only ever travelled in a straight vertical line -- the
+          // arc-circle behind them rotated but the numbers themselves never actually followed
+          // its curve. Push each marker right as it nears active, so it visibly swings in
+          // along the curve instead of just fading up a flat list. Applied to the marker
+          // (not the .num span, which already owns its own CSS scale transform) so the two
+          // transforms don't collide on the same element/property.
+          const curveX = Math.max(0, 34 - dist * 34);
+          gsap.set(m, { x: curveX });
         });
       };
       const st = ScrollTrigger.create({
@@ -1153,6 +1191,106 @@
     });
     btn.addEventListener('mouseleave', ()=> gsap.to(btn, { x:0, y:0, duration:0.5, ease:'elastic.out(1,0.4)' }));
   });
+</script>
+
+<script type="module">
+  // Single large glassy-chrome "C" (Cloudefy's initial), hero-scoped only -- reacts to both
+  // mouse (smooth follow-the-cursor tilt, like lessestudio.com's hero object) and scroll
+  // (a large, deliberate rotation + drift through the hero, not a subtle nudge). Sits on top
+  // of the hero's existing gradient background, which is untouched by this.
+  import * as THREE from 'three';
+  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+  const canvas = document.getElementById('hero-gl');
+  const heroEl = document.getElementById('hero');
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  camera.position.set(0, 0, 12);
+
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+  // Several real lights (not just the procedural environment) so the chrome gets visible,
+  // confident specular hotspots rather than a uniform pale reflection.
+  const keyLight = new THREE.DirectionalLight(0xffffff, 3.4);
+  keyLight.position.set(6, 8, 9);
+  scene.add(keyLight);
+  const rimLight = new THREE.DirectionalLight(0x9fd4ff, 2.4);
+  rimLight.position.set(-6, -5, -7);
+  scene.add(rimLight);
+  const fillPoint = new THREE.PointLight(0xffffff, 55, 30);
+  fillPoint.position.set(3, 1, 9);
+  scene.add(fillPoint);
+
+  const chromeMat = new THREE.MeshPhysicalMaterial({
+    color: 0x9fb3c6, metalness: 1, roughness: 0.05,
+    envMapIntensity: 2, clearcoat: 1, clearcoatRoughness: 0.08,
+  });
+
+  // The "C" is a partial torus -- an open ring -- which is a reliable, robust way to get a
+  // clean, evenly-curved letterform without needing an external font file converted to
+  // Three.js's typeface JSON format. arc < TWO_PI leaves the gap that reads as the letter's
+  // opening; starting the sweep at the default angle puts that gap on the right, which is
+  // exactly where a capital C opens.
+  const letterGeo = new THREE.TorusGeometry(2.6, 0.72, 48, 160, Math.PI * 1.5);
+  const letter = new THREE.Mesh(letterGeo, chromeMat);
+  letter.position.set(3.4, 0, 0);
+  scene.add(letter);
+
+  function resize() {
+    const w = heroEl.clientWidth, h = heroEl.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Mouse-reactive tilt -- smoothed with a lerp each frame (not an instant snap) so it reads
+  // as a spring-following motion, same "not rigid" motion language used elsewhere on this site.
+  let targetRotX = 0, targetRotY = 0.15;
+  heroEl.addEventListener('mousemove', (e) => {
+    const r = heroEl.getBoundingClientRect();
+    const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+    const ny = ((e.clientY - r.top) / r.height) * 2 - 1;
+    targetRotY = 0.15 + nx * 0.55;
+    targetRotX = -ny * 0.4;
+  });
+
+  // Scroll-driven motion -- a large, obvious rotation + drift across the hero's own scroll
+  // range (this is hero-scoped again, not the whole document), on top of the mouse tilt.
+  let scrollRotY = 0, scrollRotZ = 0, scrollY = 0;
+  gsap.timeline({
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 },
+  }).to({ v: 0 }, {
+    v: 1, ease: 'none',
+    onUpdate: function () {
+      const p = this.targets()[0].v;
+      scrollRotY = p * 2.6;
+      scrollRotZ = p * 0.5;
+      scrollY = -p * 3.5;
+    },
+  });
+
+  const clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    // Smoothly follow the mouse target (spring-like damping, framerate-independent enough
+    // for this purpose) and layer the idle float + scroll motion on top.
+    letter.rotation.y += (targetRotY + scrollRotY - letter.rotation.y) * 0.06;
+    letter.rotation.x += (targetRotX - letter.rotation.x) * 0.06;
+    letter.rotation.z = scrollRotZ + Math.sin(t * 0.3) * 0.03;
+    letter.position.y = Math.sin(t * 0.4) * 0.15 + scrollY;
+    renderer.render(scene, camera);
+  }
+  animate();
 </script>
 </body>
 </html>
