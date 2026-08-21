@@ -412,6 +412,15 @@
     font-family:'Caveat',cursive;font-weight:700;color:var(--btn-bg);
     font-size:clamp(3.6rem,9vw,7.5rem);line-height:1;margin-top:-.1em;display:block;
   }
+  /* Cursor-trail photo pop-ups, confined to this section only -- small photos pop in near
+     the cursor as it moves, then fade back out. */
+  .trail-photo{
+    position:absolute;width:130px;height:170px;top:0;left:0;
+    border-radius:3px;object-fit:cover;pointer-events:none;
+    opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(0deg);
+    box-shadow:0 20px 40px -12px rgba(0,0,0,.35);
+    will-change:transform,opacity;z-index:2;
+  }
 
   /* ===== PROCESS (scroll-driven traveling-number steps) ===== */
   #process{background:var(--black);padding-bottom:130px;padding-top:40px;}
@@ -458,7 +467,7 @@
     transition:opacity .5s ease, transform .5s ease;
   }
   .process-step.active{opacity:1;pointer-events:auto;transform:translateY(0);}
-  .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;}
+  .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;user-select:none;}
   .process-step p{color:var(--ink);font-weight:700;font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
   .process-visual{
     position:absolute;right:-40px;top:50%;transform:translateY(-50%);
@@ -487,12 +496,6 @@
     background:radial-gradient(ellipse, rgba(255,255,255,.85), transparent 72%);
     border-radius:50%;filter:blur(6px);pointer-events:none;
   }
-  .visual-orb svg{
-    position:relative;z-index:1;width:38%;height:38%;
-    filter:drop-shadow(0 6px 14px rgba(60,80,100,.35)) drop-shadow(0 -2px 2px rgba(255,255,255,.5));
-    animation:orb-spin 18s linear infinite;
-  }
-  @keyframes orb-spin{to{transform:rotate(360deg);}}
   .visual-orb.shape-circle{border-radius:50%;}
   .visual-orb.shape-squircle{border-radius:30%;}
   .visual-orb.shape-blob{border-radius:58% 42% 63% 37% / 41% 53% 47% 59%;}
@@ -800,10 +803,10 @@
 
       <!-- Placeholder orb per step — swap for real AI-rendered shapes once produced -->
       <div class="process-visual">
-        <div class="process-visual-shape active" data-step="0"><div class="visual-orb shape-circle"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><polygon points="100,20 170,160 30,160"/><polygon points="100,70 145,160 55,160"/><polygon points="100,120 122,160 78,160"/></svg></div></div>
-        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><rect x="40" y="40" width="120" height="120" transform="rotate(45 100 100)"/><rect x="65" y="65" width="70" height="70" transform="rotate(45 100 100)"/></svg></div></div>
-        <div class="process-visual-shape" data-step="2"><div class="visual-orb shape-blob"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="50"/><line x1="100" y1="20" x2="100" y2="180"/><line x1="20" y1="100" x2="180" y2="100"/></svg></div></div>
-        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal"><svg viewBox="0 0 200 200" fill="rgba(20,30,40,.08)" stroke="#1c2b38" stroke-width="1.3"><polygon points="100,15 178,60 178,140 100,185 22,140 22,60"/><polygon points="100,55 145,80 145,120 100,145 55,120 55,80"/></svg></div></div>
+        <div class="process-visual-shape active" data-step="0"><div class="visual-orb shape-circle"></div></div>
+        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle"></div></div>
+        <div class="process-visual-shape" data-step="2"><div class="visual-orb shape-blob"></div></div>
+        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal"></div></div>
       </div>
     </div>
   </section>
@@ -1191,6 +1194,45 @@
     });
     btn.addEventListener('mouseleave', ()=> gsap.to(btn, { x:0, y:0, duration:0.5, ease:'elastic.out(1,0.4)' }));
   });
+
+  // "Making Brands matter" cursor-trail photos -- confined to this section only. Cycles
+  // through 7 photos in order as the cursor moves, popping each in near the cursor then
+  // fading it back out, matching the madsmatters.com-style hover-trail reference.
+  (function(){
+    const section = document.getElementById('brand-statement');
+    if (!section) return;
+    const images = [
+      'assets/images/trail-1.jpg','assets/images/trail-2.jpg','assets/images/trail-3.jpg',
+      'assets/images/trail-4.jpg','assets/images/trail-5.jpg','assets/images/trail-6.jpg',
+      'assets/images/trail-7.jpg'
+    ];
+    let idx = 0;
+    let lastSpawn = 0;
+    const minGap = 100; // ms between spawns -- throttled to mouse-move time, not every pixel
+    section.addEventListener('mousemove', (e)=>{
+      const now = performance.now();
+      if (now - lastSpawn < minGap) return;
+      lastSpawn = now;
+      const r = section.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      const img = document.createElement('img');
+      img.className = 'trail-photo';
+      img.src = images[idx % images.length];
+      idx++;
+      const rot = Math.random() * 16 - 8;
+      img.style.left = x + 'px';
+      img.style.top = y + 'px';
+      section.appendChild(img);
+      gsap.fromTo(img,
+        { opacity: 0, scale: .5, rotate: rot },
+        { opacity: 1, scale: 1, rotate: rot, duration: .4, ease: 'back.out(1.7)' }
+      );
+      gsap.to(img, {
+        opacity: 0, scale: .85, duration: .5, delay: .55, ease: 'power2.in',
+        onComplete: () => img.remove(),
+      });
+    });
+  })();
 </script>
 
 <script type="module">
@@ -1199,7 +1241,6 @@
   // (a large, deliberate rotation + drift through the hero, not a subtle nudge). Sits on top
   // of the hero's existing gradient background, which is untouched by this.
   import * as THREE from 'three';
-  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
   const canvas = document.getElementById('hero-gl');
   const heroEl = document.getElementById('hero');
@@ -1213,32 +1254,92 @@
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   camera.position.set(0, 0, 12);
 
+  // Custom baked environment, not the generic RoomEnvironment -- gives direct, predictable
+  // control over exactly where color appears in the chrome's reflections, rather than
+  // guessing at iridescence thin-film physics (tried and abandoned: too unpredictable which
+  // hue came out). A studio-white room with ONE deliberately brand-blue wall/patch means the
+  // curved parts of the letter that catch that patch reflect blue; the rest stays white/gray,
+  // reading as "white with blue on the curve" for real, not a lighting hack.
+  function buildEnvScene() {
+    const s = new THREE.Scene();
+    const geo = new THREE.SphereGeometry(40, 32, 32);
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    const grad = ctx.createLinearGradient(0, 0, 0, 256);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(0.55, '#f2f4f6');
+    grad.addColorStop(1, '#dbe6ee');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 512, 256);
+    // A bright brand-blue patch on one side/bottom -- this is the region whose reflection
+    // shows up as "blue on the curve" of the letter.
+    const blueGrad = ctx.createRadialGradient(120, 200, 20, 120, 200, 170);
+    blueGrad.addColorStop(0, '#1cb6fe');
+    blueGrad.addColorStop(1, 'rgba(28,182,254,0)');
+    ctx.fillStyle = blueGrad;
+    ctx.fillRect(0, 0, 512, 256);
+    const blueGrad2 = ctx.createRadialGradient(400, 60, 10, 400, 60, 130);
+    blueGrad2.addColorStop(0, '#59caff');
+    blueGrad2.addColorStop(1, 'rgba(89,202,255,0)');
+    ctx.fillStyle = blueGrad2;
+    ctx.fillRect(0, 0, 512, 256);
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.mapping = THREE.EquirectangularReflectionMapping;
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const mat = new THREE.MeshBasicMaterial({ map: tex, side: THREE.BackSide });
+    s.add(new THREE.Mesh(geo, mat));
+    return s;
+  }
   const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environment = pmrem.fromScene(buildEnvScene(), 0.04).texture;
 
-  // Several real lights (not just the procedural environment) so the chrome gets visible,
-  // confident specular hotspots rather than a uniform pale reflection.
+  // Real lights on top of the environment map, for sharp specular hotspots -- the color
+  // (white base, blue on the curves) comes from the custom baked environment above, not
+  // from these; these just add crisp highlight definition.
   const keyLight = new THREE.DirectionalLight(0xffffff, 3.4);
   keyLight.position.set(6, 8, 9);
   scene.add(keyLight);
-  const rimLight = new THREE.DirectionalLight(0x9fd4ff, 2.4);
-  rimLight.position.set(-6, -5, -7);
-  scene.add(rimLight);
   const fillPoint = new THREE.PointLight(0xffffff, 55, 30);
   fillPoint.position.set(3, 1, 9);
   scene.add(fillPoint);
 
+  // White chrome base -- the blue comes entirely from the custom environment map's blue
+  // patches reflecting off the curved parts of the letter, not from material tricks.
   const chromeMat = new THREE.MeshPhysicalMaterial({
-    color: 0x9fb3c6, metalness: 1, roughness: 0.05,
-    envMapIntensity: 2, clearcoat: 1, clearcoatRoughness: 0.08,
+    color: 0xf3f5f7, metalness: 1, roughness: 0.05,
+    envMapIntensity: 2.2, clearcoat: 1, clearcoatRoughness: 0.08,
   });
 
-  // The "C" is a partial torus -- an open ring -- which is a reliable, robust way to get a
-  // clean, evenly-curved letterform without needing an external font file converted to
-  // Three.js's typeface JSON format. arc < TWO_PI leaves the gap that reads as the letter's
-  // opening; starting the sweep at the default angle puts that gap on the right, which is
-  // exactly where a capital C opens.
-  const letterGeo = new THREE.TorusGeometry(2.6, 0.72, 48, 160, Math.PI * 1.5);
+  // The "C" is a flat beveled ribbon (2D arc shape, extruded with a bevel), not a round tube.
+  // A round torus tube looks like a blob/loop from most angles -- no flat faces, no edges, so
+  // it never really reads as a designed letterform. A flat panel with rounded bevel edges
+  // (matching how lessestudio.com's chrome "S" is actually built) has real front/back faces
+  // and a visible edge profile, so it stays legible as a "C" across a much wider range of
+  // viewing angles and reads as an intentional metal object, not an abstract shape.
+  function buildArcRingShape(outerR, innerR, gapDeg) {
+    const shape = new THREE.Shape();
+    const gap = (gapDeg * Math.PI) / 180;
+    const start = gap / 2, end = Math.PI * 2 - gap / 2;
+    const steps = 96;
+    for (let i = 0; i <= steps; i++) {
+      const a = start + (end - start) * (i / steps);
+      const x = Math.cos(a) * outerR, y = Math.sin(a) * outerR;
+      if (i === 0) shape.moveTo(x, y); else shape.lineTo(x, y);
+    }
+    for (let i = 0; i <= steps; i++) {
+      const a = end - (end - start) * (i / steps);
+      const x = Math.cos(a) * innerR, y = Math.sin(a) * innerR;
+      shape.lineTo(x, y);
+    }
+    shape.closePath();
+    return shape;
+  }
+  const cShape = buildArcRingShape(2.7, 1.55, 62);
+  const letterGeo = new THREE.ExtrudeGeometry(cShape, {
+    depth: 1.0, bevelEnabled: true, bevelThickness: 0.22, bevelSize: 0.2, bevelSegments: 8, curveSegments: 64,
+  });
+  letterGeo.center();
   const letter = new THREE.Mesh(letterGeo, chromeMat);
   letter.position.set(3.4, 0, 0);
   scene.add(letter);
