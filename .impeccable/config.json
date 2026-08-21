@@ -14,6 +14,12 @@
         "value": "fraunces",
         "createdAt": "2026-08-21T19:21:43.174Z",
         "reason": "User confirmed Fraunces is intentional (identified from a reference site, requested sitewide 2026-08-21)"
+      },
+      {
+        "rule": "overused-font",
+        "value": "dm sans",
+        "createdAt": "2026-08-21T20:00:29.031Z",
+        "reason": "User confirmed DM Sans is intentional (identified from lessestudio.com, requested sitewide 2026-08-21)"
       }
     ]
   }
