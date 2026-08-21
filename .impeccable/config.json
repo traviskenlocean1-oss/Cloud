@@ -8,6 +8,12 @@
         "value": "inter",
         "createdAt": "2026-08-15T19:55:19.223Z",
         "reason": "Inter is the mandated body font in the user's own website_build_template.md, applied to every client site per CLAUDE.md"
+      },
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-08-21T19:21:43.174Z",
+        "reason": "User confirmed Fraunces is intentional (identified from a reference site, requested sitewide 2026-08-21)"
       }
     ]
   }
