@@ -538,10 +538,20 @@
     content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
     background:linear-gradient(180deg, rgba(0,0,0,.4) 0%, rgba(0,0,0,.6) 55%, rgba(0,0,0,.82) 100%);
   }
-  .faq-body{position:relative;z-index:1;padding:110px 0 60px;}
+  /* The whole grid (FAQ column + card column) pins together once you scroll to it -- only the
+     card animates (see JS); the FAQ column has no animation of its own, it's just static
+     content sitting there when the lock engages. min-height:100vh so the pinned box fully
+     covers the viewport (a shorter box leaves a gap other content can peek into mid-reveal). */
+  .faq-contact-pin{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;padding:100px 0;}
+  .faq-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;width:100%;}
+  .faq-col .section-head{margin-bottom:20px;}
+  .faq-col h2{font-size:clamp(1.7rem,2.6vw,2.1rem);}
+
   /* Distinctive treatment, not a generic flat list: a blue accent bar draws in on the open
-     item, the number goes serif/bigger and picks up the accent color, and the plus becomes a
-     bordered circle that also accents on open. */
+     item, the number goes serif and picks up the accent color, and the plus becomes a bordered
+     circle that also accents on open. Padding is tighter than a normal-flow FAQ list would use
+     -- this one lives inside a fixed-height pinned box alongside the card, so it has to fit
+     within one screen, not just look nice in isolation. */
   .faq-item{position:relative;border-top:1px solid var(--line);}
   .faq-item:last-child{border-bottom:1px solid var(--line);}
   .faq-item::before{
@@ -550,32 +560,23 @@
   }
   .faq-item.open::before{transform:scaleY(1);}
   .faq-q{
-    display:flex;align-items:baseline;gap:22px;padding:24px 0 24px 22px;cursor:pointer;width:100%;text-align:left;
+    display:flex;align-items:baseline;gap:18px;padding:14px 0 14px 18px;cursor:pointer;width:100%;text-align:left;
   }
   .faq-q .svc-num{
-    width:40px;flex-shrink:0;font-family:'Fraunces',serif;font-size:1.4rem;
+    width:34px;flex-shrink:0;font-family:'Fraunces',serif;font-size:1.15rem;
     color:var(--ink-faint);transition:color .3s ease;
   }
   .faq-item.open .faq-q .svc-num{color:var(--btn-bg);}
-  .faq-q span.qtext{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:-.01em;font-size:1.05rem;flex:1;}
+  .faq-q span.qtext{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:-.01em;font-size:.92rem;line-height:1.35;flex:1;}
   .faq-q .plus{
-    width:28px;height:28px;border-radius:50%;border:1px solid var(--line-strong);flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--ink-faint);
+    width:24px;height:24px;border-radius:50%;border:1px solid var(--line-strong);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--ink-faint);
     transition:transform .3s ease,border-color .3s ease,color .3s ease;
   }
   .faq-item.open .faq-q .plus{transform:rotate(45deg);border-color:var(--btn-bg);color:var(--btn-bg);}
   .faq-a{display:grid;grid-template-rows:minmax(0,0fr);overflow:hidden;transition:grid-template-rows .4s ease;}
   .faq-item.open .faq-a{grid-template-rows:minmax(0,1fr);}
-  .faq-a p{min-height:0;padding:0 0 20px 62px;color:var(--ink-dim);font-size:.92rem;line-height:1.7;max-width:60ch;}
-
-  /* Scroll locks here (see the JS pin near the Process pin) for a short beat while the card
-     reveals, then releases into the footer. min-height:100vh is necessary here -- not for the
-     card's sake (it's much shorter) but so the pinned box fully covers the viewport while
-     active; a shorter box left a gap beneath it that the footer peeked into mid-reveal, which
-     read as broken. The GSAP pin *duration* (see the JS) is kept short and fixed-pixel instead,
-     which is the actual lever for how long this whole beat takes -- the two are independent. */
-  .contact-reveal-pin{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;}
-  .contact-reveal-pin .wrap{display:flex;justify-content:flex-end;}
+  .faq-a p{min-height:0;padding:0 0 13px 52px;color:var(--ink-dim);font-size:.82rem;line-height:1.55;max-width:56ch;}
 
   /* Get-in-touch card — solid, opaque white (not the site's usual translucent glass look;
      this needs to read as a firm physical card against the busy dark backdrop), narrow and
@@ -585,9 +586,9 @@
   .contact-card{
     --ink:#0a0a0a;--ink-dim:rgba(10,10,10,.62);--ink-faint:rgba(10,10,10,.34);
     --line:rgba(10,10,10,.12);--line-strong:rgba(10,10,10,.22);--surface:#ffffff;
-    width:100%;max-width:500px;background:#ffffff;
+    width:100%;max-width:440px;justify-self:end;background:#ffffff;
     border:1px solid rgba(10,10,10,.08);color:var(--ink);
-    padding:38px 36px 34px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);
+    padding:34px 32px 30px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);
     will-change:transform,opacity;
   }
   .contact-card h2{
@@ -660,11 +661,11 @@
     .menu-toggle-label{display:none;}
     #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
     #menu-panel a{font-size:1.3rem;}
-    .feature-grid,.pricing-grid{grid-template-columns:1fr;}
-    .faq-body{padding:70px 0 40px;}
+    .feature-grid,.pricing-grid,.faq-contact-grid{grid-template-columns:1fr;}
+    .faq-contact-pin{min-height:0;padding:70px 0;}
+    .faq-contact-grid{gap:50px;}
     .faq-bg-img{opacity:.35;}
-    .contact-reveal-pin{min-height:0;padding:0 0 70px;}
-    .contact-card{max-width:none;}
+    .contact-card{max-width:none;justify-self:stretch;}
     .feature-col{display:contents;}
     .feature-card{min-height:520px;padding:32px 26px 28px;}
     .feature-card.bg-light, .feature-card.bg-dark{margin:0;}
@@ -907,58 +908,60 @@
     </div>
   </section>
 
-  <!-- FAQ + CONTACT (merged — FAQ scrolls normally, then scroll locks and the get-in-touch
-       card reveals over a dark "reach out" backdrop) -->
+  <!-- FAQ + CONTACT (merged) — FAQ list is static on the left, visible immediately, no
+       animation. The whole section locks (pin) once you scroll to it; you cannot scroll past.
+       The get-in-touch card starts hidden and rises into view on the right only as you keep
+       scrolling while locked. Once it's fully in view, the lock releases. -->
   <section id="faq" class="dark-section">
     <span id="contact"></span>
     <div class="faq-bg-img" style="background-image:url('assets/images/faq-reach-out-bg.jpg')"></div>
 
-    <div class="wrap faq-body">
-      <div class="section-head">
-        <p class="eyebrow">FAQ</p>
-        <h2>Frequently asked questions.</h2>
-      </div>
-
-      <div class="faq-list">
-        <div class="faq-item open">
-          <button class="faq-q"><span class="svc-num">01</span><span class="qtext">How is Cloudefy different from a marketing agency that also does social media?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>We don't manage social accounts. Cloudefy is scoped to brand strategy, identity, rebrands, and paid advertising — the work that determines whether a brand looks credible before a single post ever goes out.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">02</span><span class="qtext">Do you work with companies that don't have a brand yet?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Yes. Our Foundation tier is built specifically for companies building their first real identity — strategy and positioning come before any visual work starts.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">03</span><span class="qtext">How long does a rebrand take?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Most rebrands run 6 to 10 weeks from strategy through final asset delivery, depending on how many touchpoints the new identity needs to roll out across.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">04</span><span class="qtext">Do you handle media buying, or just the creative for ad campaigns?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">05</span><span class="qtext">What's the difference between Foundation, Growth, and Signature?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Foundation ($8,500 starting) covers strategy, positioning, and a full identity system for a first-time brand. Growth ($18,500 starting) adds a full rebrand of an existing identity plus website design direction. Signature is a custom, ongoing partnership — a dedicated strategist, quarterly brand audits, and continuous ad campaign management.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">06</span><span class="qtext">Do you only take one-time projects, or is there ongoing support?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Foundation and Growth are scoped, defined projects with a clear end date. Signature clients keep us on as an ongoing partner — ad management, quarterly brand audits, and continued creative direction as the company grows past its first identity.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">07</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>We're based in Austin, TX, and work with clients nationally — most engagements run remotely with the same process regardless of location.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll locks here for a beat while the card reveals in, then releases -->
-    <div class="contact-reveal-pin">
+    <div class="faq-contact-pin">
       <div class="wrap">
-        <div class="contact-card">
-          <p class="eyebrow">Get In Touch</p>
-          <h2>Let's make your brand look inevitable.</h2>
+        <div class="faq-contact-grid">
+          <div class="faq-col">
+            <div class="section-head">
+              <p class="eyebrow">FAQ</p>
+              <h2>Frequently asked questions.</h2>
+            </div>
 
-          <form class="cf-outline" action="https://formspree.io/f/mzzeqoyj" method="POST">
+            <div class="faq-list">
+              <div class="faq-item open">
+                <button class="faq-q"><span class="svc-num">01</span><span class="qtext">How is Cloudefy different from a marketing agency that also does social media?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>We don't manage social accounts. Cloudefy is scoped to brand strategy, identity, rebrands, and paid advertising — the work that determines whether a brand looks credible before a single post ever goes out.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">02</span><span class="qtext">Do you work with companies that don't have a brand yet?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Yes. Our Foundation tier is built specifically for companies building their first real identity — strategy and positioning come before any visual work starts.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">03</span><span class="qtext">How long does a rebrand take?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Most rebrands run 6 to 10 weeks from strategy through final asset delivery, depending on how many touchpoints the new identity needs to roll out across.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">04</span><span class="qtext">Do you handle media buying, or just the creative for ad campaigns?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">05</span><span class="qtext">What's the difference between Foundation, Growth, and Signature?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Foundation ($8,500 starting) covers strategy, positioning, and a full identity system for a first-time brand. Growth ($18,500 starting) adds a full rebrand plus website design direction. Signature is a custom, ongoing partnership — a dedicated strategist and quarterly brand audits.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">06</span><span class="qtext">Do you only take one-time projects, or is there ongoing support?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Foundation and Growth are scoped projects with a clear end date. Signature clients keep us on as an ongoing partner as the company grows past its first identity.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">07</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>We're based in Austin, TX, and work with clients nationally — most engagements run remotely regardless of location.</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <p class="eyebrow">Get In Touch</p>
+            <h2>Let's make your brand look inevitable.</h2>
+
+            <form class="cf-outline" action="https://formspree.io/f/mzzeqoyj" method="POST">
             <div class="cf-two">
               <div class="cf-row">
                 <label for="cf-name">Name</label>
@@ -990,6 +993,7 @@
           </form>
         </div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -1199,21 +1203,19 @@
     }
   });
 
-  // FAQ + Contact — the FAQ list scrolls normally; once you reach the dedicated reveal block
-  // below it, scroll locks (pin) for a short beat while the get-in-touch card animates in, then
-  // releases into the footer. Desktop only (mobile just stacks the card in normal flow below
-  // the FAQ list); deep links to #contact land on the anchor span at the top of #faq, not the
-  // card itself, so a direct jump never looks broken mid-reveal.
+  // FAQ + Contact — the FAQ column is static (visible immediately, no animation of its own).
+  // The whole grid pins the moment you scroll to it: you cannot scroll past. The card starts
+  // hidden and rises up from the lower-right into place on the right only as you keep scrolling
+  // while locked; once fully in view, the lock releases. Desktop only (mobile stacks both in
+  // normal flow, no lock); deep links to #contact land on the anchor span at the top of #faq,
+  // not the card itself, so a direct jump never looks broken mid-reveal.
   ScrollTrigger.matchMedia({
     '(min-width: 861px)': function(){
       const contactCard = document.querySelector('.contact-card');
-      // Enters from the lower-right and rises up-and-left into its resting spot -- both axes
-      // moving, not a straight vertical fade. A short, fixed pin distance (not viewport-relative)
-      // so the lock-then-reveal beat stays brief regardless of screen size.
       gsap.set(contactCard, { xPercent: 24, yPercent: 20, opacity: 0, scale: .96 });
       gsap.timeline({
         scrollTrigger: {
-          trigger: '.contact-reveal-pin',
+          trigger: '.faq-contact-pin',
           start: 'top top',
           end: '+=420',
           pin: true,
