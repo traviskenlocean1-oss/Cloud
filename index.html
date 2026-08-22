@@ -525,32 +525,55 @@
 
   /* ===== FAQ + CONTACT (merged — FAQ scrolls normally, then a short pin reveals the card) ===== */
   #faq{background:var(--black);position:relative;overflow:hidden;}
+  /* background-attachment:fixed sizes "cover" against the VIEWPORT, not against this element's
+     own (very tall, stacked-sections) box. Sizing cover against the full element here forced a
+     ~2.6:1 wide image to cover a much taller/narrower box, blowing it up into a tight, cropped-in
+     zoom on individual letters -- that's what "too close, too big" was. Viewport-relative sizing
+     keeps it at a normal, mostly-uncropped scale regardless of how tall #faq ends up being. */
   .faq-bg-img{
     position:absolute;inset:0;background-size:cover;background-position:center;
-    opacity:.5;z-index:0;pointer-events:none;
+    background-attachment:fixed;opacity:.5;z-index:0;pointer-events:none;
   }
   #faq::before{
     content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
     background:linear-gradient(180deg, rgba(0,0,0,.4) 0%, rgba(0,0,0,.6) 55%, rgba(0,0,0,.82) 100%);
   }
   .faq-body{position:relative;z-index:1;padding:110px 0 60px;}
-  .faq-item{border-top:1px solid var(--line);}
+  /* Distinctive treatment, not a generic flat list: a blue accent bar draws in on the open
+     item, the number goes serif/bigger and picks up the accent color, and the plus becomes a
+     bordered circle that also accents on open. */
+  .faq-item{position:relative;border-top:1px solid var(--line);}
   .faq-item:last-child{border-bottom:1px solid var(--line);}
-  .faq-q{
-    display:flex;align-items:center;gap:24px;padding:24px 0;cursor:pointer;width:100%;text-align:left;
+  .faq-item::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--btn-bg);
+    transform:scaleY(0);transform-origin:top;transition:transform .45s ease;
   }
-  .faq-q .svc-num{width:32px;flex-shrink:0;}
-  .faq-q span.qtext{font-size:1.1rem;flex:1;}
-  .faq-q .plus{font-size:1.4rem;color:var(--ink-faint);transition:transform .3s ease;flex-shrink:0;}
-  .faq-item.open .faq-q .plus{transform:rotate(45deg);}
+  .faq-item.open::before{transform:scaleY(1);}
+  .faq-q{
+    display:flex;align-items:baseline;gap:22px;padding:24px 0 24px 22px;cursor:pointer;width:100%;text-align:left;
+  }
+  .faq-q .svc-num{
+    width:40px;flex-shrink:0;font-family:'Fraunces',serif;font-size:1.4rem;
+    color:var(--ink-faint);transition:color .3s ease;
+  }
+  .faq-item.open .faq-q .svc-num{color:var(--btn-bg);}
+  .faq-q span.qtext{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:-.01em;font-size:1.05rem;flex:1;}
+  .faq-q .plus{
+    width:28px;height:28px;border-radius:50%;border:1px solid var(--line-strong);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--ink-faint);
+    transition:transform .3s ease,border-color .3s ease,color .3s ease;
+  }
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);border-color:var(--btn-bg);color:var(--btn-bg);}
   .faq-a{display:grid;grid-template-rows:minmax(0,0fr);overflow:hidden;transition:grid-template-rows .4s ease;}
   .faq-item.open .faq-a{grid-template-rows:minmax(0,1fr);}
-  .faq-a p{min-height:0;padding:0 0 20px 56px;color:var(--ink-dim);font-size:.94rem;line-height:1.7;max-width:60ch;}
+  .faq-a p{min-height:0;padding:0 0 20px 62px;color:var(--ink-dim);font-size:.92rem;line-height:1.7;max-width:60ch;}
 
   /* Scroll locks here (see the JS pin near the Process pin) for a short beat while the card
-     reveals, then releases into the footer. Sized to comfortably hold the card with margin on
-     a normal viewport -- unlike the pinned FAQ+card combo tried earlier, this pin only ever has
-     to contain the card itself, so it can't clip. */
+     reveals, then releases into the footer. min-height:100vh is necessary here -- not for the
+     card's sake (it's much shorter) but so the pinned box fully covers the viewport while
+     active; a shorter box left a gap beneath it that the footer peeked into mid-reveal, which
+     read as broken. The GSAP pin *duration* (see the JS) is kept short and fixed-pixel instead,
+     which is the actual lever for how long this whole beat takes -- the two are independent. */
   .contact-reveal-pin{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;}
   .contact-reveal-pin .wrap{display:flex;justify-content:flex-end;}
 
@@ -914,7 +937,15 @@
           <div class="faq-a"><p>Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">05</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
+          <button class="faq-q"><span class="svc-num">05</span><span class="qtext">What's the difference between Foundation, Growth, and Signature?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Foundation ($8,500 starting) covers strategy, positioning, and a full identity system for a first-time brand. Growth ($18,500 starting) adds a full rebrand of an existing identity plus website design direction. Signature is a custom, ongoing partnership — a dedicated strategist, quarterly brand audits, and continuous ad campaign management.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="svc-num">06</span><span class="qtext">Do you only take one-time projects, or is there ongoing support?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Foundation and Growth are scoped, defined projects with a clear end date. Signature clients keep us on as an ongoing partner — ad management, quarterly brand audits, and continued creative direction as the company grows past its first identity.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="svc-num">07</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
           <div class="faq-a"><p>We're based in Austin, TX, and work with clients nationally — most engagements run remotely with the same process regardless of location.</p></div>
         </div>
       </div>
@@ -1176,16 +1207,19 @@
   ScrollTrigger.matchMedia({
     '(min-width: 861px)': function(){
       const contactCard = document.querySelector('.contact-card');
-      gsap.set(contactCard, { yPercent: 45, opacity: 0, scale: .94 });
+      // Enters from the lower-right and rises up-and-left into its resting spot -- both axes
+      // moving, not a straight vertical fade. A short, fixed pin distance (not viewport-relative)
+      // so the lock-then-reveal beat stays brief regardless of screen size.
+      gsap.set(contactCard, { xPercent: 24, yPercent: 20, opacity: 0, scale: .96 });
       gsap.timeline({
         scrollTrigger: {
           trigger: '.contact-reveal-pin',
           start: 'top top',
-          end: '+=' + Math.round(window.innerHeight * 0.85),
+          end: '+=420',
           pin: true,
           scrub: 0.6
         }
-      }).to(contactCard, { yPercent: 0, opacity: 1, scale: 1, ease: 'none' });
+      }).to(contactCard, { xPercent: 0, yPercent: 0, opacity: 1, scale: 1, ease: 'none' });
     },
     '(max-width: 860px)': function(){
       gsap.set('.contact-card', { clearProps: 'all' });
