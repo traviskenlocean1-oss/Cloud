@@ -77,7 +77,10 @@
   #menu-panel a .menu-arrow{opacity:0;transform:translateX(-8px);display:inline-block;transition:opacity .25s ease, transform .25s ease;}
   #menu-panel a:hover .menu-arrow{opacity:1;transform:translateX(0);}
 
-  .breadcrumb{padding-top:130px;font-size:.78rem;color:var(--ink-faint);display:flex;gap:8px;}
+  .breadcrumb{padding-top:20px;font-size:.78rem;color:var(--ink-faint);display:flex;gap:8px;}
+  .back-link{margin-top:130px;display:inline-flex;align-items:center;gap:10px;font-size:.92rem;font-weight:600;color:var(--ink);padding:10px 18px 10px 14px;border:1px solid var(--line-strong);border-radius:999px;transition:background .2s ease, transform .2s ease;}
+  .back-link svg{width:16px;height:16px;transition:transform .2s ease;}
+  .back-link:hover{background:var(--surface-2);transform:translateX(-3px);}
   .breadcrumb a{color:var(--ink-dim);}
   .page-hero{padding:36px 0 90px;}
   .page-hero .svc-num{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--ink-faint);display:block;margin-bottom:18px;}
@@ -147,6 +150,7 @@
 
 <main>
   <div class="wrap">
+    <a href="../index.html#services" class="back-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Back to Services</a>
     <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#services">Services</a> / Rebrands</p>
     <div class="page-hero">
       <span class="svc-num">02 / 03</span>
