@@ -540,18 +540,27 @@
   }
   /* The whole grid (FAQ column + card column) pins together once you scroll to it -- only the
      card animates (see JS); the FAQ column has no animation of its own, it's just static
-     content sitting there when the lock engages. min-height:100vh so the pinned box fully
-     covers the viewport (a shorter box leaves a gap other content can peek into mid-reveal). */
-  .faq-contact-pin{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;padding:100px 0;}
-  .faq-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;width:100%;}
+     content sitting there when the lock engages.
+     min-height:100vh here is load-bearing, not decorative padding: a pinned (position:fixed)
+     box that's SHORTER than the viewport always leaves the region below it showing whatever
+     comes next in the document (the footer) -- no amount of extra reserved *scroll distance*
+     can fix that, because a fixed element doesn't move regardless of how much scroll happens
+     while it's pinned. Only the box's own rendered height can guarantee nothing peeks through.
+     What actually caused "too much extra space" before was pairing that with align-items:center
+     (splitting the leftover room above AND below the content) plus a bloated JS scroll
+     duration on top of an already-100vh box. Content now hugs the top instead, and the JS
+     duration is a small fixed number just for reveal pacing, not doing double duty as a
+     peek-through fix -- so the box is exactly one screen, no more. */
+  .faq-contact-pin{min-height:100vh;display:flex;align-items:flex-start;position:relative;z-index:1;padding:70px 0;}
+  .faq-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;width:100%;}
   .faq-col .section-head{margin-bottom:20px;}
   .faq-col h2{font-size:clamp(1.7rem,2.6vw,2.1rem);}
 
   /* Distinctive treatment, not a generic flat list: a blue accent bar draws in on the open
      item, the number goes serif and picks up the accent color, and the plus becomes a bordered
-     circle that also accents on open. Padding is tighter than a normal-flow FAQ list would use
-     -- this one lives inside a fixed-height pinned box alongside the card, so it has to fit
-     within one screen, not just look nice in isolation. */
+     circle that also accents on open. The pinned box is a guaranteed 100vh (see above), so
+     there's real room here -- sized to fill more of that box naturally rather than sitting
+     small with a big gap underneath. */
   .faq-item{position:relative;border-top:1px solid var(--line);}
   .faq-item:last-child{border-bottom:1px solid var(--line);}
   .faq-item::before{
@@ -560,44 +569,50 @@
   }
   .faq-item.open::before{transform:scaleY(1);}
   .faq-q{
-    display:flex;align-items:baseline;gap:18px;padding:14px 0 14px 18px;cursor:pointer;width:100%;text-align:left;
+    display:flex;align-items:baseline;gap:20px;padding:22px 0 22px 20px;cursor:pointer;width:100%;text-align:left;
   }
   .faq-q .svc-num{
-    width:34px;flex-shrink:0;font-family:'Fraunces',serif;font-size:1.15rem;
+    width:38px;flex-shrink:0;font-family:'Fraunces',serif;font-size:1.35rem;
     color:var(--ink-faint);transition:color .3s ease;
   }
   .faq-item.open .faq-q .svc-num{color:var(--btn-bg);}
-  .faq-q span.qtext{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:-.01em;font-size:.92rem;line-height:1.35;flex:1;}
+  .faq-q span.qtext{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:-.01em;font-size:1.04rem;line-height:1.35;flex:1;}
   .faq-q .plus{
-    width:24px;height:24px;border-radius:50%;border:1px solid var(--line-strong);flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--ink-faint);
+    width:27px;height:27px;border-radius:50%;border:1px solid var(--line-strong);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--ink-faint);
     transition:transform .3s ease,border-color .3s ease,color .3s ease;
   }
   .faq-item.open .faq-q .plus{transform:rotate(45deg);border-color:var(--btn-bg);color:var(--btn-bg);}
   .faq-a{display:grid;grid-template-rows:minmax(0,0fr);overflow:hidden;transition:grid-template-rows .4s ease;}
   .faq-item.open .faq-a{grid-template-rows:minmax(0,1fr);}
-  .faq-a p{min-height:0;padding:0 0 13px 52px;color:var(--ink-dim);font-size:.82rem;line-height:1.55;max-width:56ch;}
+  .faq-a p{min-height:0;padding:0 0 20px 58px;color:var(--ink-dim);font-size:.9rem;line-height:1.65;max-width:56ch;}
 
   /* Get-in-touch card — solid, opaque white (not the site's usual translucent glass look;
-     this needs to read as a firm physical card against the busy dark backdrop), narrow and
-     short by design so the whole thing is visible in one view, no scrolling within the pin.
-     Re-declares the theme tokens locally so it reads as a light "island" inside #faq's
-     dark-section scope, the same inverse-token technique used for .price-card.premium.dark-section. */
+     this needs to read as a firm physical card against the busy dark backdrop). Sits inside
+     .contact-card-mask, which clips it -- the card itself stays a fixed, always-fully-rendered
+     block (opacity never changes) and is translated vertically by JS; the mask is what makes it
+     look like it's rising up out of the ground, revealing more of itself as it climbs, instead
+     of fading in. Re-declares the theme tokens locally so it reads as a light "island" inside
+     #faq's dark-section scope, the same inverse-token technique used for
+     .price-card.premium.dark-section. */
+  .contact-card-mask{
+    overflow:hidden;position:relative;width:100%;max-width:480px;justify-self:end;
+  }
   .contact-card{
     --ink:#0a0a0a;--ink-dim:rgba(10,10,10,.62);--ink-faint:rgba(10,10,10,.34);
     --line:rgba(10,10,10,.12);--line-strong:rgba(10,10,10,.22);--surface:#ffffff;
-    width:100%;max-width:440px;justify-self:end;background:#ffffff;
-    border:1px solid rgba(10,10,10,.08);color:var(--ink);
-    padding:34px 32px 30px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);
-    will-change:transform,opacity;
+    background:#ffffff;border:1px solid rgba(10,10,10,.08);color:var(--ink);
+    padding:48px 44px 42px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);
+    will-change:transform;
   }
   .contact-card h2{
     font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;
-    font-size:clamp(1.5rem,2.2vw,1.9rem);margin-bottom:22px;max-width:22ch;line-height:1.16;
+    font-size:clamp(1.7rem,2.5vw,2.1rem);margin-bottom:20px;max-width:22ch;line-height:1.16;
   }
+  .contact-card .lead{font-size:.95rem;line-height:1.6;color:var(--ink-dim);margin-bottom:28px;max-width:42ch;}
   .contact-card .cf-outline{border:none;padding:0;background:transparent;}
-  .contact-card .cf-row{margin-bottom:13px;}
-  .contact-card .cf-row textarea{min-height:64px;}
+  .contact-card .cf-row{margin-bottom:18px;}
+  .contact-card .cf-row textarea{min-height:88px;}
 
   .cf-outline{border:1px solid var(--line);padding:38px;background:var(--surface);}
   .cf-row{margin-bottom:20px;}
@@ -665,7 +680,7 @@
     .faq-contact-pin{min-height:0;padding:70px 0;}
     .faq-contact-grid{gap:50px;}
     .faq-bg-img{opacity:.35;}
-    .contact-card{max-width:none;justify-self:stretch;}
+    .contact-card-mask{max-width:none;justify-self:stretch;overflow:visible;}
     .feature-col{display:contents;}
     .feature-card{min-height:520px;padding:32px 26px 28px;}
     .feature-card.bg-light, .feature-card.bg-dark{margin:0;}
@@ -957,9 +972,11 @@
             </div>
           </div>
 
+          <div class="contact-card-mask">
           <div class="contact-card">
             <p class="eyebrow">Get In Touch</p>
             <h2>Let's make your brand look inevitable.</h2>
+            <p class="lead">Prefer to talk it through first? Book a call. Otherwise, send the details below and we'll respond within one business day.</p>
 
             <form class="cf-outline" action="https://formspree.io/f/mzzeqoyj" method="POST">
             <div class="cf-two">
@@ -991,6 +1008,7 @@
             </div>
             <button type="submit" class="btn btn-primary magnetic">Send Inquiry</button>
           </form>
+        </div>
         </div>
       </div>
     </div>
@@ -1204,24 +1222,30 @@
   });
 
   // FAQ + Contact — the FAQ column is static (visible immediately, no animation of its own).
-  // The whole grid pins the moment you scroll to it: you cannot scroll past. The card starts
-  // hidden and rises up from the lower-right into place on the right only as you keep scrolling
-  // while locked; once fully in view, the lock releases. Desktop only (mobile stacks both in
-  // normal flow, no lock); deep links to #contact land on the anchor span at the top of #faq,
-  // not the card itself, so a direct jump never looks broken mid-reveal.
+  // The whole grid pins the moment you scroll to it: you cannot scroll past. The card is clipped
+  // by .contact-card-mask and starts translated a full card-height below it (hidden, not faded --
+  // opacity never changes) and rises straight up as you keep scrolling while locked, revealing
+  // more of itself top-to-bottom as it climbs, like it's coming up out of the ground. Once fully
+  // risen, the lock releases immediately after -- no extra dead hold. Desktop only (mobile
+  // stacks both in normal flow, no lock, no transform); deep links to #contact land on the
+  // anchor span at the top of #faq, not the card itself, so a direct jump never looks broken
+  // mid-reveal.
   ScrollTrigger.matchMedia({
     '(min-width: 861px)': function(){
       const contactCard = document.querySelector('.contact-card');
-      gsap.set(contactCard, { xPercent: 24, yPercent: 20, opacity: 0, scale: .96 });
+      gsap.set(contactCard, { yPercent: 100 });
+      // Fixed, modest distance purely for reveal pacing (how slow the rise feels) -- peek-through
+      // prevention is handled entirely by min-height:100vh on .faq-contact-pin in CSS, not by
+      // inflating this number, so this can just be "however long feels right."
       gsap.timeline({
         scrollTrigger: {
           trigger: '.faq-contact-pin',
           start: 'top top',
-          end: '+=420',
+          end: '+=520',
           pin: true,
           scrub: 0.6
         }
-      }).to(contactCard, { xPercent: 0, yPercent: 0, opacity: 1, scale: 1, ease: 'none' });
+      }).to(contactCard, { yPercent: 0, ease: 'none' });
     },
     '(max-width: 860px)': function(){
       gsap.set('.contact-card', { clearProps: 'all' });
