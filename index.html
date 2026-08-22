@@ -710,6 +710,9 @@
      Process pin). Sits above everything (z-index), starts fully hidden. -->
 <div id="page-transition-overlay"></div>
 
+<!-- Everything visible lives in here so the exit transition can recede the WHOLE page (nav
+     included) as one unit -- see the transitionTo() JS near the Process pin. -->
+<div id="transition-wrap">
 <div id="hero-glow"></div>
 
 <nav id="nav">
@@ -1066,6 +1069,7 @@
     <span>Austin, TX</span>
   </div>
 </footer>
+</div>
 
 <script>
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -1236,22 +1240,21 @@
 
   // Step headings (Discovery/Strategy/Design/Launch) each open a dedicated detail page.
   // Wired unconditionally (not inside the pin's matchMedia above) so it also works on mobile,
-  // where the Process section has no pin at all. The exit here only covers the screen with the
-  // overlay -- it deliberately does NOT transform/fade #process's own content, because
-  // .process-pin can be actively position:fixed (mid-pin) on desktop at the exact moment a step
-  // is clicked; giving a fixed descendant's ancestor a transform makes that ancestor its new
-  // containing block, which would visually kick the pinned content out of place. The fuller
-  // recede-and-rise treatment happens on the destination page instead, which has no pin.
+  // where the Process section has no pin at all. The whole page (nav included, via
+  // #transition-wrap) recedes and fades as one unit while the overlay rises to cover it --
+  // wrapping nav + main + footer together means a pinned/fixed descendant (like the Process
+  // section mid-pin) shares the same transformed containing block as everything else instead
+  // of being the only thing left un-transformed, so nothing desyncs.
   const stepPages = ['process/discovery.html', 'process/strategy.html', 'process/design.html', 'process/launch.html'];
   const pageOverlay = document.getElementById('page-transition-overlay');
+  const transitionWrap = document.getElementById('transition-wrap');
   document.querySelectorAll('.process-step').forEach((stepEl, i)=>{
     const heading = stepEl.querySelector('h3');
     heading.addEventListener('click', ()=>{
       gsap.set(pageOverlay, { transformOrigin: 'bottom' });
-      gsap.to(pageOverlay, {
-        scaleY: 1, duration: 0.55, ease: 'power3.inOut',
-        onComplete: ()=> { window.location.href = stepPages[i]; }
-      });
+      gsap.timeline({ onComplete: ()=> { window.location.href = stepPages[i]; } })
+        .to(transitionWrap, { opacity: 0, y: 40, scale: .94, duration: 0.6, ease: 'power2.in' }, 0)
+        .to(pageOverlay, { scaleY: 1, duration: 0.6, ease: 'power3.inOut' }, 0.1);
     });
   });
 

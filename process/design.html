@@ -48,7 +48,8 @@
   .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
   .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);font-weight:500;}
   section{position:relative;}
-  .section-pad{padding:110px 0;}
+  .section-pad{padding:100px 0;}
+  .section-title{font-family:'Fraunces',serif;font-size:clamp(1.9rem,2.6vw,2.4rem);margin-bottom:34px;}
 
   #page-transition-overlay{
     position:fixed;inset:0;z-index:9999;background:#0a0a0a;
@@ -82,34 +83,34 @@
   }
   .back-link svg{width:16px;height:16px;transition:transform .2s ease;}
   .back-link:hover{background:var(--surface-2);transform:translateX(-3px);}
-  .page-hero{padding:36px 0 90px;}
+
+  .page-hero{padding:36px 0 50px;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:end;}
   .page-hero .svc-num{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--ink-faint);display:block;margin-bottom:18px;}
-  .page-hero h1{font-size:clamp(2.4rem,5.4vw,4.4rem);max-width:16ch;margin-bottom:26px;}
-  .page-hero .lead{color:var(--ink-dim);font-size:1.05rem;line-height:1.7;max-width:56ch;margin-bottom:38px;}
+  .page-hero h1{font-size:clamp(2.4rem,5.4vw,4.4rem);}
+  .page-hero .hero-right{padding-bottom:8px;}
+  .page-hero .lead{color:var(--ink-dim);font-size:1.05rem;line-height:1.7;margin-bottom:26px;}
   .page-hero-photo{
-    width:100%;height:380px;margin:10px 0 30px;
+    width:100%;height:420px;margin:0;
     background-size:cover;background-position:center;
   }
 
-  .overview p{color:var(--ink-dim);font-size:1.02rem;line-height:1.75;max-width:70ch;margin-bottom:20px;}
+  .deliv-overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  .deliv-row{display:flex;align-items:baseline;gap:20px;padding:22px 0;border-top:1px solid var(--line);font-size:1.05rem;font-weight:500;}
+  .deliv-list .deliv-row:last-child{border-bottom:1px solid var(--line);}
+  .deliv-row .svc-num{font-family:'Fraunces',serif;color:var(--ink-faint);font-size:1.1rem;width:32px;flex-shrink:0;}
+  .overview p{color:var(--ink-dim);font-size:1.02rem;line-height:1.75;margin-bottom:20px;}
   .overview p:last-child{margin-bottom:0;}
 
-  .why-list{margin-top:36px;}
   .why-list li{display:flex;gap:16px;padding:20px 0;border-top:1px solid var(--line);color:var(--ink-dim);font-size:.98rem;line-height:1.7;}
   .why-list li:last-child{border-bottom:1px solid var(--line);}
   .why-list li b{color:var(--ink);font-weight:600;}
   .why-list li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:50%;background:#1CB6FE;margin-top:9px;}
 
-  .deliv-item{display:grid;grid-template-columns:70px 1fr;gap:24px;padding:34px 0;border-top:1px solid var(--line);}
-  .deliv-item:last-child{border-bottom:1px solid var(--line);}
-  .deliv-item .svc-num{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--ink-faint);}
-  .deliv-item p{color:var(--ink-dim);font-size:.98rem;line-height:1.7;max-width:64ch;}
-  .deliv-item p b{color:var(--ink);font-weight:600;}
-
   .process-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
   .process-card{background:var(--surface);padding:44px 40px;}
-  .process-card .svc-num{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--ink-faint);display:block;margin-bottom:22px;}
-  .process-card h3{font-size:1.3rem;margin-bottom:14px;}
+  .process-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px;}
+  .process-head .svc-num{font-family:'Fraunces',serif;font-size:1.8rem;color:var(--ink-faint);}
+  .process-card h3{font-size:1.3rem;}
   .process-card p{color:var(--ink-dim);font-size:.9rem;line-height:1.6;max-width:42ch;}
 
   .next-step{
@@ -135,7 +136,8 @@
     .menu-toggle-label{display:none;}
     #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
     #menu-panel a{font-size:1.3rem;}
-    .deliv-item{grid-template-columns:1fr;gap:8px;}
+    .page-hero{grid-template-columns:1fr;gap:24px;}
+    .deliv-overview-grid{grid-template-columns:1fr;gap:40px;}
     .process-grid{grid-template-columns:1fr;}
     .next-step{flex-direction:column;align-items:flex-start;}
   }
@@ -144,6 +146,8 @@
 <body>
 
 <div id="page-transition-overlay"></div>
+
+<div id="transition-wrap">
 
 <nav id="nav">
   <a href="../index.html" class="logo"><img src="../assets/images/cloudefy-logo-color.png" alt="Cloudefy"></a>
@@ -168,21 +172,45 @@
     <a href="../index.html#process" class="back-link" id="back-to-process"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Back to Process</a>
     <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#process">Process</a> / Design</p>
     <div class="page-hero">
-      <span class="svc-num">03 / 04</span>
-      <h1>Design</h1>
-      <p class="lead">Identity, digital, and campaign assets get built here as one coherent system, not a stack of disconnected deliverables that happen to share a logo.</p>
-      <a href="../index.html#contact" class="btn btn-primary magnetic">Discuss Design</a>
+      <div class="hero-left">
+        <span class="svc-num">03 / 04</span>
+        <h1>Design</h1>
+      </div>
+      <div class="hero-right">
+        <p class="lead">Identity, digital, and campaign assets get built here as one coherent system, not a stack of disconnected deliverables that happen to share a logo.</p>
+        <a href="../index.html#contact" class="btn btn-primary magnetic">Discuss Design</a>
+      </div>
     </div>
     <div class="page-hero-photo" style="background-image:url('../assets/images/process-design.jpg')"></div>
   </div>
 
   <section class="section-pad">
     <div class="wrap">
-      <p class="eyebrow" style="margin-bottom:20px;">Overview</p>
-      <div class="overview">
-        <p>With strategy locked, we build the visual and verbal system that carries it: logo and identity, digital design direction, and the campaign assets that put the brand in front of people. Every piece is built to work together, not shipped as separate one-offs.</p>
-        <p>This is where the strategy becomes something people can actually see, and where a rebrand starts to feel inevitable instead of arbitrary.</p>
+      <div class="deliv-overview-grid">
+        <div>
+          <h2 class="section-title">Deliverables</h2>
+          <div class="deliv-list">
+            <div class="deliv-row"><span class="svc-num">01</span><span>Identity System</span></div>
+            <div class="deliv-row"><span class="svc-num">02</span><span>Digital Design Direction</span></div>
+            <div class="deliv-row"><span class="svc-num">03</span><span>Campaign Creative Assets</span></div>
+            <div class="deliv-row"><span class="svc-num">04</span><span>Brand Guidelines Document</span></div>
+            <div class="deliv-row"><span class="svc-num">05</span><span>Asset Library</span></div>
+          </div>
+        </div>
+        <div>
+          <h2 class="section-title">Overview:</h2>
+          <div class="overview">
+            <p>With strategy locked, we build the visual and verbal system that carries it: logo and identity, digital design direction, and the campaign assets that put the brand in front of people. Every piece is built to work together, not shipped as separate one-offs.</p>
+            <p>This is where the strategy becomes something people can actually see, and where a rebrand starts to feel inevitable instead of arbitrary.</p>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section-pad" style="background:var(--surface);">
+    <div class="wrap">
+      <h2 class="section-title">Why it matters</h2>
       <ul class="why-list">
         <li><p><b>One coherent system</b> — Identity, web, and campaign assets are designed together, so nothing feels bolted on afterward.</p></li>
         <li><p><b>Built on strategy, not vibes</b> — Every design decision traces back to a positioning or messaging choice made in the previous phase.</p></li>
@@ -193,29 +221,16 @@
     </div>
   </section>
 
-  <section class="section-pad" style="background:var(--surface);">
-    <div class="wrap">
-      <p class="eyebrow" style="margin-bottom:14px;">Deliverables</p>
-      <div class="deliv-list">
-        <div class="deliv-item"><span class="svc-num">01</span><p><b>Identity System</b> — logo, color, typography, and the guidelines that keep it consistent as the team grows.</p></div>
-        <div class="deliv-item"><span class="svc-num">02</span><p><b>Digital Design Direction</b> — how the identity translates to the website and product surfaces.</p></div>
-        <div class="deliv-item"><span class="svc-num">03</span><p><b>Campaign Creative Assets</b> — the visual system for paid media and launch campaigns.</p></div>
-        <div class="deliv-item"><span class="svc-num">04</span><p><b>Brand Guidelines Document</b> — a reference any future designer, hire, or agency can work from.</p></div>
-        <div class="deliv-item"><span class="svc-num">05</span><p><b>Asset Library</b> — production-ready files handed off in the formats the team actually needs.</p></div>
-      </div>
-    </div>
-  </section>
-
   <section class="section-pad">
     <div class="wrap">
-      <p class="eyebrow" style="margin-bottom:40px;">Our Process</p>
+      <h2 class="section-title">Our Process</h2>
       <div class="process-grid">
-        <div class="process-card"><span class="svc-num">01</span><h3>Design Kickoff</h3><p>We translate the locked strategy into a creative brief before opening any design file.</p></div>
-        <div class="process-card"><span class="svc-num">02</span><h3>Identity Exploration</h3><p>Initial directions for logo, color, and typography, grounded in the positioning.</p></div>
-        <div class="process-card"><span class="svc-num">03</span><h3>Identity Refinement</h3><p>We narrow to one direction and build it out into a full system.</p></div>
-        <div class="process-card"><span class="svc-num">04</span><h3>Digital Application</h3><p>The identity gets applied to web and digital design direction.</p></div>
-        <div class="process-card"><span class="svc-num">05</span><h3>Campaign Asset Development</h3><p>Visual templates for the launch campaign get built on the same system.</p></div>
-        <div class="process-card"><span class="svc-num">06</span><h3>Guidelines & Handoff</h3><p>Everything ships with documentation so it's usable beyond this engagement.</p></div>
+        <div class="process-card"><div class="process-head"><span class="svc-num">01</span><h3>Design Kickoff</h3></div><p>We translate the locked strategy into a creative brief before opening any design file.</p></div>
+        <div class="process-card"><div class="process-head"><span class="svc-num">02</span><h3>Identity Exploration</h3></div><p>Initial directions for logo, color, and typography, grounded in the positioning.</p></div>
+        <div class="process-card"><div class="process-head"><span class="svc-num">03</span><h3>Identity Refinement</h3></div><p>We narrow to one direction and build it out into a full system.</p></div>
+        <div class="process-card"><div class="process-head"><span class="svc-num">04</span><h3>Digital Application</h3></div><p>The identity gets applied to web and digital design direction.</p></div>
+        <div class="process-card"><div class="process-head"><span class="svc-num">05</span><h3>Campaign Asset Development</h3></div><p>Visual templates for the launch campaign get built on the same system.</p></div>
+        <div class="process-card"><div class="process-head"><span class="svc-num">06</span><h3>Guidelines & Handoff</h3></div><p>Everything ships with documentation so it's usable beyond this engagement.</p></div>
       </div>
     </div>
   </section>
@@ -247,6 +262,7 @@
     <span><a href="../index.html">cloudefy.co</a> — Austin, TX</span>
   </div>
 </footer>
+</div>
 
 <script>
   gsap.registerPlugin(ScrollTrigger);
@@ -256,18 +272,18 @@
   gsap.ticker.lagSmoothing(0);
 
   const overlay = document.getElementById('page-transition-overlay');
-  const mainEl = document.querySelector('main');
+  const wrap = document.getElementById('transition-wrap');
   gsap.set(overlay, { scaleY: 1, transformOrigin: 'top' });
-  gsap.set(mainEl, { opacity: 0, y: 24, scale: .98 });
+  gsap.set(wrap, { opacity: 0, y: 30, scale: .96 });
   gsap.timeline()
     .to(overlay, { scaleY: 0, duration: 0.6, ease: 'power3.inOut' }, 0)
-    .to(mainEl, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power2.out' }, 0.15);
+    .to(wrap, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power2.out' }, 0.15);
 
   function transitionTo(url){
     gsap.set(overlay, { transformOrigin: 'bottom' });
     gsap.timeline({ onComplete: ()=> { window.location.href = url; } })
-      .to(mainEl, { opacity: 0, y: -30, scale: .96, duration: 0.5, ease: 'power2.in' }, 0)
-      .to(overlay, { scaleY: 1, duration: 0.55, ease: 'power3.inOut' }, 0.05);
+      .to(wrap, { opacity: 0, y: 40, scale: .94, duration: 0.6, ease: 'power2.in' }, 0)
+      .to(overlay, { scaleY: 1, duration: 0.6, ease: 'power3.inOut' }, 0.1);
   }
   document.getElementById('back-to-process').addEventListener('click', (e)=>{
     e.preventDefault();
@@ -297,7 +313,7 @@
     if (!menuPanel.contains(e.target) && !menuToggle.contains(e.target)) closeMenu();
   });
 
-  gsap.utils.toArray('.deliv-item, .process-card, .why-list li').forEach(el=>{
+  gsap.utils.toArray('.deliv-row, .process-card, .why-list li').forEach(el=>{
     gsap.from(el, { opacity:0, y:24, duration:0.8, ease:'power2.out', scrollTrigger:{ trigger: el, start:'top 90%' } });
   });
 
