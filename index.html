@@ -467,7 +467,11 @@
     transition:opacity .5s ease, transform .5s ease;
   }
   .process-step.active{opacity:1;pointer-events:auto;transform:translateY(0);}
-  .process-step h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;user-select:none;}
+  .process-step h3{
+    font-size:clamp(2.2rem,3.6vw,3.2rem);margin-bottom:20px;user-select:none;
+    cursor:pointer;display:inline-block;transition:color .3s ease;
+  }
+  .process-step h3:hover{color:var(--btn-bg);}
   .process-step p{color:var(--ink);font-weight:700;font-size:1.02rem;line-height:1.7;max-width:48ch;margin-bottom:26px;}
   .process-visual{
     position:absolute;right:-40px;top:50%;transform:translateY(-50%);
@@ -1217,6 +1221,14 @@
           const targetScroll = st.start + targetProgress * (st.end - st.start);
           lenis.scrollTo(targetScroll, { duration: 1.1 });
         });
+      });
+
+      // Step headings (Discovery/Strategy/Design/Launch) are clickable -- cursor + hover state
+      // only for now. Interaction on click (custom cursor, fade-to-distance transition, etc.)
+      // is intentionally not built yet -- waiting on the specific reference for it.
+      steps.forEach((stepEl)=>{
+        const heading = stepEl.querySelector('h3');
+        heading.addEventListener('click', ()=>{});
       });
     }
   });
