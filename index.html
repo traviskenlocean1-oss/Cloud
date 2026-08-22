@@ -523,8 +523,29 @@
   .price-list li:first-child{border-top:none;}
   .price-list li svg{flex-shrink:0;margin-top:3px;}
 
-  /* ===== FAQ ===== */
-  #faq{background:var(--black);}
+  /* ===== FAQ + CONTACT (merged — pinned scroll reveal) ===== */
+  #faq{background:var(--black);position:relative;overflow:hidden;}
+  .faq-bg-img{
+    position:absolute;inset:0;background-size:cover;background-position:center;
+    opacity:.55;z-index:0;pointer-events:none;
+  }
+  .faq-contact-pin{
+    position:relative;z-index:1;padding:130px 0 100px;
+  }
+  .faq-contact-pin::before{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg, rgba(0,0,0,.4) 0%, rgba(0,0,0,.6) 55%, rgba(0,0,0,.82) 100%);
+  }
+  .faq-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;width:100%;position:relative;z-index:2;}
+  /* Desktop: the row is intentionally tall so the sticky card has room to hold in place
+     while the FAQ column scrolls past beside it -- "you scroll, it holds, then the card
+     comes up" -- without ever needing to pin/freeze the whole section (a pinned box can't
+     be taller than the viewport without clipping; sticky has no such ceiling). */
+  @media (min-width:861px){
+    .faq-contact-grid{min-height:150vh;align-items:start;}
+    .faq-col{min-height:inherit;display:flex;flex-direction:column;justify-content:center;}
+    .contact-card{position:sticky;top:14vh;}
+  }
   .faq-item{border-top:1px solid var(--line);}
   .faq-item:last-child{border-bottom:1px solid var(--line);}
   .faq-q{
@@ -536,25 +557,31 @@
   .faq-item.open .faq-q .plus{transform:rotate(45deg);}
   .faq-a{display:grid;grid-template-rows:minmax(0,0fr);overflow:hidden;transition:grid-template-rows .4s ease;}
   .faq-item.open .faq-a{grid-template-rows:minmax(0,1fr);}
-  .faq-a p{min-height:0;padding:0 0 30px 56px;color:var(--ink-dim);font-size:.94rem;line-height:1.7;max-width:60ch;}
+  .faq-a p{min-height:0;padding:0 0 22px 56px;color:var(--ink-dim);font-size:.94rem;line-height:1.7;max-width:60ch;}
 
-  /* ===== CONTACT / BOTTOM CTA ===== */
-  #contact{
-    background:var(--black);
-    padding:140px 0;position:relative;overflow:hidden;
+  /* Get-in-touch card — a light-blue panel that scroll-reveals over the dark FAQ backdrop
+     (GSAP-driven, see the matchMedia block near the Process pin in the script). Re-declares
+     the theme tokens locally so it reads as a light "island" inside #faq's dark-section scope,
+     the same inverse-token technique already used for .price-card.premium.dark-section. */
+  .contact-card{
+    --ink:#0a0a0a;--ink-dim:rgba(10,10,10,.62);--ink-faint:rgba(10,10,10,.34);
+    --line:rgba(10,10,10,.12);--line-strong:rgba(10,10,10,.22);--surface:#eaf6ff;
+    background:linear-gradient(165deg,#eaf6ff 0%,#d9edfc 100%);
+    border:1px solid rgba(28,182,254,.4);color:var(--ink);
+    padding:42px 40px 38px;box-shadow:0 50px 100px -28px rgba(0,0,0,.6);
+    will-change:transform,opacity;
   }
-  #contact::before{
-    content:'';position:absolute;left:50%;top:0;width:900px;height:900px;
-    background:radial-gradient(circle, rgba(10,10,10,.05), transparent 70%);
-    transform:translate(-50%,-50%);pointer-events:none;
-  }
-  .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;position:relative;z-index:1;}
-  #contact h2{
+  .contact-card h2{
     font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;
-    font-size:clamp(2rem,3.8vw,3rem);margin-bottom:24px;max-width:20ch;line-height:1.1;
+    font-size:clamp(1.6rem,2.4vw,2.1rem);margin-bottom:14px;max-width:22ch;line-height:1.14;
   }
-  #contact .lead{color:var(--ink-dim);font-size:1.02rem;line-height:1.65;margin-bottom:38px;max-width:44ch;}
-  .contact-nap{margin-top:44px;}
+  .contact-card .lead{font-size:.92rem;line-height:1.6;margin-bottom:22px;max-width:44ch;}
+  .contact-card .btn-primary{margin-bottom:26px;}
+  .contact-card .cf-outline{border:none;padding:0;background:transparent;}
+  .contact-card .cf-row{margin-bottom:14px;}
+  .contact-card .contact-nap{margin-top:20px;}
+  .contact-card .contact-nap p{font-size:.8rem;line-height:1.6;}
+
   .contact-nap p{color:var(--ink-dim);font-size:.9rem;line-height:1.9;}
   .contact-nap a{color:var(--ink);}
   .cf-outline{border:1px solid var(--line);padding:38px;background:var(--surface);}
@@ -574,7 +601,7 @@
   .cf-row textarea{resize:vertical;min-height:100px;}
   .cf-row input:focus,.cf-row select:focus,.cf-row textarea:focus{outline:none;border-color:var(--ink);}
   .cf-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  #contact form button{width:100%;margin-top:6px;}
+  .contact-card form button{width:100%;margin-top:6px;}
 
   /* ===== FOOTER ===== */
   footer{background:var(--black);padding:70px 0 0;overflow:hidden;}
@@ -619,7 +646,9 @@
     .menu-toggle-label{display:none;}
     #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
     #menu-panel a{font-size:1.3rem;}
-    .feature-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr;}
+    .feature-grid,.pricing-grid,.faq-contact-grid{grid-template-columns:1fr;}
+    .faq-contact-pin{padding:70px 0;}
+    .faq-bg-img{opacity:.35;}
     .feature-col{display:contents;}
     .feature-card{min-height:520px;padding:32px 26px 28px;}
     .feature-card.bg-light, .feature-card.bg-dark{margin:0;}
@@ -862,88 +891,85 @@
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="section-pad">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Questions</p>
-        <h2>Before you reach out.</h2>
-      </div>
-
-      <div class="faq-list">
-        <div class="faq-item open">
-          <button class="faq-q"><span class="svc-num">01</span><span class="qtext">How is Cloudefy different from a marketing agency that also does social media?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>We don't manage social accounts. Cloudefy is scoped to brand strategy, identity, rebrands, and paid advertising — the work that determines whether a brand looks credible before a single post ever goes out.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">02</span><span class="qtext">Do you work with companies that don't have a brand yet?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Yes. Our Foundation tier is built specifically for companies building their first real identity — strategy and positioning come before any visual work starts.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">03</span><span class="qtext">How long does a rebrand take?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Most rebrands run 6 to 10 weeks from strategy through final asset delivery, depending on how many touchpoints the new identity needs to roll out across.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">04</span><span class="qtext">Do you handle media buying, or just the creative for ad campaigns?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q"><span class="svc-num">05</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>We're based in Austin, TX, and work with clients nationally — most engagements run remotely with the same process regardless of location.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT / BOTTOM CTA -->
-  <section id="contact">
-    <div class="wrap">
-      <div class="contact-grid">
-        <div class="fade-up">
-          <p class="eyebrow">Get In Touch</p>
-          <h2>Let's make your brand look inevitable.</h2>
-          <p class="lead">Prefer to talk it through first? Book a call. Otherwise, send the details below and we'll respond within one business day.</p>
-          <a href="tel:+15125550142" class="btn btn-primary magnetic">Book a Call — (512) 555-0142</a>
-          <div class="contact-nap">
-            <p>
-              Cloudefy<br>
-              1200 Congress Ave, Suite 400<br>
-              Austin, TX 78701<br>
-              <a href="tel:+15125550142">(512) 555-0142</a>
-            </p>
-          </div>
-        </div>
-
-        <form class="cf-outline fade-up" action="https://formspree.io/f/mzzeqoyj" method="POST">
-          <div class="cf-two">
-            <div class="cf-row">
-              <label for="cf-name">Name</label>
-              <input id="cf-name" name="name" type="text" required>
+  <!-- FAQ + CONTACT (merged — get-in-touch card scroll-reveals over a dark "reach out" backdrop) -->
+  <section id="faq" class="dark-section">
+    <span id="contact"></span>
+    <div class="faq-contact-pin">
+      <div class="faq-bg-img" style="background-image:url('assets/images/faq-reach-out-bg.jpg')"></div>
+      <div class="wrap">
+        <div class="faq-contact-grid">
+          <div class="faq-col">
+            <div class="section-head">
+              <p class="eyebrow">FAQ</p>
+              <h2>Frequently asked questions.</h2>
             </div>
-            <div class="cf-row">
-              <label for="cf-email">Email</label>
-              <input id="cf-email" name="email" type="email" required>
+
+            <div class="faq-list">
+              <div class="faq-item open">
+                <button class="faq-q"><span class="svc-num">01</span><span class="qtext">How is Cloudefy different from a marketing agency that also does social media?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>We don't manage social accounts. Cloudefy is scoped to brand strategy, identity, rebrands, and paid advertising — the work that determines whether a brand looks credible before a single post ever goes out.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">02</span><span class="qtext">Do you work with companies that don't have a brand yet?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Yes. Our Foundation tier is built specifically for companies building their first real identity — strategy and positioning come before any visual work starts.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">03</span><span class="qtext">How long does a rebrand take?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Most rebrands run 6 to 10 weeks from strategy through final asset delivery, depending on how many touchpoints the new identity needs to roll out across.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">04</span><span class="qtext">Do you handle media buying, or just the creative for ad campaigns?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>Both. We build the campaign strategy and creative direction, then manage the media buying so the work is accountable to actual performance, not just how it looks.</p></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q"><span class="svc-num">05</span><span class="qtext">Where is Cloudefy located, and do you work with clients outside Austin?</span><span class="plus">+</span></button>
+                <div class="faq-a"><p>We're based in Austin, TX, and work with clients nationally — most engagements run remotely with the same process regardless of location.</p></div>
+              </div>
             </div>
           </div>
-          <div class="cf-row">
-            <label for="cf-company">Company</label>
-            <input id="cf-company" name="company" type="text">
+
+          <div class="contact-card">
+            <p class="eyebrow">Get In Touch</p>
+            <h2>Let's make your brand look inevitable.</h2>
+            <p class="lead">Prefer to talk it through first? Book a call. Otherwise, send the details below and we'll respond within one business day.</p>
+            <a href="tel:+15125550142" class="btn btn-primary magnetic">Book a Call — (512) 555-0142</a>
+
+            <form class="cf-outline" action="https://formspree.io/f/mzzeqoyj" method="POST">
+              <div class="cf-two">
+                <div class="cf-row">
+                  <label for="cf-name">Name</label>
+                  <input id="cf-name" name="name" type="text" required>
+                </div>
+                <div class="cf-row">
+                  <label for="cf-email">Email</label>
+                  <input id="cf-email" name="email" type="email" required>
+                </div>
+              </div>
+              <div class="cf-row">
+                <label for="cf-company">Company</label>
+                <input id="cf-company" name="company" type="text">
+              </div>
+              <div class="cf-row">
+                <label for="cf-service">Service of interest</label>
+                <select id="cf-service" name="service">
+                  <option>Brand Strategy</option>
+                  <option>Rebrands</option>
+                  <option>Advertising</option>
+                  <option>Not sure yet</option>
+                </select>
+              </div>
+              <div class="cf-row">
+                <label for="cf-message">Message</label>
+                <textarea id="cf-message" name="message" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary magnetic">Send Inquiry</button>
+            </form>
+
+            <div class="contact-nap">
+              <p>Cloudefy · 1200 Congress Ave, Suite 400, Austin, TX 78701 · <a href="tel:+15125550142">(512) 555-0142</a></p>
+            </div>
           </div>
-          <div class="cf-row">
-            <label for="cf-service">Service of interest</label>
-            <select id="cf-service" name="service">
-              <option>Brand Strategy</option>
-              <option>Rebrands</option>
-              <option>Advertising</option>
-              <option>Not sure yet</option>
-            </select>
-          </div>
-          <div class="cf-row">
-            <label for="cf-message">Message</label>
-            <textarea id="cf-message" name="message" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary magnetic">Send Inquiry</button>
-        </form>
+        </div>
       </div>
     </div>
   </section>
@@ -997,10 +1023,12 @@
   gsap.ticker.add((time)=>{ lenis.raf(time*1000); });
   gsap.ticker.lagSmoothing(0);
 
-  // Nav background on scroll — nav stays light throughout (hero is a light gradient
-  // now, not the old dark placeholder), just gains a blurred bg once scrolled past the top.
+  // Nav background on scroll — nav stays light for most of the page (hero is a light
+  // gradient, not the old dark placeholder), just gains a blurred bg once scrolled past the
+  // top.
   const nav = document.getElementById('nav');
   const heroSection = document.getElementById('hero');
+  const navLogoImg = document.getElementById('nav-logo-img');
   ScrollTrigger.create({
     start: 'top -80',
     onUpdate: (self)=>{
@@ -1149,6 +1177,50 @@
           lenis.scrollTo(targetScroll, { duration: 1.1 });
         });
       });
+    }
+  });
+
+  // Nav dark-mode over the FAQ+Contact section — the only genuinely dark section below the
+  // hero now that it has the "reach out" backdrop. The logo's light-theme file has a baked-in
+  // near-white background (see cloudefy-logo-color.png), which shows as a visible white box
+  // over a dark backdrop, so it needs to swap to the transparent-bg dark variant while the nav
+  // overlaps this section. Created here (after the Process pin above) rather than up near the
+  // other nav scroll-listener -- a plain 'top top'/'bottom top' trigger created *before* a
+  // later pinned section exists gets its start/end computed short by that pin's whole scroll
+  // distance, and a manual ScrollTrigger.refresh() does not correct it; creating it after the
+  // pin exists sidesteps the bug entirely.
+  ScrollTrigger.create({
+    trigger: '#faq',
+    start: 'top top+=4',
+    end: 'bottom top',
+    onToggle: (self)=>{
+      nav.classList.toggle('dark-section', self.isActive);
+      navLogoImg.src = self.isActive
+        ? 'assets/images/cloudefy-logo-color-dark.png'
+        : 'assets/images/cloudefy-logo-color.png';
+    }
+  });
+
+  // FAQ + Contact — the get-in-touch card holds in a sticky position while the FAQ column
+  // scrolls past beside it, scroll-revealing in (opacity/scale/lift) as it settles. Desktop
+  // only (sticky is opted out via CSS below 861px); deep links to #contact land on the anchor
+  // span at the top of #faq, not the card itself, so a direct jump never looks broken mid-reveal.
+  ScrollTrigger.matchMedia({
+    '(min-width: 861px)': function(){
+      const contactCard = document.querySelector('.contact-card');
+      gsap.set(contactCard, { yPercent: 35, opacity: 0, scale: .94 });
+      gsap.to(contactCard, {
+        yPercent: 0, opacity: 1, scale: 1, ease: 'none',
+        scrollTrigger: {
+          trigger: '.faq-contact-grid',
+          start: 'top 70%',
+          end: 'top 5%',
+          scrub: 0.6
+        }
+      });
+    },
+    '(max-width: 860px)': function(){
+      gsap.set('.contact-card', { clearProps: 'all' });
     }
   });
 
