@@ -548,29 +548,50 @@
       0 40px 80px -30px rgba(10,80,130,.35);
   }
 
-  /* ===== PRICING ===== */
+  /* ===== PRICING =====
+     Rebuilt to literally match a reference screenshot of orionix.framer.website's pricing
+     cards: icon-grid + name header, dotted dividers, circular-badge feature icons, big bold
+     price, full-width black/white rounded-rect CTA (not this site's usual pill button) --
+     structure and composition match the reference part-for-part; colors stay Cloudefy's own
+     via the existing --ink/--black token pair, which is what makes the premium card's icon,
+     badges, and CTA auto-invert to white-on-black with no separate override rules needed. */
   /* padding-top overridden down from .section-pad's 130px for the same reason as #process's
      padding-bottom above -- the pin's own trailing centered space already covers this gap. */
   #pricing{background:var(--black);padding-top:0;}
-  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+  #pricing .wrap{max-width:1400px;}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:stretch;}
   .price-card{
-    border:1px solid var(--line);padding:44px 34px;display:flex;flex-direction:column;
+    border:1px solid var(--line);border-radius:28px;padding:56px 46px;
+    display:flex;flex-direction:column;min-height:720px;
   }
   .price-card.premium{
     background:var(--surface);border-color:var(--line-strong);
     box-shadow:0 30px 80px -30px rgba(0,0,0,.6);
   }
-  .price-card .tier{font-size:1.5rem;margin-bottom:10px;}
-  .price-card .tier-desc{color:var(--ink-dim);font-size:.88rem;line-height:1.6;margin-bottom:26px;min-height:64px;}
-  .price-card .price{font-size:2rem;font-family:'Fraunces',serif;margin-bottom:28px;}
-  .price-card .price small{font-size:.9rem;color:var(--ink-faint);font-family:'Inter',sans-serif;}
-  .price-list{margin-bottom:34px;flex:1;}
-  .price-list li{
-    display:flex;gap:12px;font-size:.87rem;color:var(--ink-dim);padding:10px 0;
-    border-top:1px solid var(--line);
+  .tier-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+  .tier-icon{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;flex-shrink:0;width:34px;height:34px;}
+  .tier-icon span{background:var(--ink);border-radius:6px;}
+  .price-card .tier{font-size:1.9rem;margin:0;}
+  .price-card .tier-desc{color:var(--ink-dim);font-size:1rem;line-height:1.65;}
+  .price-divider{border:none;border-top:1px dotted var(--line-strong);margin:30px 0;}
+  .price-card .price{
+    font-size:3rem;font-family:'Fraunces',serif;margin-top:30px;
+    display:flex;align-items:baseline;gap:10px;
   }
-  .price-list li:first-child{border-top:none;}
-  .price-list li svg{flex-shrink:0;margin-top:3px;}
+  .price-card .price small{font-size:1rem;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:500;}
+  .price-list{flex:1;display:flex;flex-direction:column;gap:22px;margin:0;}
+  .price-list li{display:flex;align-items:center;gap:16px;font-size:.98rem;color:var(--ink-dim);font-weight:500;}
+  .price-badge{
+    width:32px;height:32px;border-radius:50%;border:1px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink);
+  }
+  .price-badge svg{width:16px;height:16px;}
+  .price-cta{
+    display:block;width:100%;text-align:center;padding:19px;border-radius:14px;margin-top:30px;
+    font-size:.92rem;font-weight:600;letter-spacing:.01em;
+    background:var(--ink);color:var(--black);transition:opacity .2s ease;
+  }
+  .price-cta:hover{opacity:.85;}
 
   /* ===== FAQ + CONTACT (merged — FAQ scrolls normally, then a short pin reveals the card) ===== */
   #faq{background:var(--black);position:relative;overflow:hidden;}
@@ -936,44 +957,56 @@
       </div>
       <div class="pricing-grid">
         <div class="price-card fade-up">
-          <p class="tier serif">Foundation</p>
+          <div class="tier-head">
+            <div class="tier-icon"><span></span><span></span><span></span><span></span></div>
+            <p class="tier serif">Foundation</p>
+          </div>
           <p class="tier-desc">For early-stage brands that need a real identity for the first time.</p>
-          <p class="price">$8,500 <small>starting</small></p>
+          <hr class="price-divider">
           <ul class="price-list">
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Brand strategy & positioning</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Full identity system</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Brand guidelines</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>2 rounds of revisions</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></span>Brand strategy & positioning</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"/><polyline points="3 15 12 20 21 15"/></svg></span>Full identity system</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a1.5 1.5 0 00-1.5 1.5v15A1.5 1.5 0 007 21h10a1.5 1.5 0 001.5-1.5V8z"/><polyline points="14 3 14 8 18.5 8"/><line x1="8.5" y1="13" x2="15" y2="13"/><line x1="8.5" y1="16.5" x2="15" y2="16.5"/></svg></span>Brand guidelines</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="21.5 5 21.5 10 16.5 10"/><polyline points="2.5 19 2.5 14 7.5 14"/><path d="M4.2 9.5a8 8 0 0113.1-3l4.2 3.5M19.8 14.5a8 8 0 01-13.1 3l-4.2-3.5"/></svg></span>2 rounds of revisions</li>
           </ul>
-          <a href="#contact" class="btn btn-outline magnetic">Inquire for Foundation</a>
+          <p class="price">$8,500 <small>starting</small></p>
+          <a href="#contact" class="price-cta magnetic">Inquire for Foundation</a>
         </div>
 
         <div class="price-card fade-up">
-          <p class="tier serif">Growth</p>
+          <div class="tier-head">
+            <div class="tier-icon"><span></span><span></span><span></span><span></span></div>
+            <p class="tier serif">Growth</p>
+          </div>
           <p class="tier-desc">For existing brands that need a rebuild plus a real go-to-market push.</p>
-          <p class="price">$18,500 <small>starting</small></p>
+          <hr class="price-divider">
           <ul class="price-list">
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Everything in Foundation</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Full rebrand of existing identity</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Website design direction</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Launch campaign strategy</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>4 rounds of revisions</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 14.5 8.8 21 9.7 16.3 14 17.5 20.5 12 17.3 6.5 20.5 7.7 14 3 9.7 9.5 8.8 12 2.5"/></svg></span>Everything in Foundation</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="21.5 5 21.5 10 16.5 10"/><polyline points="2.5 19 2.5 14 7.5 14"/><path d="M4.2 9.5a8 8 0 0113.1-3l4.2 3.5M19.8 14.5a8 8 0 01-13.1 3l-4.2-3.5"/></svg></span>Full rebrand of existing identity</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="13" rx="1.6"/><line x1="8" y1="20.5" x2="16" y2="20.5"/><line x1="12" y1="17.5" x2="12" y2="20.5"/></svg></span>Website design direction</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h3.5l6 4V6l-6 4H3z"/><path d="M15.5 9a4.2 4.2 0 010 6"/></svg></span>Launch campaign strategy</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="21.5 5 21.5 10 16.5 10"/><polyline points="2.5 19 2.5 14 7.5 14"/><path d="M4.2 9.5a8 8 0 0113.1-3l4.2 3.5M19.8 14.5a8 8 0 01-13.1 3l-4.2-3.5"/></svg></span>4 rounds of revisions</li>
           </ul>
-          <a href="#contact" class="btn btn-outline magnetic">Inquire for Growth</a>
+          <p class="price">$18,500 <small>starting</small></p>
+          <a href="#contact" class="price-cta magnetic">Inquire for Growth</a>
         </div>
 
         <div class="price-card premium dark-section fade-up">
-          <p class="tier serif">Signature</p>
+          <div class="tier-head">
+            <div class="tier-icon"><span></span><span></span><span></span><span></span></div>
+            <p class="tier serif">Signature</p>
+          </div>
           <p class="tier-desc">Full-service partnership — brand, identity, and ongoing advertising management.</p>
-          <p class="price">Custom</p>
+          <hr class="price-divider">
           <ul class="price-list">
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Everything in Growth</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Ongoing ad campaign management</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Dedicated strategist</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Quarterly brand audits</li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" fill="none"/></svg>Unlimited revisions</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 14.5 8.8 21 9.7 16.3 14 17.5 20.5 12 17.3 6.5 20.5 7.7 14 3 9.7 9.5 8.8 12 2.5"/></svg></span>Everything in Growth</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h3.5l6 4V6l-6 4H3z"/><path d="M15.5 9a4.2 4.2 0 010 6"/></svg></span>Ongoing ad campaign management</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.4-4 4.7-6 7.5-6s6.1 2 7.5 6"/></svg></span>Dedicated strategist</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 11.5v.6a9.5 9.5 0 11-5.6-8.7"/><polyline points="21.5 4.5 12 14 9 11"/></svg></span>Quarterly brand audits</li>
+            <li><span class="price-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 8.5a3.5 3.5 0 100 7 5 5 0 003.5-1.5 5 5 0 003.5 1.5 3.5 3.5 0 100-7 5 5 0 00-3.5 1.5 5 5 0 00-3.5-1.5z"/></svg></span>Unlimited revisions</li>
           </ul>
-          <a href="#contact" class="btn btn-primary magnetic">Inquire for Signature</a>
+          <p class="price">Custom</p>
+          <a href="#contact" class="price-cta magnetic">Inquire for Signature</a>
         </div>
       </div>
     </div>
