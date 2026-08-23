@@ -130,9 +130,12 @@
     overflow-x:hidden;
   }
   h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-.01em;}
+  /* A light, even haze -- NOT a dark shape climbing up an edge. The reference transition washes
+     the whole screen at once with a translucent white/cream veil while the page cross-fades
+     underneath; there's no hard-edged silhouette sliding in from anywhere. */
   #page-transition-overlay{
-    position:fixed;inset:0;z-index:9999;background:#0a0a0a;
-    transform:scaleY(0);transform-origin:bottom;pointer-events:none;will-change:transform;
+    position:fixed;inset:0;z-index:9999;background:#fbfaf8;
+    opacity:0;pointer-events:none;will-change:opacity;
   }
   a{color:inherit;text-decoration:none;}
   ul{list-style:none;}
@@ -1240,21 +1243,21 @@
 
   // Step headings (Discovery/Strategy/Design/Launch) each open a dedicated detail page.
   // Wired unconditionally (not inside the pin's matchMedia above) so it also works on mobile,
-  // where the Process section has no pin at all. The whole page (nav included, via
-  // #transition-wrap) recedes and fades as one unit while the overlay rises to cover it --
-  // wrapping nav + main + footer together means a pinned/fixed descendant (like the Process
-  // section mid-pin) shares the same transformed containing block as everything else instead
-  // of being the only thing left un-transformed, so nothing desyncs.
+  // where the Process section has no pin at all. Reference behavior (frame-by-frame from a
+  // screen recording): the whole page gets a light, even haze wash while dimming in place --
+  // no shape sliding in from an edge, no big scale/translate. Wrapping nav + main + footer
+  // together (#transition-wrap) still matters even for this lighter treatment, since a pinned
+  // descendant (the Process section mid-pin) needs to share the same transformed ancestor as
+  // everything else or it desyncs.
   const stepPages = ['process/discovery.html', 'process/strategy.html', 'process/design.html', 'process/launch.html'];
   const pageOverlay = document.getElementById('page-transition-overlay');
   const transitionWrap = document.getElementById('transition-wrap');
   document.querySelectorAll('.process-step').forEach((stepEl, i)=>{
     const heading = stepEl.querySelector('h3');
     heading.addEventListener('click', ()=>{
-      gsap.set(pageOverlay, { transformOrigin: 'bottom' });
       gsap.timeline({ onComplete: ()=> { window.location.href = stepPages[i]; } })
-        .to(transitionWrap, { opacity: 0, y: 40, scale: .94, duration: 0.6, ease: 'power2.in' }, 0)
-        .to(pageOverlay, { scaleY: 1, duration: 0.6, ease: 'power3.inOut' }, 0.1);
+        .to(transitionWrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
+        .to(pageOverlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);
     });
   });
 

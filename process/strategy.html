@@ -52,8 +52,8 @@
   .section-title{font-family:'Fraunces',serif;font-size:clamp(1.9rem,2.6vw,2.4rem);margin-bottom:34px;}
 
   #page-transition-overlay{
-    position:fixed;inset:0;z-index:9999;background:#0a0a0a;
-    transform:scaleY(0);transform-origin:bottom;pointer-events:none;will-change:transform;
+    position:fixed;inset:0;z-index:9999;background:#fbfaf8;
+    opacity:0;pointer-events:none;will-change:opacity;
   }
 
   #nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 32px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
@@ -93,8 +93,10 @@
     width:100%;height:420px;margin:0;
     background-size:cover;background-position:center;
   }
+  .mid-photo{width:100%;height:320px;margin:56px 0;background-size:cover;background-position:center;}
 
-  .deliv-overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  .sticky-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:80px;align-items:start;}
+  .sticky-col{position:sticky;top:130px;}
   .deliv-row{display:flex;align-items:baseline;gap:20px;padding:22px 0;border-top:1px solid var(--line);font-size:1.05rem;font-weight:500;}
   .deliv-list .deliv-row:last-child{border-bottom:1px solid var(--line);}
   .deliv-row .svc-num{font-family:'Fraunces',serif;color:var(--ink-faint);font-size:1.1rem;width:32px;flex-shrink:0;}
@@ -107,11 +109,11 @@
   .why-list li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:50%;background:#1CB6FE;margin-top:9px;}
 
   .process-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
-  .process-card{background:var(--surface);padding:44px 40px;}
+  .process-card{background:var(--surface);padding:36px 32px;}
   .process-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px;}
   .process-head .svc-num{font-family:'Fraunces',serif;font-size:1.8rem;color:var(--ink-faint);}
-  .process-card h3{font-size:1.3rem;}
-  .process-card p{color:var(--ink-dim);font-size:.9rem;line-height:1.6;max-width:42ch;}
+  .process-card h3{font-size:1.2rem;}
+  .process-card p{color:var(--ink-dim);font-size:.88rem;line-height:1.6;}
 
   .next-step{
     display:flex;align-items:center;justify-content:space-between;gap:24px;
@@ -137,7 +139,8 @@
     #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
     #menu-panel a{font-size:1.3rem;}
     .page-hero{grid-template-columns:1fr;gap:24px;}
-    .deliv-overview-grid{grid-template-columns:1fr;gap:40px;}
+    .sticky-grid{grid-template-columns:1fr;gap:40px;}
+    .sticky-col{position:static;}
     .process-grid{grid-template-columns:1fr;}
     .next-step{flex-direction:column;align-items:flex-start;}
   }
@@ -174,20 +177,20 @@
     <div class="page-hero">
       <div class="hero-left">
         <span class="svc-num">02 / 04</span>
-        <h1>Strategy</h1>
+        <h1 id="hero-h1">Strategy</h1>
       </div>
       <div class="hero-right">
         <p class="lead">Positioning and messaging get locked here — before a single visual gets made. Everything downstream, identity, campaigns, the website, gets built on what we decide in this phase, not the other way around.</p>
         <a href="../index.html#contact" class="btn btn-primary magnetic">Talk Through Strategy</a>
       </div>
     </div>
-    <div class="page-hero-photo" style="background-image:url('../assets/images/process-strategy.jpg')"></div>
+    <div class="page-hero-photo" id="hero-photo" style="background-image:url('../assets/images/process-strategy.jpg')"></div>
   </div>
 
   <section class="section-pad">
     <div class="wrap">
-      <div class="deliv-overview-grid">
-        <div>
+      <div class="sticky-grid">
+        <div class="sticky-col">
           <h2 class="section-title">Deliverables</h2>
           <div class="deliv-list">
             <div class="deliv-row"><span class="svc-num">01</span><span>Positioning Statement</span></div>
@@ -203,34 +206,28 @@
             <p>We turn discovery findings into a real strategic foundation: a positioning statement, a messaging architecture, and a roadmap for how the brand shows up across every channel. This isn't a mood board — it's the argument for why the business wins.</p>
             <p>We stress-test the strategy against real objections before it's considered final, so it holds up in a sales conversation, not just in a presentation.</p>
           </div>
+
+          <div class="mid-photo" style="background-image:url('../assets/images/process-strategy-2.jpg')"></div>
+
+          <h2 class="section-title">Why it matters</h2>
+          <ul class="why-list">
+            <li><p><b>A defensible position</b> — We define what the business does, for whom, and why it's the better choice, in language that survives a hard question.</p></li>
+            <li><p><b>One message, every channel</b> — Sales decks, ads, and the website all trace back to the same core message instead of drifting apart.</p></li>
+            <li><p><b>Built to be challenged</b> — We pressure-test positioning against real buyer objections before it ships, not after.</p></li>
+            <li><p><b>A roadmap, not just a document</b> — Strategy comes with a rollout plan, so it's clear what gets built first.</p></li>
+            <li><p><b>Alignment before spend</b> — Positioning gets agreed on before any paid media or design budget is committed.</p></li>
+          </ul>
+
+          <h2 class="section-title" style="margin-top:70px;">Our Process</h2>
+          <div class="process-grid">
+            <div class="process-card"><div class="process-head"><span class="svc-num">01</span><h3>Strategy Workshop</h3></div><p>We work through discovery findings together to align on direction before drafting anything.</p></div>
+            <div class="process-card"><div class="process-head"><span class="svc-num">02</span><h3>Positioning Draft</h3></div><p>A first version of the positioning statement and core message.</p></div>
+            <div class="process-card"><div class="process-head"><span class="svc-num">03</span><h3>Objection Testing</h3></div><p>We stress-test the draft against the toughest questions a real buyer would ask.</p></div>
+            <div class="process-card"><div class="process-head"><span class="svc-num">04</span><h3>Messaging Architecture</h3></div><p>Supporting pillars and proof points get built out under the core message.</p></div>
+            <div class="process-card"><div class="process-head"><span class="svc-num">05</span><h3>Roadmap Sequencing</h3></div><p>We map how the strategy rolls out across identity, campaigns, and channels.</p></div>
+            <div class="process-card"><div class="process-head"><span class="svc-num">06</span><h3>Strategy Sign-off</h3></div><p>A final working session to lock the direction before design starts.</p></div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-pad" style="background:var(--surface);">
-    <div class="wrap">
-      <h2 class="section-title">Why it matters</h2>
-      <ul class="why-list">
-        <li><p><b>A defensible position</b> — We define what the business does, for whom, and why it's the better choice, in language that survives a hard question.</p></li>
-        <li><p><b>One message, every channel</b> — Sales decks, ads, and the website all trace back to the same core message instead of drifting apart.</p></li>
-        <li><p><b>Built to be challenged</b> — We pressure-test positioning against real buyer objections before it ships, not after.</p></li>
-        <li><p><b>A roadmap, not just a document</b> — Strategy comes with a rollout plan, so it's clear what gets built first.</p></li>
-        <li><p><b>Alignment before spend</b> — Positioning gets agreed on before any paid media or design budget is committed.</p></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section-pad">
-    <div class="wrap">
-      <h2 class="section-title">Our Process</h2>
-      <div class="process-grid">
-        <div class="process-card"><div class="process-head"><span class="svc-num">01</span><h3>Strategy Workshop</h3></div><p>We work through discovery findings together to align on direction before drafting anything.</p></div>
-        <div class="process-card"><div class="process-head"><span class="svc-num">02</span><h3>Positioning Draft</h3></div><p>A first version of the positioning statement and core message.</p></div>
-        <div class="process-card"><div class="process-head"><span class="svc-num">03</span><h3>Objection Testing</h3></div><p>We stress-test the draft against the toughest questions a real buyer would ask.</p></div>
-        <div class="process-card"><div class="process-head"><span class="svc-num">04</span><h3>Messaging Architecture</h3></div><p>Supporting pillars and proof points get built out under the core message.</p></div>
-        <div class="process-card"><div class="process-head"><span class="svc-num">05</span><h3>Roadmap Sequencing</h3></div><p>We map how the strategy rolls out across identity, campaigns, and channels.</p></div>
-        <div class="process-card"><div class="process-head"><span class="svc-num">06</span><h3>Strategy Sign-off</h3></div><p>A final working session to lock the direction before design starts.</p></div>
       </div>
     </div>
   </section>
@@ -273,17 +270,22 @@
 
   const overlay = document.getElementById('page-transition-overlay');
   const wrap = document.getElementById('transition-wrap');
-  gsap.set(overlay, { scaleY: 1, transformOrigin: 'top' });
-  gsap.set(wrap, { opacity: 0, y: 30, scale: .96 });
+  const heroPhoto = document.getElementById('hero-photo');
+  const heroH1 = document.getElementById('hero-h1');
+  gsap.set(overlay, { opacity: .97 });
+  gsap.set(wrap, { opacity: .12 });
+  gsap.set(heroPhoto, { clipPath: 'inset(0 0 42% 0)' });
+  gsap.set(heroH1, { scale: 1.18, y: 14, transformOrigin: 'left bottom' });
   gsap.timeline()
-    .to(overlay, { scaleY: 0, duration: 0.6, ease: 'power3.inOut' }, 0)
-    .to(wrap, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power2.out' }, 0.15);
+    .to(overlay, { opacity: 0, duration: 0.55, ease: 'power2.inOut' }, 0)
+    .to(wrap, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.05)
+    .to(heroPhoto, { clipPath: 'inset(0 0 0% 0)', duration: 0.6, ease: 'power2.out' }, 0.1)
+    .to(heroH1, { scale: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 0.1);
 
   function transitionTo(url){
-    gsap.set(overlay, { transformOrigin: 'bottom' });
     gsap.timeline({ onComplete: ()=> { window.location.href = url; } })
-      .to(wrap, { opacity: 0, y: 40, scale: .94, duration: 0.6, ease: 'power2.in' }, 0)
-      .to(overlay, { scaleY: 1, duration: 0.6, ease: 'power3.inOut' }, 0.1);
+      .to(wrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
+      .to(overlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);
   }
   document.getElementById('back-to-process').addEventListener('click', (e)=>{
     e.preventDefault();
