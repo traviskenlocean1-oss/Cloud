@@ -444,8 +444,17 @@
   }
 
   /* ===== PROCESS (scroll-driven traveling-number steps) ===== */
-  #process{background:var(--black);padding-bottom:130px;padding-top:180px;}
-  .process-pin{height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;position:relative;}
+  /* padding-bottom kept small on purpose -- .process-pin (100vh, flex-centered content) already
+     leaves ~280px of empty trailing space below its content once it unpins, so any real bottom
+     padding here just stacks another gap on top of that and reads as one long dead corridor
+     before #pricing starts. */
+  #process{background:var(--black);padding-bottom:0;padding-top:180px;}
+  /* Capped below 100vh on purpose: the centered content (.process-visual is 460px tall) sits
+     nowhere near a full 1000px+ viewport height, and that leftover flex-centering space is
+     invisible while pinned but "leaks" into normal flow as dead space the instant it unpins --
+     capping the box keeps the pinned moment full-bleed on real laptop/desktop heights while
+     shrinking that leak. min-height:600px stays as the floor on short viewports. */
+  .process-pin{height:min(100vh,760px);min-height:600px;display:flex;align-items:center;overflow:hidden;position:relative;}
   .process-scroll-layout{display:grid;grid-template-columns:340px 1fr;gap:70px;align-items:center;width:100%;position:relative;z-index:2;}
   .process-arc{
     position:relative;height:420px;overflow:hidden;
@@ -540,7 +549,9 @@
   }
 
   /* ===== PRICING ===== */
-  #pricing{background:var(--black);}
+  /* padding-top overridden down from .section-pad's 130px for the same reason as #process's
+     padding-bottom above -- the pin's own trailing centered space already covers this gap. */
+  #pricing{background:var(--black);padding-top:0;}
   .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
   .price-card{
     border:1px solid var(--line);padding:44px 34px;display:flex;flex-direction:column;
