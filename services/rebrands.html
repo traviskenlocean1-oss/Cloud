@@ -60,6 +60,21 @@
   section{position:relative;}
   .section-pad{padding:110px 0;}
 
+  #page-transition-overlay{
+    position:fixed;inset:0;z-index:9999;background:#fbfaf8;
+    opacity:0;pointer-events:none;will-change:opacity;
+  }
+  /* Same amplified transition used across the whole site now (Process, Services, and Blog
+     navigation all share it) -- see index.html for the full rationale. */
+  @view-transition{ navigation:auto; }
+  ::view-transition-old(root), ::view-transition-new(root){
+    animation-duration:1.1s; animation-timing-function:cubic-bezier(.4,0,.2,1);
+  }
+  ::view-transition-old(root){ animation-name:cf-page-recede; }
+  ::view-transition-new(root){ animation-name:cf-page-arrive; }
+  @keyframes cf-page-recede{ from{opacity:1;transform:scale(1);} to{opacity:0;transform:scale(.7);} }
+  @keyframes cf-page-arrive{ from{opacity:0;transform:scale(1.3);} to{opacity:1;transform:scale(1);} }
+
   #nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 32px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
   #nav .logo img{height:90px;width:auto;}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;font-size:.8rem;letter-spacing:.04em;border-radius:2px;white-space:nowrap;}
@@ -129,6 +144,10 @@
 </style>
 </head>
 <body>
+
+<div id="page-transition-overlay"></div>
+
+<div id="transition-wrap">
 
 <nav id="nav">
   <a href="../index.html" class="logo"><img src="../assets/images/cloudefy-logo-color.png" alt="Cloudefy"></a>
@@ -213,6 +232,7 @@
     <span><a href="../index.html">cloudefy.co</a> — Austin, TX</span>
   </div>
 </footer>
+</div>
 
 <script>
   gsap.registerPlugin(ScrollTrigger);
@@ -220,6 +240,29 @@
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time)=>{ lenis.raf(time*1000); });
   gsap.ticker.lagSmoothing(0);
+
+  const overlay = document.getElementById('page-transition-overlay');
+  const wrap = document.getElementById('transition-wrap');
+  const supportsViewTransition = 'startViewTransition' in document;
+  if (!supportsViewTransition) {
+    gsap.set(overlay, { opacity: .97 });
+    gsap.set(wrap, { opacity: .12 });
+    gsap.timeline()
+      .to(overlay, { opacity: 0, duration: 0.55, ease: 'power2.inOut' }, 0)
+      .to(wrap, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.05);
+  }
+  function transitionTo(url){
+    if (supportsViewTransition) { window.location.href = url; return; }
+    gsap.timeline({ onComplete: ()=> { window.location.href = url; } })
+      .to(wrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
+      .to(overlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);
+  }
+  document.querySelectorAll('.back-link, .related-card').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      transitionTo(el.getAttribute('href'));
+    });
+  });
 
   const menuToggle = document.getElementById('menu-toggle');
   const menuPanel = document.getElementById('menu-panel');
