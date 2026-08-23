@@ -712,7 +712,11 @@
   .faq-item.open .faq-q .plus{transform:rotate(45deg);border-color:var(--btn-bg);color:var(--btn-bg);}
   .faq-a{display:grid;grid-template-rows:minmax(0,0fr);overflow:hidden;transition:grid-template-rows .4s ease;}
   .faq-item.open .faq-a{grid-template-rows:minmax(0,1fr);}
-  .faq-a p{min-height:0;padding:0 0 20px 58px;color:var(--ink-dim);font-size:.9rem;line-height:1.65;max-width:56ch;}
+  /* Brighter than --ink-dim (60% white) on purpose -- against the now-more-visible "REACH OUT"
+     background photo, the dimmed answer text was reading as hard to see. Overridden here only,
+     not on the shared token, since --ink-dim is used all over the site outside this busier
+     background. */
+  .faq-a p{min-height:0;padding:0 0 20px 58px;color:rgba(245,245,240,.92);font-size:.9rem;line-height:1.65;max-width:56ch;}
 
   /* Get-in-touch card — solid, opaque white (not the site's usual translucent glass look;
      this needs to read as a firm physical card against the busy dark backdrop). Sits inside
