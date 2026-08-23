@@ -525,6 +525,19 @@
   .visual-orb.shape-squircle{border-radius:30%;}
   .visual-orb.shape-blob{border-radius:58% 42% 63% 37% / 41% 53% 47% 59%;}
   .visual-orb.shape-petal{border-radius:10% 50% 10% 50%;}
+  /* Same glossy-sphere technique (specular highlight + underside shadow + base tone), base tone
+     swapped to the brand sky-blue (#1CB6FE) instead of light gray -- alternates white/blue/white/blue
+     across the 4 steps. */
+  .visual-orb.orb-blue{
+    background:
+      radial-gradient(circle at 32% 26%, rgba(255,255,255,.9), rgba(255,255,255,.15) 42%, transparent 65%),
+      radial-gradient(circle at 74% 80%, rgba(10,70,110,.55), transparent 60%),
+      linear-gradient(160deg, #5cd0ff 0%, #0d9fe6 75%);
+    box-shadow:
+      inset 0 4px 10px rgba(255,255,255,.55),
+      inset 0 -16px 34px rgba(6,60,95,.45),
+      0 40px 80px -30px rgba(10,80,130,.35);
+  }
 
   /* ===== PRICING ===== */
   #pricing{background:var(--black);}
@@ -896,9 +909,9 @@
       <!-- Placeholder orb per step — swap for real AI-rendered shapes once produced -->
       <div class="process-visual">
         <div class="process-visual-shape active" data-step="0"><div class="visual-orb shape-circle"></div></div>
-        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle"></div></div>
+        <div class="process-visual-shape" data-step="1"><div class="visual-orb shape-squircle orb-blue"></div></div>
         <div class="process-visual-shape" data-step="2"><div class="visual-orb shape-blob"></div></div>
-        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal"></div></div>
+        <div class="process-visual-shape" data-step="3"><div class="visual-orb shape-petal orb-blue"></div></div>
       </div>
     </div>
   </section>
