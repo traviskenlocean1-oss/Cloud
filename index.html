@@ -151,6 +151,16 @@
   ::view-transition-new(root){ animation-name:cf-page-arrive; }
   @keyframes cf-page-recede{ from{opacity:1;transform:scale(1);} to{opacity:0;transform:scale(.96);} }
   @keyframes cf-page-arrive{ from{opacity:0;transform:scale(1.03);} to{opacity:1;transform:scale(1);} }
+  /* Blog navigation gets a much more dramatic version of the same transition (explicitly
+     requested bigger than the Process one above) -- scoped via an html.vt-blog class the JS
+     below adds right before navigating away from a clicked .blog-card, so Process-step
+     navigation elsewhere on this page keeps its subtler feel untouched. Blog pages themselves
+     use this amplified version unconditionally in their own <style> block. */
+  html.vt-blog::view-transition-old(root){ animation-name:cf-blog-recede; }
+  html.vt-blog::view-transition-new(root){ animation-name:cf-blog-arrive; }
+  html.vt-blog::view-transition-old(root), html.vt-blog::view-transition-new(root){ animation-duration:1.1s; }
+  @keyframes cf-blog-recede{ from{opacity:1;transform:scale(1);} to{opacity:0;transform:scale(.7);} }
+  @keyframes cf-blog-arrive{ from{opacity:0;transform:scale(1.3);} to{opacity:1;transform:scale(1);} }
   a{color:inherit;text-decoration:none;}
   ul{list-style:none;}
   img{max-width:100%;display:block;}
@@ -593,6 +603,46 @@
   }
   .price-cta:hover{opacity:.85;}
 
+  /* ===== INSIGHTS (blog) =====
+     Same literal-match approach as Pricing: reusable .blog-card component (rounded photo with
+     a "Read article" pill that fades in + the photo scaling up on hover, date/title/description/
+     tag body) used identically here, on every article page's "You might also like" grid, and on
+     the standalone all-articles page. */
+  #insights{background:var(--black);}
+  .insights-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap;}
+  .insights-head h2{margin:0;}
+  .eyebrow-pill{
+    display:inline-flex;align-items:center;gap:9px;
+    border:1px solid var(--line-strong);border-radius:999px;padding:8px 16px 8px 14px;
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-dim);
+    margin-bottom:18px;
+  }
+  .eyebrow-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--btn-bg);flex-shrink:0;}
+  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .blog-card{
+    display:block;border-radius:28px;overflow:hidden;border:1px solid var(--line);
+    background:var(--black);transition:border-color .25s ease;
+  }
+  .blog-card:hover{border-color:var(--line-strong);}
+  .blog-card-photo{position:relative;aspect-ratio:4/3;overflow:hidden;}
+  .blog-card-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1);}
+  .blog-card:hover .blog-card-photo img{transform:scale(1.09);}
+  .blog-card-read{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(10,10,10,.32);opacity:0;transition:opacity .35s ease;
+  }
+  .blog-card:hover .blog-card-read{opacity:1;}
+  .blog-card-read span{
+    background:#ffffff;color:#0a0a0a;font-size:.85rem;font-weight:600;
+    padding:12px 24px;border-radius:999px;transform:translateY(10px);transition:transform .35s ease;
+  }
+  .blog-card:hover .blog-card-read span{transform:translateY(0);}
+  .blog-card-body{padding:26px 28px 30px;}
+  .blog-card-date{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px;}
+  .blog-card-body h3{font-size:1.3rem;margin-bottom:10px;line-height:1.32;}
+  .blog-card-body p{color:var(--ink-dim);font-size:.92rem;line-height:1.6;margin-bottom:16px;}
+  .blog-tag{display:inline-block;font-size:.76rem;font-weight:600;color:var(--ink-dim);background:var(--surface);padding:6px 14px;border-radius:999px;}
+
   /* ===== FAQ + CONTACT (merged — FAQ scrolls normally, then a short pin reveals the card) ===== */
   #faq{background:var(--black);position:relative;overflow:hidden;}
   /* background-attachment:fixed sizes "cover" against the VIEWPORT, not against this element's
@@ -746,7 +796,7 @@
     .menu-toggle-label{display:none;}
     #menu-panel{width:calc(100vw - 40px);right:20px;top:76px;}
     #menu-panel a{font-size:1.3rem;}
-    .feature-grid,.pricing-grid,.faq-contact-grid{grid-template-columns:1fr;}
+    .feature-grid,.pricing-grid,.faq-contact-grid,.blog-grid{grid-template-columns:1fr;}
     .faq-contact-pin{min-height:0;padding:70px 0;}
     .faq-contact-grid{gap:50px;}
     .faq-bg-img{opacity:.35;}
@@ -791,6 +841,7 @@
     <a href="#services"><span class="menu-arrow">→</span>Services</a>
     <a href="#process"><span class="menu-arrow">→</span>Process</a>
     <a href="#pricing"><span class="menu-arrow">→</span>Pricing</a>
+    <a href="#insights"><span class="menu-arrow">→</span>Insights</a>
     <a href="#faq"><span class="menu-arrow">→</span>FAQ</a>
     <a href="#contact"><span class="menu-arrow">→</span>Contact</a>
   </div>
@@ -1008,6 +1059,57 @@
           <p class="price">Custom</p>
           <a href="#contact" class="price-cta magnetic">Inquire for Signature</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section id="insights" class="section-pad">
+    <div class="wrap">
+      <div class="insights-head">
+        <div>
+          <p class="eyebrow-pill"><span class="dot"></span>Insights</p>
+          <h2>Ideas, insights & perspectives.</h2>
+        </div>
+        <a href="blog/index.html" class="btn btn-outline magnetic">View all Articles</a>
+      </div>
+      <div class="blog-grid">
+        <a href="blog/why-brand-strategy-comes-first.html" class="blog-card fade-up">
+          <div class="blog-card-photo">
+            <img src="assets/images/blog/article-1.jpg" alt="Why Brand Strategy Comes Before Design">
+            <div class="blog-card-read"><span>Read article</span></div>
+          </div>
+          <div class="blog-card-body">
+            <p class="blog-card-date">Aug 3, 2026</p>
+            <h3 class="serif">Why Brand Strategy Comes Before Design</h3>
+            <p>Every rushed rebrand traces back to the same mistake: skipping straight to visuals before the positioning is actually locked.</p>
+            <span class="blog-tag">Brand Strategy</span>
+          </div>
+        </a>
+        <a href="blog/what-changes-in-a-rebrand.html" class="blog-card fade-up">
+          <div class="blog-card-photo">
+            <img src="assets/images/blog/article-3.jpg" alt="What Actually Changes in a Rebrand">
+            <div class="blog-card-read"><span>Read article</span></div>
+          </div>
+          <div class="blog-card-body">
+            <p class="blog-card-date">Aug 12, 2026</p>
+            <h3 class="serif">What Actually Changes in a Rebrand (and What Doesn't)</h3>
+            <p>A rebrand isn't a new logo. Here's what genuinely changes underneath, and the parts of a brand that should survive one intact.</p>
+            <span class="blog-tag">Rebrands</span>
+          </div>
+        </a>
+        <a href="blog/what-makes-ads-convert.html" class="blog-card fade-up">
+          <div class="blog-card-photo">
+            <img src="assets/images/blog/article-5.jpg" alt="What Makes an Ad Campaign Actually Convert">
+            <div class="blog-card-read"><span>Read article</span></div>
+          </div>
+          <div class="blog-card-body">
+            <p class="blog-card-date">Aug 19, 2026</p>
+            <h3 class="serif">What Makes an Ad Campaign Actually Convert</h3>
+            <p>Good creative and good media buying rarely come from two different vendors. Here's why that split quietly costs you performance.</p>
+            <span class="blog-tag">Advertising</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1334,6 +1436,25 @@
         return;
       }
       gsap.timeline({ onComplete: ()=> { window.location.href = stepPages[i]; } })
+        .to(transitionWrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
+        .to(pageOverlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);
+    });
+  });
+
+  // Blog cards -- same native-transition-first pattern as Process steps above, but tagged with
+  // .vt-blog right before navigating so the CSS keyframes defined for that class (much bigger
+  // scale swing, longer duration) take over instead of the subtler Process ones.
+  document.querySelectorAll('.blog-card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      const url = card.getAttribute('href');
+      if (supportsViewTransition) {
+        e.preventDefault();
+        document.documentElement.classList.add('vt-blog');
+        window.location.href = url;
+        return;
+      }
+      e.preventDefault();
+      gsap.timeline({ onComplete: ()=> { window.location.href = url; } })
         .to(transitionWrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
         .to(pageOverlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);
     });
