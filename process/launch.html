@@ -55,6 +55,16 @@
     position:fixed;inset:0;z-index:9999;background:#fbfaf8;
     opacity:0;pointer-events:none;will-change:opacity;
   }
+  /* Native cross-document View Transition (Chromium 126+) -- see index.html for the full
+     rationale. Falls back silently where unsupported; JS below gates on it. */
+  @view-transition{ navigation:auto; }
+  ::view-transition-old(root), ::view-transition-new(root){
+    animation-duration:.6s; animation-timing-function:cubic-bezier(.4,0,.2,1);
+  }
+  ::view-transition-old(root){ animation-name:cf-page-recede; }
+  ::view-transition-new(root){ animation-name:cf-page-arrive; }
+  @keyframes cf-page-recede{ from{opacity:1;transform:scale(1);} to{opacity:0;transform:scale(.96);} }
+  @keyframes cf-page-arrive{ from{opacity:0;transform:scale(1.03);} to{opacity:1;transform:scale(1);} }
 
   #nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 32px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
   #nav .logo img{height:90px;width:auto;}
@@ -272,17 +282,22 @@
   const wrap = document.getElementById('transition-wrap');
   const heroPhoto = document.getElementById('hero-photo');
   const heroH1 = document.getElementById('hero-h1');
-  gsap.set(overlay, { opacity: .97 });
-  gsap.set(wrap, { opacity: .12 });
+  const supportsViewTransition = 'startViewTransition' in document;
   gsap.set(heroPhoto, { clipPath: 'inset(0 0 42% 0)' });
   gsap.set(heroH1, { scale: 1.18, y: 14, transformOrigin: 'left bottom' });
-  gsap.timeline()
-    .to(overlay, { opacity: 0, duration: 0.55, ease: 'power2.inOut' }, 0)
-    .to(wrap, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.05)
-    .to(heroPhoto, { clipPath: 'inset(0 0 0% 0)', duration: 0.6, ease: 'power2.out' }, 0.1)
-    .to(heroH1, { scale: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 0.1);
+  const entranceTl = gsap.timeline()
+    .to(heroPhoto, { clipPath: 'inset(0 0 0% 0)', duration: 0.6, ease: 'power2.out' }, supportsViewTransition ? 0 : 0.1)
+    .to(heroH1, { scale: 1, y: 0, duration: 0.55, ease: 'power2.out' }, supportsViewTransition ? 0 : 0.1);
+  if (!supportsViewTransition) {
+    gsap.set(overlay, { opacity: .97 });
+    gsap.set(wrap, { opacity: .12 });
+    entranceTl
+      .to(overlay, { opacity: 0, duration: 0.55, ease: 'power2.inOut' }, 0)
+      .to(wrap, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.05);
+  }
 
   function transitionTo(url){
+    if (supportsViewTransition) { window.location.href = url; return; }
     gsap.timeline({ onComplete: ()=> { window.location.href = url; } })
       .to(wrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
       .to(overlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);

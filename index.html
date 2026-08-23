@@ -137,6 +137,20 @@
     position:fixed;inset:0;z-index:9999;background:#fbfaf8;
     opacity:0;pointer-events:none;will-change:opacity;
   }
+  /* Native cross-document View Transition (Chromium 126+): lets the browser crossfade the
+     *actual* outgoing/incoming page pixels across a hard navigation -- the real previous
+     page visibly recedes while the real next page rises in, instead of everything washing
+     through the overlay above first. No-ops in browsers without support; the JS below only
+     skips the overlay wash when 'startViewTransition' actually exists, so unsupported
+     browsers keep the fallback exactly as before. */
+  @view-transition{ navigation:auto; }
+  ::view-transition-old(root), ::view-transition-new(root){
+    animation-duration:.6s; animation-timing-function:cubic-bezier(.4,0,.2,1);
+  }
+  ::view-transition-old(root){ animation-name:cf-page-recede; }
+  ::view-transition-new(root){ animation-name:cf-page-arrive; }
+  @keyframes cf-page-recede{ from{opacity:1;transform:scale(1);} to{opacity:0;transform:scale(.96);} }
+  @keyframes cf-page-arrive{ from{opacity:0;transform:scale(1.03);} to{opacity:1;transform:scale(1);} }
   a{color:inherit;text-decoration:none;}
   ul{list-style:none;}
   img{max-width:100%;display:block;}
@@ -430,7 +444,7 @@
   }
 
   /* ===== PROCESS (scroll-driven traveling-number steps) ===== */
-  #process{background:var(--black);padding-bottom:130px;padding-top:40px;}
+  #process{background:var(--black);padding-bottom:130px;padding-top:180px;}
   .process-pin{height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden;position:relative;}
   .process-scroll-layout{display:grid;grid-template-columns:340px 1fr;gap:70px;align-items:center;width:100%;position:relative;z-index:2;}
   .process-arc{
@@ -1252,9 +1266,16 @@
   const stepPages = ['process/discovery.html', 'process/strategy.html', 'process/design.html', 'process/launch.html'];
   const pageOverlay = document.getElementById('page-transition-overlay');
   const transitionWrap = document.getElementById('transition-wrap');
+  const supportsViewTransition = 'startViewTransition' in document;
   document.querySelectorAll('.process-step').forEach((stepEl, i)=>{
     const heading = stepEl.querySelector('h3');
     heading.addEventListener('click', ()=>{
+      if (supportsViewTransition) {
+        // Let the native transition own the exit -- washing to the overlay first would hand
+        // the browser a near-blank "old page" snapshot instead of the real homepage.
+        window.location.href = stepPages[i];
+        return;
+      }
       gsap.timeline({ onComplete: ()=> { window.location.href = stepPages[i]; } })
         .to(transitionWrap, { opacity: .12, scale: .99, duration: 0.5, ease: 'power2.inOut' }, 0)
         .to(pageOverlay, { opacity: .97, duration: 0.5, ease: 'power2.inOut' }, 0);
