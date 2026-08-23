@@ -335,12 +335,17 @@
   .statement-text span{opacity:.045;}
 
   /* ===== SERVICES (scroll-fades to dark, mads-matters-style feature cards) ===== */
+  /* Duration shortened from .9s -- the binary toggleClass below can flip back and forth if
+     scroll position bounces near the trigger boundary (mobile momentum/flick scrolling makes
+     this common), and a .9s transition is long enough for that reversal to visibly get caught
+     mid-crossfade (briefly wrong-colored text against a bg that hasn't caught up). A snappier
+     transition closes that window without needing to rebuild the toggle as a full scrub. */
   #services{
     background:var(--black);
-    transition:background-color .9s ease, color .9s ease;
+    transition:background-color .35s ease, color .35s ease;
     position:relative;z-index:2;
   }
-  #services *{transition:color .9s ease, border-color .9s ease;}
+  #services *{transition:color .35s ease, border-color .35s ease;}
   .accent{color:var(--btn-bg);}
   .svc-num{font-family:'Fraunces',serif;font-size:1rem;color:var(--ink-faint);}
   .svc-link{font-size:.82rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink);border-bottom:1px solid var(--line-strong);padding-bottom:2px;align-self:flex-start;}
@@ -871,6 +876,13 @@
     .process-content{min-height:0;}
     .process-step{position:static;opacity:1;pointer-events:auto;padding-bottom:44px;border-bottom:1px solid var(--line);margin-bottom:44px;}
     .process-step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+    /* Full pin+arc mechanic is desktop-only by design (it depends on position:fixed pinning,
+       which doesn't translate to a sensibly-scoped mobile interaction) -- this gives mobile its
+       own lighter scroll-reveal instead of the static list just appearing with zero motion. */
+    .process-step.mobile-reveal{opacity:0;transform:translateY(28px);}
+    /* Faint on a small phone screen at the original 2px/.55 opacity -- boosted here so it's
+       actually noticeable rather than reading as "not there". */
+    .wordmark-wrap h2{-webkit-text-stroke:2.5px rgba(10,10,10,.78);}
   }
 </style>
 </head>
@@ -1492,6 +1504,18 @@
         });
       });
 
+    },
+    '(max-width: 860px)': function(){
+      // No pin/arc on mobile (see the CSS note above), but the static stacked list shouldn't
+      // just appear with zero motion either -- each step fades/slides up individually as it
+      // scrolls into view, a plain scroll-reveal rather than the desktop pin mechanic.
+      gsap.utils.toArray('.process-step').forEach(step=>{
+        step.classList.add('mobile-reveal');
+        gsap.to(step, {
+          opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+          scrollTrigger: { trigger: step, start: 'top 88%' }
+        });
+      });
     }
   });
 
@@ -1798,11 +1822,22 @@
   letter.position.set(3.4, 0, 0);
   scene.add(letter);
 
+  // The letter's world-space X offset (3.4) was tuned for desktop's wide aspect ratio, where a
+  // narrower horizontal FOV at the same depth pushes that same offset almost entirely off-screen
+  // on a narrow mobile viewport -- that's why the C was effectively invisible on phones. Below
+  // the site's existing 860px breakpoint, center it (x:0) and drop it down in the frame (y:-2.6)
+  // so it sits below the hero text instead of overlapping it, matching desktop's untouched
+  // right-of-text placement above that breakpoint.
+  let baseX = 3.4, baseY = 0;
   function resize() {
     const w = heroEl.clientWidth, h = heroEl.clientHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    const isMobile = w <= 860;
+    baseX = isMobile ? 0 : 3.4;
+    baseY = isMobile ? -2.6 : 0;
+    letter.position.x = baseX;
   }
   window.addEventListener('resize', resize);
   resize();
@@ -1842,7 +1877,7 @@
     letter.rotation.y += (targetRotY + scrollRotY - letter.rotation.y) * 0.06;
     letter.rotation.x += (targetRotX - letter.rotation.x) * 0.06;
     letter.rotation.z = scrollRotZ + Math.sin(t * 0.3) * 0.03;
-    letter.position.y = Math.sin(t * 0.4) * 0.15 + scrollY;
+    letter.position.y = baseY + Math.sin(t * 0.4) * 0.15 + scrollY;
     renderer.render(scene, camera);
   }
   animate();
